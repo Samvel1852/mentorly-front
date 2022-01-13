@@ -1,5 +1,9 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+
+import logo from "./logo.svg";
+import "./App.css";
+
+const i = 0;
 
 function App() {
   return (
