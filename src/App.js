@@ -4,7 +4,7 @@ import logo from "./logo.svg";
 import "./App.css";
 
 const i = 0;
-const b;
+const b = 1;
 
 function App() {
   return (
