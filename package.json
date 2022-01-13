@@ -2,6 +2,14 @@
   "name": "mentorly-front",
   "version": "0.1.0",
   "private": true,
+  "husky": {
+    "hooks": {
+      "applypatch-msg": "echo \"[Husky] applypatch-msg\"",
+      "pre-applypatch": "echo \"[Husky] pre-applypatch\"",
+      "post-applypatch": "echo \"[Husky] post-applypatch\"",
+      "pre-commit": "echo \"[Husky] pre-commit\""
+    }
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
@@ -20,7 +28,7 @@
     "lint-staged": "lint-staged --config lint-staged.js",
     "husky-install": "husky install",
     "pre-commit": "lint-staged",
-    "prepare": "chmod ug+x ./installHooks.sh && ./installHooks.sh"
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
