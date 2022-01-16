@@ -1,8 +1,9 @@
+import { useState } from 'react';
+import axios from 'axios';
 import { Layout, Menu, Form, Input, Button, Select } from 'antd';
 
 import './MyProfile.less';
 import 'antd/dist/antd.css';
-import { useState } from 'react';
 import Skill from '../../components/Skill/Skill';
 
 const { Header, Content, Footer } = Layout;
@@ -10,6 +11,8 @@ const { Option } = Select;
 const { TextArea } = Input;
 
 export default function MyProfile() {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [experience, setExperience] = useState('');
   const [education, setEducation] = useState('');
   const [about, setAbout] = useState('');
@@ -22,7 +25,25 @@ export default function MyProfile() {
 
   const [form] = Form.useForm();
 
-  const onfinish = () => {};
+  const onfinish = () => {
+    axios.post('/', {
+      firstName,
+      lastName,
+      experience,
+      education,
+      about,
+      plans,
+      skills,
+    });
+  };
+
+  function handleFirstNameChange(e) {
+    setFirstName(e.target.value);
+  }
+
+  function handleLastNameChange(e) {
+    setLastName(e.target.value);
+  }
 
   function handleChangeRole(value) {
     console.log(`selected ${value}`);
@@ -103,7 +124,10 @@ export default function MyProfile() {
                   { required: true, message: 'Please input your First Name!' },
                 ]}
               >
-                <Input style={{ width: '80%' }} />
+                <Input
+                  onChange={handleFirstNameChange}
+                  style={{ width: '80%' }}
+                />
               </Form.Item>
               <Form.Item
                 name='Last Name'
@@ -113,7 +137,10 @@ export default function MyProfile() {
                   { required: true, message: 'Please input your Last Name!' },
                 ]}
               >
-                <Input style={{ width: '80%' }} />
+                <Input
+                  onChange={handleLastNameChange}
+                  style={{ width: '80%' }}
+                />
               </Form.Item>
             </div>
             <div className='selectsContainer'>
