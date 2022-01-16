@@ -1,10 +1,12 @@
-import React from "react";
+import React from 'react';
 
-import "./App.less";
+import './App.less';
+import MyProfile from './pages/MyProfile/MyProfile';
 
 function App() {
   return (
-    <div className="App">
+    <div className='App'>
+      <MyProfile />
     </div>
   );
 }
