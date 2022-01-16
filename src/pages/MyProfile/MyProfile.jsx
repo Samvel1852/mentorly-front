@@ -3,6 +3,7 @@ import { Layout, Menu, Form, Input, Button, Select } from 'antd';
 import './MyProfile.less';
 import 'antd/dist/antd.css';
 import { useState } from 'react';
+import Skill from '../../components/Skill/Skill';
 
 const { Header, Content, Footer } = Layout;
 const { Option } = Select;
@@ -50,6 +51,7 @@ export default function MyProfile() {
   function handleAddingSkillChange(e) {
     setSkills([...skills, e.target.value]);
     setAddingSkill(!addingSkill);
+    setSkillName('');
   }
 
   function handleSkillNameChange(e) {
@@ -238,26 +240,28 @@ export default function MyProfile() {
                 },
               ]}
             >
-              <Layout style={{ minHeight: '100px' }}>
-                {skills.map((skill) => (
-                  <span key={skillId++}>{skill}</span>
-                ))}
-                {addingSkill ? (
-                  <Input
-                    value={skillName}
-                    onPressEnter={handleAddingSkillChange}
-                    onChange={handleSkillNameChange}
-                    style={{ width: '20%' }}
-                    autoFocus
-                  />
-                ) : (
-                  <Button
-                    onClick={handleAddingSkillChange}
-                    style={{ width: '20%' }}
-                  >
-                    + New skill
-                  </Button>
-                )}
+              <Layout style={{ minHeight: '100px', display: 'flex' }}>
+                <div className='skillsContainer'>
+                  {skills.map((skill) => (
+                    <Skill key={skillId++} name={skill} />
+                  ))}
+                  {addingSkill ? (
+                    <Input
+                      value={skillName}
+                      onPressEnter={handleAddingSkillChange}
+                      onChange={handleSkillNameChange}
+                      style={{ width: '15%' }}
+                      autoFocus
+                    />
+                  ) : (
+                    <Button
+                      onClick={handleAddingSkillChange}
+                      style={{ width: '15%' }}
+                    >
+                      + New skill
+                    </Button>
+                  )}
+                </div>
               </Layout>
             </Form.Item>
             <br />
