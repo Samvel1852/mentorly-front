@@ -49,13 +49,24 @@ export default function MyProfile() {
   }
 
   function handleAddingSkillChange(e) {
-    setSkills([...skills, e.target.value]);
-    setAddingSkill(!addingSkill);
-    setSkillName('');
+    if (e.target.value) {
+      setSkills([...skills, { id: skillId, name: e.target.value }]);
+      setAddingSkill(!addingSkill);
+      setSkillName('');
+    } else {
+      setAddingSkill(!addingSkill);
+    }
   }
 
   function handleSkillNameChange(e) {
     setSkillName(e.target.value);
+  }
+
+  function handleDeleteSkill({ id, e }) {
+    const filteredSkills = skills.filter((skill) => skill.id !== id);
+    console.log('filteredSkills', filteredSkills);
+    e.preventDefault();
+    setSkills(filteredSkills);
   }
 
   return (
@@ -243,7 +254,12 @@ export default function MyProfile() {
               <Layout style={{ minHeight: '100px', display: 'flex' }}>
                 <div className='skillsContainer'>
                   {skills.map((skill) => (
-                    <Skill key={skillId++} name={skill} />
+                    <Skill
+                      key={skillId++}
+                      name={skill.name}
+                      id={skillId}
+                      handleDeleteSkill={handleDeleteSkill}
+                    />
                   ))}
                   {addingSkill ? (
                     <Input
