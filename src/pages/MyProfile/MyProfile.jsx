@@ -13,6 +13,11 @@ export default function MyProfile() {
   const [education, setEducation] = useState('');
   const [about, setAbout] = useState('');
   const [plans, setPlans] = useState('');
+  const [addingSkill, setAddingSkill] = useState(false);
+  const [skillName, setSkillName] = useState('');
+  const [skills, setSkills] = useState([]);
+
+  let skillId = 1;
 
   const [form] = Form.useForm();
 
@@ -40,6 +45,15 @@ export default function MyProfile() {
 
   function handlePlansChange(e) {
     setPlans(e.target.value);
+  }
+
+  function handleAddingSkillChange(e) {
+    setSkills([...skills, e.target.value]);
+    setAddingSkill(!addingSkill);
+  }
+
+  function handleSkillNameChange(e) {
+    setSkillName(e.target.value);
   }
 
   return (
@@ -225,7 +239,25 @@ export default function MyProfile() {
               ]}
             >
               <Layout style={{ minHeight: '100px' }}>
-                <Button style={{ width: '20%' }}>+ New skill</Button>
+                {skills.map((skill) => (
+                  <span key={skillId++}>{skill}</span>
+                ))}
+                {addingSkill ? (
+                  <Input
+                    value={skillName}
+                    onPressEnter={handleAddingSkillChange}
+                    onChange={handleSkillNameChange}
+                    style={{ width: '20%' }}
+                    autoFocus
+                  />
+                ) : (
+                  <Button
+                    onClick={handleAddingSkillChange}
+                    style={{ width: '20%' }}
+                  >
+                    + New skill
+                  </Button>
+                )}
               </Layout>
             </Form.Item>
             <br />
