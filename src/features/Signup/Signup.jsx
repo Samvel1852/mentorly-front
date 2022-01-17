@@ -13,10 +13,10 @@ export default function Signup() {
     <Form
       name='basic'
       labelCol={{
-        span: 8,
+        span: 10,
       }}
       wrapperCol={{
-        span: 16,
+        span: 10,
       }}
       initialValues={{
         remember: true,
@@ -25,6 +25,14 @@ export default function Signup() {
       onFinishFailed={onFinishFailed}
       autoComplete='off'
     >
+      <Form.Item
+        wrapperCol={{
+          offset: 13,
+          span: 16,
+        }}
+      >
+        <h1>Sign Up</h1>
+      </Form.Item>
       <Form.Item
         label='Username'
         name='username'
@@ -35,7 +43,7 @@ export default function Signup() {
           },
         ]}
       >
-        <Input />
+        <Input style={{ width: '80%' }} />
       </Form.Item>
 
       <Form.Item
@@ -48,7 +56,7 @@ export default function Signup() {
           },
         ]}
       >
-        <Input.Password />
+        <Input.Password style={{ width: '80%' }} />
       </Form.Item>
 
       <Form.Item
@@ -61,12 +69,12 @@ export default function Signup() {
           },
         ]}
       >
-        <Input.Password />
+        <Input.Password style={{ width: '80%' }} />
       </Form.Item>
 
       <Form.Item
         wrapperCol={{
-          offset: 8,
+          offset: 13,
           span: 16,
         }}
       >
