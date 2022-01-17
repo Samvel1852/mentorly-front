@@ -1,32 +1,60 @@
-import { useState } from 'react';
+// import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 import axios from 'axios';
 import { Layout, Menu, Form, Input, Button, Select } from 'antd';
 
-import './MyProfile.less';
+import './FillMyProfile.less';
 import 'antd/dist/antd.css';
 import Skill from '../../components/Skill/Skill';
+
+import {
+  setFirstName,
+  setLastName,
+  setExperience,
+  setEducation,
+  setAbout,
+  setPlans,
+  setAddingSkill,
+  setSkillName,
+  setSkills,
+} from '../../features/fillMyProfile/fillMyProfileSlice';
 
 const { Header, Content, Footer } = Layout;
 const { Option } = Select;
 const { TextArea } = Input;
 
 export default function MyProfile() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [experience, setExperience] = useState('');
-  const [education, setEducation] = useState('');
-  const [about, setAbout] = useState('');
-  const [plans, setPlans] = useState('');
-  const [addingSkill, setAddingSkill] = useState(false);
-  const [skillName, setSkillName] = useState('');
-  const [skills, setSkills] = useState([]);
+  // const [firstName, setFirstName] = useState('');
+  // const [lastName, setLastName] = useState('');
+  // const [experience, setExperience] = useState('');
+  // const [education, setEducation] = useState('');
+  // const [about, setAbout] = useState('');
+  // const [plans, setPlans] = useState('');
+  // const [addingSkill, setAddingSkill] = useState(false);
+  // const [skillName, setSkillName] = useState('');
+  // const [skills, setSkills] = useState([]);
+
+  const {
+    firstName,
+    lastName,
+    experience,
+    education,
+    about,
+    plans,
+    addingSkill,
+    skillName,
+    skills,
+  } = useSelector((state) => state.fillMyProfile);
+
+  const dispatch = useDispatch();
 
   let skillId = 1;
 
   const [form] = Form.useForm();
 
   const onfinish = () => {
-    axios.post('/', {
+    axios.post('`http://localhost:4000/api/', {
       firstName,
       lastName,
       experience,
@@ -35,14 +63,25 @@ export default function MyProfile() {
       plans,
       skills,
     });
+    console.log(
+      axios.post('http://localhost:4000/', {
+        firstName,
+        lastName,
+        experience,
+        education,
+        about,
+        plans,
+        skills,
+      }),
+    );
   };
 
   function handleFirstNameChange(e) {
-    setFirstName(e.target.value);
+    dispatch(setFirstName(e.target.value));
   }
 
   function handleLastNameChange(e) {
-    setLastName(e.target.value);
+    dispatch(setLastName(e.target.value));
   }
 
   function handleChangeRole(value) {
@@ -54,40 +93,40 @@ export default function MyProfile() {
   }
 
   function handleEducationChange(e) {
-    setEducation(e.target.value);
+    dispatch(setEducation(e.target.value));
   }
 
   function handleExperienceChange(e) {
-    setExperience(e.target.value);
+    dispatch(setExperience(e.target.value));
   }
 
   function handleAboutChange(e) {
-    setAbout(e.target.value);
+    dispatch(setAbout(e.target.value));
   }
 
   function handlePlansChange(e) {
-    setPlans(e.target.value);
+    dispatch(setPlans(e.target.value));
   }
 
   function handleAddingSkillChange(e) {
     if (e.target.value) {
-      setSkills([...skills, { id: skillId, name: e.target.value }]);
-      setAddingSkill(!addingSkill);
-      setSkillName('');
+      dispatch(setSkills([...skills, { id: skillId, name: e.target.value }]));
+      dispatch(setAddingSkill(!addingSkill));
+      dispatch(setSkillName(''));
     } else {
-      setAddingSkill(!addingSkill);
+      dispatch(setAddingSkill(!addingSkill));
     }
   }
 
   function handleSkillNameChange(e) {
-    setSkillName(e.target.value);
+    dispatch(setSkillName(e.target.value));
   }
 
   function handleDeleteSkill({ id, e }) {
     const filteredSkills = skills.filter((skill) => skill.id !== id);
     console.log('filteredSkills', filteredSkills);
     e.preventDefault();
-    setSkills(filteredSkills);
+    dispatch(setSkills(filteredSkills));
   }
 
   return (

@@ -1,12 +1,12 @@
 import React from 'react';
 
 import './App.less';
-import MyProfile from './pages/MyProfile/MyProfile';
+import FillMyProfile from './pages/FillMyProfile/FillMyProfile';
 
 function App() {
   return (
     <div className='App'>
-      <MyProfile />
+      <FillMyProfile />
     </div>
   );
 }
