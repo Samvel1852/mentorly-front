@@ -5,6 +5,7 @@ import './App.less';
 import Signup from './pages/Signup/Signup';
 import FillMyProfile from './pages/FillMyProfile/FillMyProfile';
 import Confirm from './pages/Confirm/Confirm';
+import Login from './pages/Login/Login';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path='/signup' element={<Signup />} />
           <Route path='/confirm' element={<Confirm />} />
+          <Route path='/login' element={<Login />} />
           <Route path='/fill-my-profile' element={<FillMyProfile />} />
         </Routes>
       </Router>
