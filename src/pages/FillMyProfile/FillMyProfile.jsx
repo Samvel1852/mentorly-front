@@ -1,7 +1,7 @@
 // import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import axios from 'axios';
+// import axios from 'axios';
 import { Layout, Menu, Form, Input, Button, Select } from 'antd';
 
 import './FillMyProfile.less';
@@ -18,6 +18,7 @@ import {
   setAddingSkill,
   setSkillName,
   setSkills,
+  finish,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
 
 const { Header, Content, Footer } = Layout;
@@ -25,16 +26,6 @@ const { Option } = Select;
 const { TextArea } = Input;
 
 export default function MyProfile() {
-  // const [firstName, setFirstName] = useState('');
-  // const [lastName, setLastName] = useState('');
-  // const [experience, setExperience] = useState('');
-  // const [education, setEducation] = useState('');
-  // const [about, setAbout] = useState('');
-  // const [plans, setPlans] = useState('');
-  // const [addingSkill, setAddingSkill] = useState(false);
-  // const [skillName, setSkillName] = useState('');
-  // const [skills, setSkills] = useState([]);
-
   const {
     firstName,
     lastName,
@@ -54,23 +45,16 @@ export default function MyProfile() {
   const [form] = Form.useForm();
 
   const onfinish = () => {
-    axios.post('`http://localhost:4000/api/', {
-      firstName,
-      lastName,
-      experience,
-      education,
-      about,
-      plans,
-      skills,
-    });
-    console.log(
-      axios.post('http://localhost:4000/', {
+    dispatch(
+      finish({
         firstName,
         lastName,
         experience,
         education,
         about,
         plans,
+        addingSkill,
+        skillName,
         skills,
       }),
     );
@@ -164,6 +148,7 @@ export default function MyProfile() {
                 ]}
               >
                 <Input
+                  value={firstName}
                   onChange={handleFirstNameChange}
                   style={{ width: '80%' }}
                 />
@@ -177,6 +162,7 @@ export default function MyProfile() {
                 ]}
               >
                 <Input
+                  value={lastName}
                   onChange={handleLastNameChange}
                   style={{ width: '80%' }}
                 />
