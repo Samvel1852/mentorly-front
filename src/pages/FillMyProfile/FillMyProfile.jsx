@@ -125,11 +125,11 @@ export default function MyProfile() {
         }}
       >
         <div className='logo'>LOGO</div>
-        <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['3']}>
-          <Menu.Item key='1'>Dashboard</Menu.Item>
-          <Menu.Item key='2'>Message Requests</Menu.Item>
-          <Menu.Item key='3'>My Profile</Menu.Item>
-          <Menu.Item key='4'>Log Out</Menu.Item>
+        <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['1']}>
+          {/* <Menu.Item key='1'>Dashboard</Menu.Item> */}
+          {/* <Menu.Item key='2'>Message Requests</Menu.Item> */}
+          <Menu.Item key='1'>My Profile</Menu.Item>
+          <Menu.Item key='2'>Log Out</Menu.Item>
         </Menu>
       </Header>
       <Content
