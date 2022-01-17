@@ -1,8 +1,10 @@
 import { Form, Input, Button } from 'antd';
+import axios from 'axios';
 
 export default function Signup() {
   const onFinish = (values) => {
-    console.log('Success:', values);
+    console.log(values);
+    axios.post('http://localhost:4000/signup', values);
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -34,8 +36,8 @@ export default function Signup() {
         <h1>Sign Up</h1>
       </Form.Item>
       <Form.Item
-        label='Username'
-        name='username'
+        label='Email'
+        name='email'
         rules={[
           {
             required: true,
@@ -61,7 +63,7 @@ export default function Signup() {
 
       <Form.Item
         label='Confirm Password'
-        name='passwordConfirm'
+        name='confirmPassword'
         rules={[
           {
             required: true,
