@@ -1,6 +1,6 @@
 import { Form, Input, Button, Checkbox } from 'antd';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -89,6 +89,9 @@ export default function Login() {
         <Button type='primary' htmlType='submit'>
           Login
         </Button>
+        <Form.Item>
+          Or <Link to='/signup'>Sign Up</Link>
+        </Form.Item>
       </Form.Item>
     </Form>
   );

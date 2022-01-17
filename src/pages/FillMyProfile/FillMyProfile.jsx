@@ -20,6 +20,7 @@ import {
   setSkills,
   finish,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
+import { Link } from 'react-router-dom';
 
 const { Header, Content, Footer } = Layout;
 const { Option } = Select;
@@ -129,7 +130,9 @@ export default function MyProfile() {
           {/* <Menu.Item key='1'>Dashboard</Menu.Item> */}
           {/* <Menu.Item key='2'>Message Requests</Menu.Item> */}
           <Menu.Item key='1'>My Profile</Menu.Item>
-          <Menu.Item key='2'>Log Out</Menu.Item>
+          <Link to='/login'>
+            <Menu.Item key='2'>Log Out</Menu.Item>
+          </Link>
         </Menu>
       </Header>
       <Content

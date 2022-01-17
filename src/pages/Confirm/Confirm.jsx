@@ -7,7 +7,7 @@ export default function Confirm() {
 
   const onFinish = async (values) => {
     console.log(values);
-    const response = await axios.post('http://localhost:4000/signup', values);
+    const response = await axios.post('http://localhost:4000/verify', values);
 
     if (response.status === 200) {
       navigate('/login');
