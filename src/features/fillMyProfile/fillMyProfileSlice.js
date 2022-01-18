@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import myAxios from '../../helpers/axiosInstance';
+// import axios from 'axios';
 
 const initialState = {
   firstName: '',
@@ -25,7 +26,7 @@ export const finish = createAsyncThunk(
     addingSkill,
     skills,
   }) => {
-    return axios.post('http://localhost:4000/fill-my-profile', {
+    return myAxios.post('http://localhost:4000/fill-my-profile', {
       firstName,
       lastName,
       experience,
