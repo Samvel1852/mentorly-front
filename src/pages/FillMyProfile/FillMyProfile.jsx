@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 // import axios from 'axios';
 import PropTypes from 'prop-types';
 import { Layout, Menu, Form, Input, Button, Select } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import './FillMyProfile.less';
 import 'antd/dist/antd.css';
@@ -23,6 +23,7 @@ import {
   finish,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
 import { useEffect } from 'react';
+import { removeFromLocalStorage } from '../../helpers/localstorage';
 
 const { Header, Content, Footer } = Layout;
 const { Option } = Select;
@@ -125,7 +126,7 @@ export default function MyProfile({ accessToken }) {
   }
 
   function handleLogOut() {
-    localStorage.removeItem('accessToken');
+    removeFromLocalStorage('accessToken');
   }
 
   return (
@@ -144,11 +145,11 @@ export default function MyProfile({ accessToken }) {
           {/* <Menu.Item key='1'>Dashboard</Menu.Item> */}
           {/* <Menu.Item key='2'>Message Requests</Menu.Item> */}
           <Menu.Item key='1'>My Profile</Menu.Item>
-          <Link to='/login'>
-            <Menu.Item key='2' onClick={handleLogOut}>
-              Log Out
-            </Menu.Item>
-          </Link>
+          {/* <Link to='/login'> */}
+          <Menu.Item key='2' onClick={handleLogOut}>
+            Log Out
+          </Menu.Item>
+          {/* </Link> */}
         </Menu>
       </Header>
       <Content

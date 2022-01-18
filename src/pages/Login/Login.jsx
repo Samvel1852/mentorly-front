@@ -1,6 +1,8 @@
 import { Form, Input, Button, Checkbox } from 'antd';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { setLocalStorage } from '../../helpers/localstorage';
+// import { setLocalStorage } from '../../helpers/localstorage';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -11,7 +13,7 @@ export default function Login() {
 
     if (response.status === 200) {
       //   console.log('login successRes', response, response.data.data.token);
-      localStorage.setItem('accessToken', response.data.data.token);
+      setLocalStorage('accessToken', response.data.data.token);
       navigate('/fill-my-profile');
     }
     console.log('res', response);
