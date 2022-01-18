@@ -1,9 +1,8 @@
-// import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-// import axios from 'axios';
 import PropTypes from 'prop-types';
-import { Layout, Menu, Form, Input, Button, Select } from 'antd';
+import { Layout, Menu, Form, Input, Button, Select, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 import './FillMyProfile.less';
@@ -22,7 +21,6 @@ import {
   setSkills,
   finish,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
-import { useEffect, useState } from 'react';
 import { removeFromLocalStorage } from '../../helpers/localstorage';
 // import axios from 'axios';
 
@@ -31,6 +29,7 @@ const { Option } = Select;
 const { TextArea } = Input;
 
 export default function MyProfile({ accessToken }) {
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [submitLoader, setSubmitLoader] = useState(false);
   const navigate = useNavigate();
 
@@ -80,7 +79,7 @@ export default function MyProfile({ accessToken }) {
       if (result.payload && !result.errors) {
         navigate('/my-profile');
       } else {
-        alert('something went wrong');
+        setIsModalVisible(true);
       }
     } catch (err) {
       console.log('err', err);
@@ -145,6 +144,14 @@ export default function MyProfile({ accessToken }) {
     navigate('/login');
   }
 
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   return (
     <Layout>
       <Header
@@ -158,22 +165,32 @@ export default function MyProfile({ accessToken }) {
       >
         <div className='logo'>LOGO</div>
         <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['1']}>
-          {/* <Menu.Item key='1'>Dashboard</Menu.Item> */}
-          {/* <Menu.Item key='2'>Message Requests</Menu.Item> */}
           <Menu.Item key='1'>My Profile</Menu.Item>
-          {/* <Link to='/login'> */}
           <Menu.Item key='2' onClick={handleLogOut}>
             Log Out
           </Menu.Item>
-          {/* </Link> */}
         </Menu>
       </Header>
+      <Modal
+        title='Something went wrong'
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <p>Please check whether fields are filled right!</p>
+        <p>and Please try Again</p>
+      </Modal>
       <Content
         className='site-layout'
         style={{ padding: '0 50px', marginTop: 64 }}
       >
         <div className='content'>
-          <Form onFinish={onfinish} name='submit' form={form}>
+          <Form
+            onFinish={onfinish}
+            name='submit'
+            form={form}
+            style={{ maxWidth: '600px' }}
+          >
             <div className='namesContainer'>
               <Form.Item
                 name='First Name'
@@ -348,13 +365,13 @@ export default function MyProfile({ accessToken }) {
                       value={skillName}
                       onPressEnter={handleAddingSkillChange}
                       onChange={handleSkillNameChange}
-                      style={{ width: '15%' }}
+                      style={{ width: '15%', minWidth: '100px' }}
                       autoFocus
                     />
                   ) : (
                     <Button
                       onClick={handleAddingSkillChange}
-                      style={{ width: '15%' }}
+                      style={{ width: '15%', minWidth: '100px' }}
                     >
                       + New skill
                     </Button>
