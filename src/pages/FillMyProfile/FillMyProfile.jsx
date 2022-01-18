@@ -21,9 +21,11 @@ import {
   setSkillName,
   setSkills,
   finish,
+  // finish,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
 import { useEffect } from 'react';
 import { removeFromLocalStorage } from '../../helpers/localstorage';
+// import axios from 'axios';
 
 const { Header, Content, Footer } = Layout;
 const { Option } = Select;
@@ -56,20 +58,31 @@ export default function MyProfile({ accessToken }) {
 
   const [form] = Form.useForm();
 
-  const onfinish = () => {
-    dispatch(
-      finish({
-        firstName,
-        lastName,
-        experience,
-        education,
-        about,
-        plans,
-        addingSkill,
-        skillName,
-        skills,
-      }),
-    );
+  const onfinish = async () => {
+    try {
+      const result = await dispatch(
+        finish({
+          firstName,
+          lastName,
+          experience,
+          education,
+          about,
+          plans,
+          addingSkill,
+          skillName,
+          skills,
+        }),
+      );
+
+      console.log('resFill', result);
+      if (result.payload && !result.errors) {
+        navigate('/my-profile');
+      } else {
+        alert('something went wrong');
+      }
+    } catch (err) {
+      console.log('err', err);
+    }
   };
 
   function handleFirstNameChange(e) {
@@ -192,7 +205,7 @@ export default function MyProfile({ accessToken }) {
               >
                 <Select
                   initialvalue='--Select Role'
-                  // style={{ width: '100%' }}
+                  // style={{ width: 265 }}
                   onChange={handleChangeRole}
                   placeholder='--Select Role'
                 >

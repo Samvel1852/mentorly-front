@@ -23,10 +23,9 @@ export const finish = createAsyncThunk(
     about,
     plans,
     addingSkill,
-    skillName,
     skills,
   }) => {
-    axios.post('http://localhost:4000/', {
+    return axios.post('http://localhost:4000/fill-my-profile', {
       firstName,
       lastName,
       experience,
@@ -34,7 +33,6 @@ export const finish = createAsyncThunk(
       about,
       plans,
       addingSkill,
-      skillName,
       skills,
     });
   },
