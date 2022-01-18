@@ -350,7 +350,13 @@ export default function MyProfile({ accessToken }) {
                 },
               ]}
             >
-              <Layout style={{ minHeight: '100px', display: 'flex' }}>
+              <Layout
+                style={{
+                  minHeight: '100px',
+                  display: 'flex',
+                  backgroundColor: '#fff',
+                }}
+              >
                 <div className='skillsContainer'>
                   {skills.map((skill) => (
                     <Skill
