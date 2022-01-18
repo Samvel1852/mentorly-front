@@ -21,9 +21,8 @@ import {
   setSkillName,
   setSkills,
   finish,
-  // finish,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { removeFromLocalStorage } from '../../helpers/localstorage';
 // import axios from 'axios';
 
@@ -32,6 +31,7 @@ const { Option } = Select;
 const { TextArea } = Input;
 
 export default function MyProfile({ accessToken }) {
+  const [submitLoader, setSubmitLoader] = useState(false);
   const navigate = useNavigate();
 
   console.log(accessToken);
@@ -59,6 +59,7 @@ export default function MyProfile({ accessToken }) {
   const [form] = Form.useForm();
 
   const onfinish = async () => {
+    setSubmitLoader(true);
     try {
       const result = await dispatch(
         finish({
@@ -73,6 +74,7 @@ export default function MyProfile({ accessToken }) {
           skills,
         }),
       );
+      setSubmitLoader(false);
 
       console.log('resFill', result);
       if (result.payload && !result.errors) {
@@ -361,7 +363,7 @@ export default function MyProfile({ accessToken }) {
               </Layout>
             </Form.Item>
             <br />
-            <Button type='primary' htmlType='submit'>
+            <Button type='primary' htmlType='submit' loading={submitLoader}>
               Submit
             </Button>
           </Form>
