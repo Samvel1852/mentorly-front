@@ -127,6 +127,7 @@ export default function MyProfile({ accessToken }) {
 
   function handleLogOut() {
     removeFromLocalStorage('accessToken');
+    navigate('/login');
   }
 
   return (
@@ -167,11 +168,7 @@ export default function MyProfile({ accessToken }) {
                   { required: true, message: 'Please input your First Name!' },
                 ]}
               >
-                <Input
-                  value={firstName}
-                  onChange={handleFirstNameChange}
-                  style={{ width: '80%' }}
-                />
+                <Input value={firstName} onChange={handleFirstNameChange} />
               </Form.Item>
               <Form.Item
                 name='Last Name'
@@ -181,11 +178,7 @@ export default function MyProfile({ accessToken }) {
                   { required: true, message: 'Please input your Last Name!' },
                 ]}
               >
-                <Input
-                  value={lastName}
-                  onChange={handleLastNameChange}
-                  style={{ width: '80%' }}
-                />
+                <Input value={lastName} onChange={handleLastNameChange} />
               </Form.Item>
             </div>
             <div className='selectsContainer'>
@@ -198,9 +191,10 @@ export default function MyProfile({ accessToken }) {
                 ]}
               >
                 <Select
-                  defaultValue='--Select Role'
-                  style={{ width: 212 }}
+                  initialvalue='--Select Role'
+                  // style={{ width: '100%' }}
                   onChange={handleChangeRole}
+                  placeholder='--Select Role'
                 >
                   <Option value='--Select Role' disabled>
                     --Select Role
@@ -218,9 +212,10 @@ export default function MyProfile({ accessToken }) {
                 ]}
               >
                 <Select
-                  defaultValue='--Select Field'
-                  style={{ width: 220 }}
+                  initialvalue='--Select Field'
+                  // style={{ width: '100%' }}
                   onChange={handleChangeField}
+                  placeholder='Select Field'
                 >
                   <Option value='--Select Field' disabled>
                     --Select Field
@@ -237,7 +232,7 @@ export default function MyProfile({ accessToken }) {
               label='Position'
               labelCol={{ span: 24 }}
               rules={[
-                { required: true, message: 'Please input your Position!' },
+                { required: true, message: 'Please input Your Position!' },
               ]}
             >
               <Input />
@@ -247,7 +242,7 @@ export default function MyProfile({ accessToken }) {
               label='Education'
               labelCol={{ span: 24 }}
               rules={[
-                { required: true, message: 'Please input your Education!' },
+                { required: true, message: 'Please input Your Education!' },
               ]}
             >
               <TextArea
@@ -263,7 +258,7 @@ export default function MyProfile({ accessToken }) {
               label='Experience'
               labelCol={{ span: 24 }}
               rules={[
-                { required: true, message: 'Please input your Experience!' },
+                { required: true, message: 'Please input Your Experience!' },
               ]}
             >
               <TextArea
@@ -281,7 +276,7 @@ export default function MyProfile({ accessToken }) {
               rules={[
                 {
                   required: true,
-                  message: 'Please input your Something About You!',
+                  message: 'Please input Something About You!',
                 },
               ]}
             >
