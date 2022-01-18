@@ -2,7 +2,9 @@
 import { useSelector, useDispatch } from 'react-redux';
 
 // import axios from 'axios';
+import PropTypes from 'prop-types';
 import { Layout, Menu, Form, Input, Button, Select } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
 
 import './FillMyProfile.less';
 import 'antd/dist/antd.css';
@@ -20,13 +22,21 @@ import {
   setSkills,
   finish,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const { Header, Content, Footer } = Layout;
 const { Option } = Select;
 const { TextArea } = Input;
 
-export default function MyProfile() {
+export default function MyProfile({ accessToken }) {
+  const navigate = useNavigate();
+
+  console.log(accessToken);
+
+  useEffect(() => {
+    if (!accessToken) navigate('/login');
+  }, []);
+
   const {
     firstName,
     lastName,
@@ -114,6 +124,10 @@ export default function MyProfile() {
     dispatch(setSkills(filteredSkills));
   }
 
+  function handleLogOut() {
+    localStorage.removeItem('accessToken');
+  }
+
   return (
     <Layout>
       <Header
@@ -131,7 +145,9 @@ export default function MyProfile() {
           {/* <Menu.Item key='2'>Message Requests</Menu.Item> */}
           <Menu.Item key='1'>My Profile</Menu.Item>
           <Link to='/login'>
-            <Menu.Item key='2'>Log Out</Menu.Item>
+            <Menu.Item key='2' onClick={handleLogOut}>
+              Log Out
+            </Menu.Item>
           </Link>
         </Menu>
       </Header>
@@ -348,3 +364,7 @@ export default function MyProfile() {
     </Layout>
   );
 }
+
+MyProfile.propTypes = {
+  accessToken: PropTypes.string,
+};

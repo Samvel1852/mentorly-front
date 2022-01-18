@@ -10,6 +10,8 @@ export default function Login() {
     const response = await axios.post('http://localhost:4000/login', values);
 
     if (response.status === 200) {
+      //   console.log('login successRes', response, response.data.data.token);
+      localStorage.setItem('accessToken', response.data.data.token);
       navigate('/fill-my-profile');
     }
     console.log('res', response);

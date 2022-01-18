@@ -6,13 +6,13 @@ export default function Confirm() {
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
-    console.log(values);
+    console.log('values', values);
     const response = await axios.post('http://localhost:4000/verify', values);
 
     if (response.status === 200) {
       navigate('/login');
     }
-    console.log('res', response);
+    console.log('response', response);
   };
 
   const onFinishFailed = (errorInfo) => {

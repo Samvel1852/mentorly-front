@@ -6,13 +6,14 @@ export default function Signup() {
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
-    console.log(values);
+    console.log('signUpValues', values);
     const response = await axios.post('http://localhost:4000/signup', values);
 
     if (response.status === 200) {
+      console.log('signUp resOk response', response);
       navigate('/confirm');
     }
-    console.log('res', response);
+    console.log('signUp response', response);
   };
 
   const onFinishFailed = (errorInfo) => {
