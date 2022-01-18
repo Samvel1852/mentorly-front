@@ -77,7 +77,7 @@ export default function MyProfile({ accessToken }) {
 
       console.log('resFill', result);
       if (result.payload && !result.errors) {
-        navigate('/my-profile');
+        navigate('/users/:id');
       } else {
         setIsModalVisible(true);
       }

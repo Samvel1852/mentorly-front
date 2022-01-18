@@ -14,7 +14,7 @@ export default function Login() {
     if (response.status === 200) {
       //   console.log('login successRes', response, response.data.data.token);
       setLocalStorage('accessToken', response.data.data.token);
-      navigate('/fill-my-profile');
+      navigate('/users/verify');
     }
     console.log('res', response);
   };
