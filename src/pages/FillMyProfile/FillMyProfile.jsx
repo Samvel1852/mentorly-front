@@ -20,6 +20,8 @@ import {
   setSkillName,
   setSkills,
   finish,
+  setRole,
+  setField,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
 import { removeFromLocalStorage } from '../../helpers/localstorage';
 // import axios from 'axios';
@@ -42,6 +44,7 @@ export default function MyProfile({ accessToken }) {
   const {
     firstName,
     lastName,
+    selectedRole,
     experience,
     education,
     about,
@@ -95,11 +98,13 @@ export default function MyProfile({ accessToken }) {
   }
 
   function handleChangeRole(value) {
-    console.log(`selected ${value}`);
+    dispatch(setRole(value));
+    // console.log(`selected ${value}`);
   }
 
   function handleChangeField(value) {
-    console.log(`selected ${value}`);
+    dispatch(setField(value));
+    // console.log(`selected ${value}`);
   }
 
   function handleEducationChange(e) {
@@ -177,7 +182,7 @@ export default function MyProfile({ accessToken }) {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <p>Please check whether fields are filled right!</p>
+        <p>Please check whether all the fields are filled right!</p>
         <p>and Please try Again</p>
       </Modal>
       <Content
@@ -198,6 +203,21 @@ export default function MyProfile({ accessToken }) {
                 labelCol={{ span: 24 }}
                 rules={[
                   { required: true, message: 'Please input your First Name!' },
+                  {
+                    min: 2,
+                    message: 'First Name should contain at least two letters.',
+                  },
+                  {
+                    validator(_, value) {
+                      if (/^[A-z]+$/.test(value)) {
+                        return Promise.resolve();
+                      }
+
+                      return Promise.reject(
+                        new Error('First Name should contain only letters.'),
+                      );
+                    },
+                  },
                 ]}
               >
                 <Input value={firstName} onChange={handleFirstNameChange} />
@@ -208,6 +228,21 @@ export default function MyProfile({ accessToken }) {
                 labelCol={{ span: 24 }}
                 rules={[
                   { required: true, message: 'Please input your Last Name!' },
+                  {
+                    min: 2,
+                    message: 'Last Name should contain at least two letters.',
+                  },
+                  {
+                    validator(_, value) {
+                      if (/^[A-z]+$/.test(value)) {
+                        return Promise.resolve();
+                      }
+
+                      return Promise.reject(
+                        new Error('Last Name should contain only letters.'),
+                      );
+                    },
+                  },
                 ]}
               >
                 <Input value={lastName} onChange={handleLastNameChange} />
@@ -216,7 +251,7 @@ export default function MyProfile({ accessToken }) {
             <div className='selectsContainer'>
               <Form.Item
                 name='Role'
-                label='Role'
+                label='Choose Role'
                 labelCol={{ span: 24 }}
                 rules={[
                   { required: true, message: 'Please select Your Role!' },
@@ -252,10 +287,12 @@ export default function MyProfile({ accessToken }) {
                   <Option value='--Select Field' disabled>
                     --Select Field
                   </Option>
-                  <Option value='Software Development'>
-                    Software Development
-                  </Option>
-                  <Option value='Quality Assurance'>Quality Assurance</Option>
+                  <Option value='IT'>IT</Option>
+                  <Option value='Marketing'>Marketing</Option>
+                  <Option value='Finance'>Finance</Option>
+                  <Option value='Law'>Law</Option>
+                  <Option value='Tourism'>Tourism</Option>
+                  <Option value='Business'>Business</Option>
                 </Select>
               </Form.Item>
             </div>
@@ -267,7 +304,7 @@ export default function MyProfile({ accessToken }) {
                 { required: true, message: 'Please input Your Position!' },
               ]}
             >
-              <Input />
+              <Input maxLength={50} />
             </Form.Item>
             <Form.Item
               name='Education'
@@ -322,7 +359,13 @@ export default function MyProfile({ accessToken }) {
             </Form.Item>
             <Form.Item
               name='Plans'
-              label='Who can request mentorship (for mentor) / My plans (for mentee)'
+              label={
+                selectedRole === 'mentor'
+                  ? 'Who can request mentorship'
+                  : selectedRole === 'mentee'
+                  ? 'My plans'
+                  : 'Who can request mentorship (for mentor) / My plans (for mentee)'
+              }
               labelCol={{ span: 24 }}
               rules={[
                 {
@@ -336,7 +379,7 @@ export default function MyProfile({ accessToken }) {
                 onChange={handlePlansChange}
                 autoSize={{ minRows: 3 }}
                 showCount
-                maxLength={255}
+                maxLength={150}
               />
             </Form.Item>
             <Form.Item

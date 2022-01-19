@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import myAxios from '../../helpers/axiosInstance';
-// import axios from 'axios';
 
 const initialState = {
   firstName: '',
   lastName: '',
+  selectedRole: '',
+  selectedField: '',
   experience: '',
   education: '',
   about: '',
@@ -19,6 +20,8 @@ export const finish = createAsyncThunk(
   ({
     firstName,
     lastName,
+    selectedRole,
+    selectedField,
     experience,
     education,
     about,
@@ -29,6 +32,8 @@ export const finish = createAsyncThunk(
     return myAxios.post('http://localhost:4000/users/verify', {
       firstName,
       lastName,
+      selectedRole,
+      selectedField,
       experience,
       education,
       about,
@@ -48,6 +53,12 @@ export const fillMyProfileSlice = createSlice({
     },
     setLastName: (state, { payload }) => {
       state.lastName = payload;
+    },
+    setRole: (state, { payload }) => {
+      state.selectedRole = payload;
+    },
+    setField: (state, { payload }) => {
+      state.selectedField = payload;
     },
     setEducation: (state, { payload }) => {
       state.education = payload;
@@ -76,6 +87,8 @@ export const fillMyProfileSlice = createSlice({
 export const {
   setFirstName,
   setLastName,
+  setRole,
+  setField,
   setEducation,
   setExperience,
   setPlans,
