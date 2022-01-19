@@ -6,6 +6,7 @@ import Signup from './pages/Signup/Signup';
 import FillMyProfile from './pages/FillMyProfile/FillMyProfile';
 import Confirm from './pages/Confirm/Confirm';
 import Login from './pages/Login/Login';
+import ViewMyProfile from './pages/ViewMyProfile/ViewMyProfile';
 
 function App() {
   const accessToken = localStorage.getItem('accessToken');
@@ -19,6 +20,10 @@ function App() {
           <Route
             path='/users/verify'
             element={<FillMyProfile accessToken={accessToken} />}
+          />
+          <Route
+            path='/users/:id'
+            element={<ViewMyProfile accessToken={accessToken} />}
           />
         </Routes>
       </Router>
