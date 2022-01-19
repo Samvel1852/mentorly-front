@@ -24,7 +24,6 @@ import {
   setField,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
 import { removeFromLocalStorage } from '../../helpers/localstorage';
-// import axios from 'axios';
 
 const { Header, Content, Footer } = Layout;
 const { Option } = Select;

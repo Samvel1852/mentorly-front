@@ -1,4 +1,4 @@
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button } from 'antd';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { setLocalStorage } from '../../helpers/localstorage';
@@ -27,10 +27,10 @@ export default function Login() {
     <Form
       name='basic'
       labelCol={{
-        span: 10,
+        span: 8,
       }}
       wrapperCol={{
-        span: 10,
+        span: 8,
       }}
       initialValues={{
         remember: true,
@@ -41,8 +41,8 @@ export default function Login() {
     >
       <Form.Item
         wrapperCol={{
-          offset: 13,
-          span: 16,
+          offset: 10,
+          span: 10,
         }}
       >
         <h1>Login</h1>
@@ -50,6 +50,8 @@ export default function Login() {
       <Form.Item
         label='Email'
         name='email'
+        labelCol={{ span: 24, offset: 10 }}
+        wrapperCol={{ span: 10, offset: 10 }}
         rules={[
           {
             required: true,
@@ -63,6 +65,8 @@ export default function Login() {
       <Form.Item
         label='Password'
         name='password'
+        labelCol={{ span: 24, offset: 10 }}
+        wrapperCol={{ span: 10, offset: 10 }}
         rules={[
           {
             required: true,
@@ -74,27 +78,16 @@ export default function Login() {
       </Form.Item>
 
       <Form.Item
-        name='remember'
-        valuePropName='checked'
-        wrapperCol={{
-          offset: 8,
-          span: 16,
-        }}
-      >
-        <Checkbox>Remember me</Checkbox>
-      </Form.Item>
-
-      <Form.Item
         wrapperCol={{
           offset: 13,
-          span: 16,
+          span: 24,
         }}
       >
         <Button type='primary' htmlType='submit'>
           Login
         </Button>
         <Form.Item>
-          Or <Link to='/signup'>Sign Up</Link>
+          Do not have an account? <Link to='/signup'>Sign Up</Link>
         </Form.Item>
       </Form.Item>
     </Form>
