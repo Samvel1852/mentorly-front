@@ -2,8 +2,8 @@ import { Form, Input, Button } from 'antd';
 import axios from 'axios';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { setLocalStorage } from '../../helpers/localstorage';
 
+import { setLocalStorage } from '../../helpers/localstorage';
 import styles from './Login.module.less';
 
 export default function Login() {
@@ -18,9 +18,10 @@ export default function Login() {
       const response = await axios.post('http://localhost:4000/login', values);
 
       if (response.status === 200) {
-        //   console.log('login successRes', response, response.data.data.token);
+        console.log('login successRes', response, response.data);
         setLocalStorage('accessToken', response.data.data.token);
-        navigate('/users/verify');
+        console.log('user.id', response.data.data.user._id);
+        navigate(`/users/${response.data.data.user._id}`);
       }
       console.log('res', response);
     } catch (error) {
