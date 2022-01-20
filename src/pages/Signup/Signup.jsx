@@ -56,6 +56,7 @@ export default function Signup() {
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete='off'
+        requiredMark={false}
       >
         <Form.Item
           wrapperCol={{
