@@ -1,20 +1,31 @@
 import { useEffect } from 'react';
 
 import PropTypes from 'prop-types';
-import { Layout, Menu } from 'antd';
+import { Col, Layout, List, Menu, Row, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 import styles from './ViewMyProfile.module.less';
 import 'antd/dist/antd.css';
 
-import { removeFromLocalStorage } from '../../helpers/localstorage';
+import { removeFromLocalStorage } from '../../helpers/localStorage';
 
 const { Header, Content, Footer } = Layout;
+
+const { Title } = Typography;
 
 export default function ViewMyProfile({ accessToken }) {
   const navigate = useNavigate();
 
   console.log(accessToken);
+
+  const personalData = [
+    ['First Name:', 'John'], 
+    ['Last Name:', 'Doe'],
+    ['Email:', 'john@gmail.com'],
+    ['Role:', 'Mentor'], 
+    ['Position:', 'Engineer'], 
+    ['Field:', 'IT'],
+  ];
 
   useEffect(() => {
     if (!accessToken) navigate('/login');
@@ -36,7 +47,7 @@ export default function ViewMyProfile({ accessToken }) {
           justifyContent: 'space-between',
         }}
       >
-        <div className='logo'>LOGO</div>
+        <div className='logo'>Mentorly</div>
         <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['1']}>
           <Menu.Item key='1'>Dashboard</Menu.Item>
           <Menu.Item key='2'>Message Requests</Menu.Item>
@@ -49,8 +60,21 @@ export default function ViewMyProfile({ accessToken }) {
 
       <Content
         className={styles.site_layout}
-        style={{ padding: '50px', marginTop: 64 }}
-      ></Content>
+        style={{ padding: '20px', marginTop: 64 }}
+      >
+          <Row style={{width: '100%', height: '100%'}}>
+            <Col flex="300px">
+              <Title level={3}>Personal Info</Title>
+              <List
+                size="small"
+                dataSource={personalData}
+                renderItem={item => <List.Item>{item[0]} {item[1]}</List.Item>}
+              />
+              <Title level={3}>Skills</Title>
+            </Col>
+            <Col flex="auto">Fill Rest</Col>
+          </Row>
+      </Content>
       <Footer style={{ textAlign: 'center' }}>
         Simply Technologies ©2022 Created with Pleasure
       </Footer>
