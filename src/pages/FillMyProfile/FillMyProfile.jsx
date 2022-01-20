@@ -28,7 +28,6 @@ import {
   removeFromLocalStorage,
   setLocalStorage,
 } from '../../helpers/localStorage';
-// import myAxios from '../../helpers/axiosInstance';
 
 const { Header, Content, Footer } = Layout;
 const { Option } = Select;
@@ -108,12 +107,10 @@ export default function MyProfile({ accessToken }) {
 
   function handleChangeRole(value) {
     dispatch(setRole(value));
-    // console.log(`selected ${value}`);
   }
 
   function handleChangeField(value) {
     dispatch(setField(value));
-    // console.log(`selected ${value}`);
   }
 
   function handleChangePosition(e) {
@@ -183,7 +180,7 @@ export default function MyProfile({ accessToken }) {
           justifyContent: 'space-between',
         }}
       >
-        <div className='logo'>LOGO</div>
+        <div className='logo'>Mentorly</div>
         <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['1']}>
           <Menu.Item key='1'>My Profile</Menu.Item>
           <Menu.Item key='2' onClick={handleLogOut}>
