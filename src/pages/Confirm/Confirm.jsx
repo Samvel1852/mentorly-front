@@ -1,18 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
-import axios from 'axios';
+
+import { myAxios } from '../../helpers/axiosInstance';
 
 export default function Confirm() {
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
-    console.log('values', values);
-    const response = await axios.post('http://localhost:4000/verify', values);
+    const response = await myAxios.post('verify', values);
 
     if (response.status === 200) {
       navigate('/login');
     }
-    console.log('response', response);
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -20,8 +19,7 @@ export default function Confirm() {
   };
 
   return (
-    <Form
-      name='basic'
+    <Form name='basic'
       labelCol={{
         span: 10,
       }}

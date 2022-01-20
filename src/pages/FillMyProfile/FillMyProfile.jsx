@@ -23,8 +23,7 @@ import {
   setRole,
   setField,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
-import { removeFromLocalStorage } from '../../helpers/localstorage';
-// import axios from 'axios';
+import { removeFromLocalStorage } from '../../helpers/localStorage';
 
 const { Header, Content, Footer } = Layout;
 const { Option } = Select;

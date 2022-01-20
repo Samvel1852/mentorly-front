@@ -1,19 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
-import axios from 'axios';
+
+import { myAxios } from '../../helpers/axiosInstance';
 
 export default function Signup() {
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
-    console.log('signUpValues', values);
-    const response = await axios.post('http://localhost:4000/signup', values);
+    const response = await myAxios.post('signup', values);
 
     if (response.status === 200) {
-      console.log('signUp resOk response', response);
       navigate('/confirm');
     }
-    console.log('signUp response', response);
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -23,15 +21,9 @@ export default function Signup() {
   return (
     <Form
       name='basic'
-      labelCol={{
-        span: 10,
-      }}
-      wrapperCol={{
-        span: 10,
-      }}
-      initialValues={{
-        remember: true,
-      }}
+      labelCol={{ span: 10 }}
+      wrapperCol={{ span: 10 }}
+      initialValues={{ remember: true }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete='off'
