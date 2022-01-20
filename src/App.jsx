@@ -10,6 +10,7 @@ import { getLocalStorage } from './helpers/localstorage';
 
 function App() {
   const accessToken = getLocalStorage('accessToken');
+  let skillId = 1;
 
   return (
     <div className='App'>
@@ -20,7 +21,9 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route
             path='/users/:id'
-            element={<FillMyProfile accessToken={accessToken} />}
+            element={
+              <FillMyProfile accessToken={accessToken} skillId={skillId} />
+            }
           />
           <Route path='/:id' element={<div>It is my profile</div>} />
         </Routes>

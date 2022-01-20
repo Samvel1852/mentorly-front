@@ -62,8 +62,6 @@ export default function MyProfile({ accessToken }) {
   console.log(selectedRole, 'selectedRole');
   const dispatch = useDispatch();
 
-  let skillId = 1;
-
   const [form] = Form.useForm();
 
   const onfinish = async () => {
@@ -140,7 +138,9 @@ export default function MyProfile({ accessToken }) {
 
   function handleAddingSkillChange(e) {
     if (e.target.value) {
-      dispatch(setSkills([...skills, { id: skillId, name: e.target.value }]));
+      dispatch(
+        setSkills([...skills, { id: Date.now(), name: e.target.value }]),
+      );
       dispatch(setAddingSkill(!addingSkill));
       dispatch(setSkillName(''));
     } else {
@@ -410,6 +410,17 @@ export default function MyProfile({ accessToken }) {
                   required: true,
                   message: 'Please Provide Your Skills!',
                 },
+                {
+                  validator() {
+                    if (skills.length < 10) {
+                      return Promise.resolve();
+                    } else {
+                      return Promise.reject(
+                        new Error('Skills can contain maximum 10 fields.'),
+                      );
+                    }
+                  },
+                },
               ]}
             >
               <Layout
@@ -422,9 +433,9 @@ export default function MyProfile({ accessToken }) {
                 <div className='skillsContainer'>
                   {skills.map((skill) => (
                     <Skill
-                      key={skillId++}
+                      key={skill.id}
                       name={skill.name}
-                      id={skillId}
+                      id={skill.id}
                       handleDeleteSkill={handleDeleteSkill}
                     />
                   ))}
@@ -463,4 +474,5 @@ export default function MyProfile({ accessToken }) {
 
 MyProfile.propTypes = {
   accessToken: PropTypes.string,
+  skillId: PropTypes.number,
 };
