@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Layout, Menu, Form, Input, Button, Select, Modal } from 'antd';
 
@@ -11,6 +11,7 @@ import {
   setFirstName,
   setLastName,
   setExperience,
+  setPosition,
   setEducation,
   setAbout,
   setPlans,
@@ -21,7 +22,10 @@ import {
   setRole,
   setField,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
-import { removeFromLocalStorage } from '../../helpers/localstorage';
+import {
+  removeFromLocalStorage,
+  setLocalStorage,
+} from '../../helpers/localStorage';
 
 const { Header, Content, Footer } = Layout;
 const { Option } = Select;
@@ -31,6 +35,7 @@ export default function MyProfile({ accessToken }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [submitLoader, setSubmitLoader] = useState(false);
   const navigate = useNavigate();
+  const params = useParams();
 
   console.log(accessToken);
 
@@ -43,6 +48,7 @@ export default function MyProfile({ accessToken }) {
     lastName,
     selectedRole,
     experience,
+    position,
     education,
     about,
     plans,
@@ -50,16 +56,16 @@ export default function MyProfile({ accessToken }) {
     skillName,
     skills,
   } = useSelector((state) => state.fillMyProfile);
-
+  console.log(selectedRole, 'selectedRole');
   const dispatch = useDispatch();
-
-  let skillId = 1;
 
   const [form] = Form.useForm();
 
   const onfinish = async () => {
     setSubmitLoader(true);
     try {
+      console.log(params, 'params');
+      const { id } = params;
       const result = await dispatch(
         finish({
           firstName,
@@ -71,18 +77,21 @@ export default function MyProfile({ accessToken }) {
           addingSkill,
           skillName,
           skills,
+          id,
         }),
       );
-      setSubmitLoader(false);
 
+      setSubmitLoader(false);
+      console.log('result payl or result errs', result.payload, result.errors);
       console.log('resFill', result);
       if (result.payload && !result.errors) {
-        navigate('/users/:id');
+        await setLocalStorage('verified', true);
+        navigate(`/${id}`);
       } else {
         setIsModalVisible(true);
       }
-    } catch (err) {
-      console.log('err', err);
+    } catch ({ response }) {
+      console.log('errResponse', { response });
     }
   };
 
@@ -96,12 +105,14 @@ export default function MyProfile({ accessToken }) {
 
   function handleChangeRole(value) {
     dispatch(setRole(value));
-    // console.log(`selected ${value}`);
   }
 
   function handleChangeField(value) {
     dispatch(setField(value));
-    // console.log(`selected ${value}`);
+  }
+
+  function handleChangePosition(e) {
+    dispatch(setPosition(e.target.value));
   }
 
   function handleEducationChange(e) {
@@ -122,7 +133,9 @@ export default function MyProfile({ accessToken }) {
 
   function handleAddingSkillChange(e) {
     if (e.target.value) {
-      dispatch(setSkills([...skills, { id: skillId, name: e.target.value }]));
+      dispatch(
+        setSkills([...skills, { id: Date.now(), name: e.target.value }]),
+      );
       dispatch(setAddingSkill(!addingSkill));
       dispatch(setSkillName(''));
     } else {
@@ -165,7 +178,7 @@ export default function MyProfile({ accessToken }) {
           justifyContent: 'space-between',
         }}
       >
-        <div className='logo'>LOGO</div>
+        <div className='logo'>Mentorly</div>
         <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['1']}>
           <Menu.Item key='1'>My Profile</Menu.Item>
           <Menu.Item key='2' onClick={handleLogOut}>
@@ -192,12 +205,15 @@ export default function MyProfile({ accessToken }) {
             name='submit'
             form={form}
             style={{ maxWidth: '600px' }}
+            requiredMark={false}
           >
             <div className='namesContainer'>
               <Form.Item
                 name='First Name'
                 label='First Name'
                 labelCol={{ span: 24 }}
+                grid={{ gutter: 16 }}
+                style={{ marginRight: '70px' }}
                 rules={[
                   { required: true, message: 'Please input your First Name!' },
                   {
@@ -253,6 +269,7 @@ export default function MyProfile({ accessToken }) {
                 rules={[
                   { required: true, message: 'Please select Your Role!' },
                 ]}
+                style={{ width: '265px', marginRight: '70px' }}
               >
                 <Select
                   initialvalue='--Select Role'
@@ -269,11 +286,12 @@ export default function MyProfile({ accessToken }) {
               </Form.Item>
               <Form.Item
                 name='Field'
-                label='Field'
+                label='Choose Field'
                 labelCol={{ span: 24 }}
                 rules={[
                   { required: true, message: 'Please select Your Field!' },
                 ]}
+                style={{ width: '265px' }}
               >
                 <Select
                   initialvalue='--Select Field'
@@ -301,7 +319,11 @@ export default function MyProfile({ accessToken }) {
                 { required: true, message: 'Please input Your Position!' },
               ]}
             >
-              <Input maxLength={50} />
+              <Input
+                maxLength={50}
+                onChange={handleChangePosition}
+                value={position}
+              />
             </Form.Item>
             <Form.Item
               name='Education'
@@ -357,9 +379,9 @@ export default function MyProfile({ accessToken }) {
             <Form.Item
               name='Plans'
               label={
-                selectedRole === 'mentor'
+                selectedRole === 'Mentor'
                   ? 'Who can request mentorship'
-                  : selectedRole === 'mentee'
+                  : selectedRole === 'Mentee'
                   ? 'My plans'
                   : 'Who can request mentorship (for mentor) / My plans (for mentee)'
               }
@@ -388,6 +410,17 @@ export default function MyProfile({ accessToken }) {
                   required: true,
                   message: 'Please Provide Your Skills!',
                 },
+                {
+                  validator() {
+                    if (skills.length < 10) {
+                      return Promise.resolve();
+                    } else {
+                      return Promise.reject(
+                        new Error('Skills can contain maximum 10 fields.'),
+                      );
+                    }
+                  },
+                },
               ]}
             >
               <Layout
@@ -400,9 +433,9 @@ export default function MyProfile({ accessToken }) {
                 <div className='skillsContainer'>
                   {skills.map((skill) => (
                     <Skill
-                      key={skillId++}
+                      key={skill.id}
                       name={skill.name}
-                      id={skillId}
+                      id={skill.id}
                       handleDeleteSkill={handleDeleteSkill}
                     />
                   ))}
@@ -413,6 +446,7 @@ export default function MyProfile({ accessToken }) {
                       onChange={handleSkillNameChange}
                       style={{ width: '15%', minWidth: '100px' }}
                       autoFocus
+                      maxLength={30}
                     />
                   ) : (
                     <Button
@@ -441,4 +475,5 @@ export default function MyProfile({ accessToken }) {
 
 MyProfile.propTypes = {
   accessToken: PropTypes.string,
+  skillId: PropTypes.number,
 };

@@ -7,9 +7,12 @@ import FillMyProfile from './pages/FillMyProfile/FillMyProfile';
 import Confirm from './pages/Confirm/Confirm';
 import Login from './pages/Login/Login';
 import ViewMyProfile from './pages/ViewMyProfile/ViewMyProfile';
+import { getLocalStorage } from './helpers/localStorage';
 
 function App() {
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = getLocalStorage('accessToken');
+  let skillId = 1;
+
   return (
     <div className='App'>
       <Router>
@@ -18,11 +21,13 @@ function App() {
           <Route path='/confirm' element={<Confirm />} />
           <Route path='/login' element={<Login />} />
           <Route
-            path='/users/verify'
-            element={<FillMyProfile accessToken={accessToken} />}
+            path='/users/:id'
+            element={
+              <FillMyProfile accessToken={accessToken} skillId={skillId} />
+            }
           />
           <Route
-            path='/users/:id'
+            path='/:id'
             element={<ViewMyProfile accessToken={accessToken} />}
           />
         </Routes>
