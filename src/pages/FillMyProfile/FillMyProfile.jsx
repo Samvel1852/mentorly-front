@@ -210,12 +210,14 @@ export default function MyProfile({ accessToken }) {
             name='submit'
             form={form}
             style={{ maxWidth: '600px' }}
+            requiredMark={false}
           >
             <div className='namesContainer'>
               <Form.Item
                 name='First Name'
                 label='First Name'
                 labelCol={{ span: 24 }}
+                style={{ marginRight: '70px' }}
                 rules={[
                   { required: true, message: 'Please input your First Name!' },
                   {
@@ -271,6 +273,7 @@ export default function MyProfile({ accessToken }) {
                 rules={[
                   { required: true, message: 'Please select Your Role!' },
                 ]}
+                style={{ width: '265px' }}
               >
                 <Select
                   initialvalue='--Select Role'
@@ -287,11 +290,12 @@ export default function MyProfile({ accessToken }) {
               </Form.Item>
               <Form.Item
                 name='Field'
-                label='Field'
+                label='Choose Field'
                 labelCol={{ span: 24 }}
                 rules={[
                   { required: true, message: 'Please select Your Field!' },
                 ]}
+                style={{ width: '265px' }}
               >
                 <Select
                   initialvalue='--Select Field'
@@ -446,6 +450,7 @@ export default function MyProfile({ accessToken }) {
                       onChange={handleSkillNameChange}
                       style={{ width: '15%', minWidth: '100px' }}
                       autoFocus
+                      maxLength={30}
                     />
                   ) : (
                     <Button
