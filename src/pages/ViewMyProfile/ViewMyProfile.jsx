@@ -8,6 +8,7 @@ import styles from './ViewMyProfile.module.less';
 import 'antd/dist/antd.css';
 
 import { removeFromLocalStorage } from '../../helpers/localStorage';
+import Skill from '../../components/Skill/Skill';
 
 const { Header, Content, Footer } = Layout;
 
@@ -25,6 +26,10 @@ export default function ViewMyProfile({ accessToken }) {
     ['Role:', 'Mentor'], 
     ['Position:', 'Engineer'], 
     ['Field:', 'IT'],
+  ];
+
+  const skills = [
+    'HTML', 'CSS', 'JS', 'React'
   ];
 
   useEffect(() => {
@@ -71,6 +76,11 @@ export default function ViewMyProfile({ accessToken }) {
                 renderItem={item => <List.Item>{item[0]} {item[1]}</List.Item>}
               />
               <Title level={3}>Skills</Title>
+              <List
+                size="small"
+                dataSource={skills}
+                renderItem={item => <Skill name={item}></Skill>}
+              />
             </Col>
             <Col flex="auto">Fill Rest</Col>
           </Row>

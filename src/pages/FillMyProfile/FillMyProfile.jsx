@@ -437,6 +437,7 @@ export default function MyProfile({ accessToken }) {
                       name={skill.name}
                       id={skill.id}
                       handleDeleteSkill={handleDeleteSkill}
+                      withDelete={true}
                     />
                   ))}
                   {addingSkill ? (
