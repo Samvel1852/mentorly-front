@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
 import axios from 'axios';
@@ -5,16 +6,26 @@ import axios from 'axios';
 import styles from './Confirm.module.less';
 
 export default function Confirm() {
+  const [errorHidden, setErrorHidden] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
-    console.log('values', values);
-    const response = await axios.post('http://localhost:4000/verify', values);
+    try {
+      console.log('values', values);
+      const response = await axios.post('http://localhost:4000/verify', values);
+      setErrorHidden(true);
 
-    if (response.status === 200) {
-      navigate('/login');
+      if (response.status === 200) {
+        navigate('/login');
+      }
+      console.log('response', response);
+    } catch ({ response }) {
+      setErrorHidden(false);
+      setErrorMessage(response.data.errors[0]);
+      console.log('confirmRes', response);
     }
-    console.log('response', response);
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -69,6 +80,17 @@ export default function Confirm() {
           ]}
         >
           <Input />
+        </Form.Item>
+
+        <Form.Item
+          wrapperCol={{
+            offset: 2,
+            span: 24,
+          }}
+        >
+          <div style={{ color: 'red' }} hidden={errorHidden}>
+            {errorMessage}
+          </div>
         </Form.Item>
 
         <Form.Item
