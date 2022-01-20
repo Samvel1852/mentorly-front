@@ -6,9 +6,10 @@ import Signup from './pages/Signup/Signup';
 import FillMyProfile from './pages/FillMyProfile/FillMyProfile';
 import Confirm from './pages/Confirm/Confirm';
 import Login from './pages/Login/Login';
+import { getLocalStorage } from './helpers/localstorage';
 
 function App() {
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = getLocalStorage('accessToken');
 
   return (
     <div className='App'>
@@ -21,6 +22,7 @@ function App() {
             path='/users/:id'
             element={<FillMyProfile accessToken={accessToken} />}
           />
+          <Route path='/:id' element={<div>It is my profile</div>} />
         </Routes>
       </Router>
     </div>

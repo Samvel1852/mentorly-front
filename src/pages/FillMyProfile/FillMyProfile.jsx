@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import PropTypes from 'prop-types';
 import { Layout, Menu, Form, Input, Button, Select, Modal } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import './FillMyProfile.less';
 import 'antd/dist/antd.css';
@@ -13,6 +13,7 @@ import {
   setFirstName,
   setLastName,
   setExperience,
+  setPosition,
   setEducation,
   setAbout,
   setPlans,
@@ -23,7 +24,11 @@ import {
   setRole,
   setField,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
-import { removeFromLocalStorage } from '../../helpers/localstorage';
+import {
+  removeFromLocalStorage,
+  setLocalStorage,
+} from '../../helpers/localstorage';
+// import myAxios from '../../helpers/axiosInstance';
 
 const { Header, Content, Footer } = Layout;
 const { Option } = Select;
@@ -33,6 +38,7 @@ export default function MyProfile({ accessToken }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [submitLoader, setSubmitLoader] = useState(false);
   const navigate = useNavigate();
+  const params = useParams();
 
   console.log(accessToken);
 
@@ -45,6 +51,7 @@ export default function MyProfile({ accessToken }) {
     lastName,
     selectedRole,
     experience,
+    position,
     education,
     about,
     plans,
@@ -52,7 +59,7 @@ export default function MyProfile({ accessToken }) {
     skillName,
     skills,
   } = useSelector((state) => state.fillMyProfile);
-
+  console.log(selectedRole, 'selectedRole');
   const dispatch = useDispatch();
 
   let skillId = 1;
@@ -62,6 +69,8 @@ export default function MyProfile({ accessToken }) {
   const onfinish = async () => {
     setSubmitLoader(true);
     try {
+      console.log(params, 'params');
+      const { id } = params;
       const result = await dispatch(
         finish({
           firstName,
@@ -73,18 +82,21 @@ export default function MyProfile({ accessToken }) {
           addingSkill,
           skillName,
           skills,
+          id,
         }),
       );
-      setSubmitLoader(false);
 
+      setSubmitLoader(false);
+      console.log('result payl or result errs', result.payload, result.errors);
       console.log('resFill', result);
       if (result.payload && !result.errors) {
-        navigate('/users/:id');
+        await setLocalStorage('verified', true);
+        navigate(`/${id}`);
       } else {
         setIsModalVisible(true);
       }
-    } catch (err) {
-      console.log('err', err);
+    } catch ({ response }) {
+      console.log('errResponse', { response });
     }
   };
 
@@ -104,6 +116,10 @@ export default function MyProfile({ accessToken }) {
   function handleChangeField(value) {
     dispatch(setField(value));
     // console.log(`selected ${value}`);
+  }
+
+  function handleChangePosition(e) {
+    dispatch(setPosition(e.target.value));
   }
 
   function handleEducationChange(e) {
@@ -303,7 +319,11 @@ export default function MyProfile({ accessToken }) {
                 { required: true, message: 'Please input Your Position!' },
               ]}
             >
-              <Input maxLength={50} />
+              <Input
+                maxLength={50}
+                onChange={handleChangePosition}
+                value={position}
+              />
             </Form.Item>
             <Form.Item
               name='Education'
@@ -359,9 +379,9 @@ export default function MyProfile({ accessToken }) {
             <Form.Item
               name='Plans'
               label={
-                selectedRole === 'mentor'
+                selectedRole === 'Mentor'
                   ? 'Who can request mentorship'
-                  : selectedRole === 'mentee'
+                  : selectedRole === 'Mentee'
                   ? 'My plans'
                   : 'Who can request mentorship (for mentor) / My plans (for mentee)'
               }
