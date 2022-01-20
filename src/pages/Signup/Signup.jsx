@@ -4,6 +4,8 @@ import { Form, Input, Button } from 'antd';
 import axios from 'axios';
 import Modal from 'antd/lib/modal/Modal';
 
+import styles from './Signup.module.less';
+
 export default function Signup() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   // const [submitLoader, setSubmitLoader] = useState(false);
@@ -33,7 +35,7 @@ export default function Signup() {
   };
 
   return (
-    <div className='formContainer'>
+    <div className={styles.formContainer}>
       <Form
         name='basic'
         labelCol={{
@@ -58,7 +60,7 @@ export default function Signup() {
       >
         <Form.Item
           wrapperCol={{
-            offset: 15,
+            offset: 8,
             span: 16,
           }}
         >
@@ -67,8 +69,8 @@ export default function Signup() {
         <Form.Item
           label='Email'
           name='email'
-          labelCol={{ span: 24, offset: 12 }}
-          wrapperCol={{ span: 24, offset: 12 }}
+          labelCol={{ span: 24 }}
+          wrapperCol={{ span: 24 }}
           rules={[
             {
               required: true,
@@ -82,8 +84,8 @@ export default function Signup() {
         <Form.Item
           label='Password'
           name='password'
-          labelCol={{ span: 24, offset: 12 }}
-          wrapperCol={{ span: 24, offset: 12 }}
+          labelCol={{ span: 24 }}
+          wrapperCol={{ span: 24 }}
           rules={[
             {
               required: true,
@@ -97,8 +99,8 @@ export default function Signup() {
         <Form.Item
           label='Confirm Password'
           name='confirmPassword'
-          labelCol={{ span: 24, offset: 12 }}
-          wrapperCol={{ span: 24, offset: 12 }}
+          labelCol={{ span: 24 }}
+          wrapperCol={{ span: 24 }}
           rules={[
             {
               required: true,
@@ -111,7 +113,7 @@ export default function Signup() {
 
         <Form.Item
           wrapperCol={{
-            offset: 15,
+            offset: 8,
             span: 16,
           }}
         >
@@ -119,7 +121,7 @@ export default function Signup() {
             Sign Up
           </Button>
         </Form.Item>
-        <Form.Item>
+        <Form.Item wrapperCol={{ span: 24, offset: 4 }}>
           Already have an account? <Link to='/login'>Log in</Link>
         </Form.Item>
       </Form>
