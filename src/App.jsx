@@ -6,7 +6,7 @@ import Signup from './pages/Signup/Signup';
 import FillMyProfile from './pages/FillMyProfile/FillMyProfile';
 import Confirm from './pages/Confirm/Confirm';
 import Login from './pages/Login/Login';
-import { getLocalStorage } from './helpers/localstorage';
+import { getLocalStorage } from './helpers/localStorage';
 
 function App() {
   const accessToken = getLocalStorage('accessToken');

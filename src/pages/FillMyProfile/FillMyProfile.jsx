@@ -27,7 +27,7 @@ import {
 import {
   removeFromLocalStorage,
   setLocalStorage,
-} from '../../helpers/localstorage';
+} from '../../helpers/localStorage';
 // import myAxios from '../../helpers/axiosInstance';
 
 const { Header, Content, Footer } = Layout;

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { setLocalStorage } from '../../helpers/localstorage';
+import { setLocalStorage } from '../../helpers/localStorage';
 import styles from './Login.module.less';
 
 export default function Login() {
