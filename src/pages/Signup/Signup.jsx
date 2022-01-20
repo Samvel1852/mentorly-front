@@ -2,36 +2,35 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
 import axios from 'axios';
-import Modal from 'antd/lib/modal/Modal';
 
 import styles from './Signup.module.less';
 
 export default function Signup() {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  // const [submitLoader, setSubmitLoader] = useState(false);
+  const [errorHidden, setErrorHidden] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
-    console.log('signUpValues', values);
-    const response = await axios.post('http://localhost:4000/signup', values);
-    console.log('bad response', response);
+    try {
+      setErrorHidden(true);
+      console.log('signUpValues', values);
+      const response = await axios.post('http://localhost:4000/signup', values);
+      console.log('bad response', response);
 
-    if (response.status === 201) {
-      console.log('signUp resOk response', response);
-      navigate('/confirm');
+      if (response.status === 201) {
+        console.log('signUp resOk response', response);
+        navigate('/confirm');
+      }
+    } catch ({ response }) {
+      setErrorHidden(false);
+      console.log('signErr', response);
+      setErrorMessage(response.data.errors[0]);
     }
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
   };
 
   return (
@@ -113,6 +112,17 @@ export default function Signup() {
 
         <Form.Item
           wrapperCol={{
+            offset: 2,
+            span: 24,
+          }}
+        >
+          <div style={{ color: 'red' }} hidden={errorHidden}>
+            {errorMessage}
+          </div>
+        </Form.Item>
+
+        <Form.Item
+          wrapperCol={{
             offset: 8,
             span: 16,
           }}
@@ -125,15 +135,6 @@ export default function Signup() {
           Already have an account? <Link to='/login'>Log in</Link>
         </Form.Item>
       </Form>
-      <Modal
-        title='Something went wrong'
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <p>Please check whether all the fields are filled right!</p>
-        <p>and Please try Again</p>
-      </Modal>
     </div>
   );
 }

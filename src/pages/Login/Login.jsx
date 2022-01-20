@@ -60,19 +60,7 @@ export default function Login() {
         >
           <h1>Login</h1>
         </Form.Item>
-        <Form.Item
-          wrapperCol={{
-            offset: 2,
-            span: 24,
-          }}
-        >
-          <div
-            style={{ color: 'red', fontSize: '9px' }}
-            hidden={errorVisibility}
-          >
-            {errorMessage}
-          </div>
-        </Form.Item>
+
         <Form.Item
           label='Email'
           name='email'
@@ -101,6 +89,20 @@ export default function Login() {
           ]}
         >
           <Input.Password />
+        </Form.Item>
+
+        <Form.Item
+          wrapperCol={{
+            offset: 2,
+            span: 24,
+          }}
+        >
+          <div
+            style={{ color: 'red', fontSize: '9px' }}
+            hidden={errorVisibility}
+          >
+            {errorMessage}
+          </div>
         </Form.Item>
 
         <Form.Item
