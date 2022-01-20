@@ -1,3 +1,13 @@
+.ant-layout-content {
+  background-color: #e6effc;
+}
+
+.ant-layout-footer {
+  background-color: #001529 !important;
+  color: #fff !important;
+  margin-top: 3px !important;
+}
+
 .ant-form-item {
   margin-bottom: 10px !important;
 }
@@ -24,7 +34,7 @@
 .content {
   width: 100%;
   min-height: 600px;
-  background-color: lightgray;
+  // background-color: lightgray;
   display: flex;
   justify-content: center;
 }
@@ -33,14 +43,26 @@
   display: flex;
   width: 100%;
   justify-content: space-between;
+  flex-wrap: wrap;
+  > div {
+    width: 265px;
+  }
 }
+
+// .namesContainer div {
+//   width: 265px !important;
+// }
 
 .selectsContainer {
   display: flex;
   width: 100%;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .skillsContainer {
+  width: 100%;
   display: flex;
+  flex-wrap: wrap;
+  background-color: #fff;
 }

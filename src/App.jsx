@@ -17,7 +17,7 @@ function App() {
           <Route path='/confirm' element={<Confirm />} />
           <Route path='/login' element={<Login />} />
           <Route
-            path='/fill-my-profile'
+            path='/users/verify'
             element={<FillMyProfile accessToken={accessToken} />}
           />
         </Routes>

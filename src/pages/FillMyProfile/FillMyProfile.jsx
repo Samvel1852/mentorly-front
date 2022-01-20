@@ -1,9 +1,8 @@
-// import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-// import axios from 'axios';
 import PropTypes from 'prop-types';
-import { Layout, Menu, Form, Input, Button, Select } from 'antd';
+import { Layout, Menu, Form, Input, Button, Select, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 import './FillMyProfile.less';
@@ -21,15 +20,19 @@ import {
   setSkillName,
   setSkills,
   finish,
+  setRole,
+  setField,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
-import { useEffect } from 'react';
 import { removeFromLocalStorage } from '../../helpers/localstorage';
+// import axios from 'axios';
 
 const { Header, Content, Footer } = Layout;
 const { Option } = Select;
 const { TextArea } = Input;
 
 export default function MyProfile({ accessToken }) {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [submitLoader, setSubmitLoader] = useState(false);
   const navigate = useNavigate();
 
   console.log(accessToken);
@@ -41,6 +44,7 @@ export default function MyProfile({ accessToken }) {
   const {
     firstName,
     lastName,
+    selectedRole,
     experience,
     education,
     about,
@@ -56,20 +60,33 @@ export default function MyProfile({ accessToken }) {
 
   const [form] = Form.useForm();
 
-  const onfinish = () => {
-    dispatch(
-      finish({
-        firstName,
-        lastName,
-        experience,
-        education,
-        about,
-        plans,
-        addingSkill,
-        skillName,
-        skills,
-      }),
-    );
+  const onfinish = async () => {
+    setSubmitLoader(true);
+    try {
+      const result = await dispatch(
+        finish({
+          firstName,
+          lastName,
+          experience,
+          education,
+          about,
+          plans,
+          addingSkill,
+          skillName,
+          skills,
+        }),
+      );
+      setSubmitLoader(false);
+
+      console.log('resFill', result);
+      if (result.payload && !result.errors) {
+        navigate('/users/:id');
+      } else {
+        setIsModalVisible(true);
+      }
+    } catch (err) {
+      console.log('err', err);
+    }
   };
 
   function handleFirstNameChange(e) {
@@ -81,11 +98,13 @@ export default function MyProfile({ accessToken }) {
   }
 
   function handleChangeRole(value) {
-    console.log(`selected ${value}`);
+    dispatch(setRole(value));
+    // console.log(`selected ${value}`);
   }
 
   function handleChangeField(value) {
-    console.log(`selected ${value}`);
+    dispatch(setField(value));
+    // console.log(`selected ${value}`);
   }
 
   function handleEducationChange(e) {
@@ -127,7 +146,16 @@ export default function MyProfile({ accessToken }) {
 
   function handleLogOut() {
     removeFromLocalStorage('accessToken');
+    navigate('/login');
   }
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   return (
     <Layout>
@@ -142,22 +170,32 @@ export default function MyProfile({ accessToken }) {
       >
         <div className='logo'>LOGO</div>
         <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['1']}>
-          {/* <Menu.Item key='1'>Dashboard</Menu.Item> */}
-          {/* <Menu.Item key='2'>Message Requests</Menu.Item> */}
           <Menu.Item key='1'>My Profile</Menu.Item>
-          {/* <Link to='/login'> */}
           <Menu.Item key='2' onClick={handleLogOut}>
             Log Out
           </Menu.Item>
-          {/* </Link> */}
         </Menu>
       </Header>
+      <Modal
+        title='Something went wrong'
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <p>Please check whether all the fields are filled right!</p>
+        <p>and Please try Again</p>
+      </Modal>
       <Content
         className='site-layout'
         style={{ padding: '0 50px', marginTop: 64 }}
       >
         <div className='content'>
-          <Form onFinish={onfinish} name='submit' form={form}>
+          <Form
+            onFinish={onfinish}
+            name='submit'
+            form={form}
+            style={{ maxWidth: '600px' }}
+          >
             <div className='namesContainer'>
               <Form.Item
                 name='First Name'
@@ -165,13 +203,24 @@ export default function MyProfile({ accessToken }) {
                 labelCol={{ span: 24 }}
                 rules={[
                   { required: true, message: 'Please input your First Name!' },
+                  {
+                    min: 2,
+                    message: 'First Name should contain at least two letters.',
+                  },
+                  {
+                    validator(_, value) {
+                      if (/^[A-z]+$/.test(value)) {
+                        return Promise.resolve();
+                      }
+
+                      return Promise.reject(
+                        new Error('First Name should contain only letters.'),
+                      );
+                    },
+                  },
                 ]}
               >
-                <Input
-                  value={firstName}
-                  onChange={handleFirstNameChange}
-                  style={{ width: '80%' }}
-                />
+                <Input value={firstName} onChange={handleFirstNameChange} />
               </Form.Item>
               <Form.Item
                 name='Last Name'
@@ -179,28 +228,40 @@ export default function MyProfile({ accessToken }) {
                 labelCol={{ span: 24 }}
                 rules={[
                   { required: true, message: 'Please input your Last Name!' },
+                  {
+                    min: 2,
+                    message: 'Last Name should contain at least two letters.',
+                  },
+                  {
+                    validator(_, value) {
+                      if (/^[A-z]+$/.test(value)) {
+                        return Promise.resolve();
+                      }
+
+                      return Promise.reject(
+                        new Error('Last Name should contain only letters.'),
+                      );
+                    },
+                  },
                 ]}
               >
-                <Input
-                  value={lastName}
-                  onChange={handleLastNameChange}
-                  style={{ width: '80%' }}
-                />
+                <Input value={lastName} onChange={handleLastNameChange} />
               </Form.Item>
             </div>
             <div className='selectsContainer'>
               <Form.Item
                 name='Role'
-                label='Role'
+                label='Choose Role'
                 labelCol={{ span: 24 }}
                 rules={[
                   { required: true, message: 'Please select Your Role!' },
                 ]}
               >
                 <Select
-                  defaultValue='--Select Role'
-                  style={{ width: 212 }}
+                  initialvalue='--Select Role'
+                  // style={{ width: 265 }}
                   onChange={handleChangeRole}
+                  placeholder='--Select Role'
                 >
                   <Option value='--Select Role' disabled>
                     --Select Role
@@ -218,17 +279,20 @@ export default function MyProfile({ accessToken }) {
                 ]}
               >
                 <Select
-                  defaultValue='--Select Field'
-                  style={{ width: 220 }}
+                  initialvalue='--Select Field'
+                  // style={{ width: '100%' }}
                   onChange={handleChangeField}
+                  placeholder='Select Field'
                 >
                   <Option value='--Select Field' disabled>
                     --Select Field
                   </Option>
-                  <Option value='Software Development'>
-                    Software Development
-                  </Option>
-                  <Option value='Quality Assurance'>Quality Assurance</Option>
+                  <Option value='IT'>IT</Option>
+                  <Option value='Marketing'>Marketing</Option>
+                  <Option value='Finance'>Finance</Option>
+                  <Option value='Law'>Law</Option>
+                  <Option value='Tourism'>Tourism</Option>
+                  <Option value='Business'>Business</Option>
                 </Select>
               </Form.Item>
             </div>
@@ -237,17 +301,17 @@ export default function MyProfile({ accessToken }) {
               label='Position'
               labelCol={{ span: 24 }}
               rules={[
-                { required: true, message: 'Please input your Position!' },
+                { required: true, message: 'Please input Your Position!' },
               ]}
             >
-              <Input />
+              <Input maxLength={50} />
             </Form.Item>
             <Form.Item
               name='Education'
               label='Education'
               labelCol={{ span: 24 }}
               rules={[
-                { required: true, message: 'Please input your Education!' },
+                { required: true, message: 'Please input Your Education!' },
               ]}
             >
               <TextArea
@@ -263,7 +327,7 @@ export default function MyProfile({ accessToken }) {
               label='Experience'
               labelCol={{ span: 24 }}
               rules={[
-                { required: true, message: 'Please input your Experience!' },
+                { required: true, message: 'Please input Your Experience!' },
               ]}
             >
               <TextArea
@@ -281,7 +345,7 @@ export default function MyProfile({ accessToken }) {
               rules={[
                 {
                   required: true,
-                  message: 'Please input your Something About You!',
+                  message: 'Please input Something About You!',
                 },
               ]}
             >
@@ -295,7 +359,13 @@ export default function MyProfile({ accessToken }) {
             </Form.Item>
             <Form.Item
               name='Plans'
-              label='Who can request mentorship (for mentor) / My plans (for mentee)'
+              label={
+                selectedRole === 'mentor'
+                  ? 'Who can request mentorship'
+                  : selectedRole === 'mentee'
+                  ? 'My plans'
+                  : 'Who can request mentorship (for mentor) / My plans (for mentee)'
+              }
               labelCol={{ span: 24 }}
               rules={[
                 {
@@ -309,7 +379,7 @@ export default function MyProfile({ accessToken }) {
                 onChange={handlePlansChange}
                 autoSize={{ minRows: 3 }}
                 showCount
-                maxLength={255}
+                maxLength={150}
               />
             </Form.Item>
             <Form.Item
@@ -323,7 +393,13 @@ export default function MyProfile({ accessToken }) {
                 },
               ]}
             >
-              <Layout style={{ minHeight: '100px', display: 'flex' }}>
+              <Layout
+                style={{
+                  minHeight: '100px',
+                  display: 'flex',
+                  backgroundColor: '#fff',
+                }}
+              >
                 <div className='skillsContainer'>
                   {skills.map((skill) => (
                     <Skill
@@ -338,13 +414,13 @@ export default function MyProfile({ accessToken }) {
                       value={skillName}
                       onPressEnter={handleAddingSkillChange}
                       onChange={handleSkillNameChange}
-                      style={{ width: '15%' }}
+                      style={{ width: '15%', minWidth: '100px' }}
                       autoFocus
                     />
                   ) : (
                     <Button
                       onClick={handleAddingSkillChange}
-                      style={{ width: '15%' }}
+                      style={{ width: '15%', minWidth: '100px' }}
                     >
                       + New skill
                     </Button>
@@ -353,7 +429,7 @@ export default function MyProfile({ accessToken }) {
               </Layout>
             </Form.Item>
             <br />
-            <Button type='primary' htmlType='submit'>
+            <Button type='primary' htmlType='submit' loading={submitLoader}>
               Submit
             </Button>
           </Form>
