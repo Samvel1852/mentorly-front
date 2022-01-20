@@ -217,6 +217,7 @@ export default function MyProfile({ accessToken }) {
                 name='First Name'
                 label='First Name'
                 labelCol={{ span: 24 }}
+                grid={{ gutter: 16 }}
                 style={{ marginRight: '70px' }}
                 rules={[
                   { required: true, message: 'Please input your First Name!' },
@@ -273,7 +274,7 @@ export default function MyProfile({ accessToken }) {
                 rules={[
                   { required: true, message: 'Please select Your Role!' },
                 ]}
-                style={{ width: '265px' }}
+                style={{ width: '265px', marginRight: '70px' }}
               >
                 <Select
                   initialvalue='--Select Role'
