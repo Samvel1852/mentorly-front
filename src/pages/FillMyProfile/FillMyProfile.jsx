@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Layout, Menu, Form, Input, Button, Select, Modal } from 'antd';
-import { useNavigate } from 'react-router-dom';
 
 import './FillMyProfile.less';
 import 'antd/dist/antd.css';
 import Skill from '../../components/Skill/Skill';
-
 import {
   setFirstName,
   setLastName,

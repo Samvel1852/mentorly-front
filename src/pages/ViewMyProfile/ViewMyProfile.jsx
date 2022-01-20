@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Layout, Menu } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
-import './ViewMyProfile.less';
+import styles from './ViewMyProfile.module.less';
 import 'antd/dist/antd.css';
 
 import { removeFromLocalStorage } from '../../helpers/localstorage';
@@ -48,7 +48,7 @@ export default function ViewMyProfile({ accessToken }) {
       </Header>
 
       <Content
-        className='site-layout'
+        className={styles.site_layout}
         style={{ padding: '50px', marginTop: 64 }}
       ></Content>
       <Footer style={{ textAlign: 'center' }}>
