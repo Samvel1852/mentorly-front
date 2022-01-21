@@ -14,7 +14,6 @@ export default function Login() {
 
   const onFinish = async (values) => {
     setErrorVisibility(true);
-
     try {
       const response = await myAxios.post(`login`, values);
 
@@ -22,7 +21,6 @@ export default function Login() {
         setLocalStorage('accessToken', response.data.data.token);
         navigate(`/users/${response.data.data.user._id}`);
       }
-
     } catch (error) {
       setErrorVisibility(false);
       setErrorMessage(error.response.data.errors[0]);

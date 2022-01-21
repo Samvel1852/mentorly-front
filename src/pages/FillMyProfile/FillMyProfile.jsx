@@ -264,9 +264,7 @@ export default function FillMyProfile() {
                 name='Field'
                 label='Choose Field'
                 labelCol={{ span: 24 }}
-                rules={[
-                  { required: true, message: 'Please select Your Field!' },
-                ]}
+                rules={[{ required: true, message: 'Please select Your Field!' }]}
                 className={styles.field}
               >
                 <Select
