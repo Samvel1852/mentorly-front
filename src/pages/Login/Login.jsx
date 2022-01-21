@@ -14,25 +14,19 @@ export default function Login() {
 
   const onFinish = async (values) => {
     setErrorVisibility(true);
-    console.log(values);
+
     try {
       const response = await myAxios.post(`login`, values);
 
       if (response.status === 200) {
-        //   console.log('login successRes', response, response.data.data.token);
         setLocalStorage('accessToken', response.data.data.token);
         navigate('/users/verify');
       }
 
     } catch (error) {
       setErrorVisibility(false);
-      console.log('error', error.response);
       setErrorMessage(error.response.data.errors[0]);
     }
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
   };
 
   return (
@@ -43,15 +37,11 @@ export default function Login() {
         wrapperCol={{ span: 10 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete='off'
         requiredMark={false}
       >
         <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
+          wrapperCol={{ offset: 8, span: 16 }}
         >
           <h1>Login</h1>
         </Form.Item>
@@ -86,12 +76,7 @@ export default function Login() {
           <Input.Password />
         </Form.Item>
 
-        <Form.Item
-          wrapperCol={{
-            offset: 2,
-            span: 24,
-          }}
-        >
+        <Form.Item wrapperCol={{ offset: 2, span: 24 }} >
           <div
             className={styles.errMessage}
             hidden={errorVisibility}
@@ -101,21 +86,13 @@ export default function Login() {
         </Form.Item>
 
         <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
+          wrapperCol={{ offset: 8, span: 16 }}
         >
           <Button type='primary' htmlType='submit'>
             Login
           </Button>
         </Form.Item>
-        <Form.Item
-          wrapperCol={{
-            offset: 4,
-            span: 24,
-          }}
-        >
+        <Form.Item wrapperCol={{ offset: 4, span: 24 }} >
           Don`t have an account <Link to='/signup'>Sign Up</Link>
         </Form.Item>
       </Form>

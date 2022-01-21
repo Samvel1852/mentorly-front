@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
 
+import styles from './Signup.module.less';
+
 import { myAxios } from '../../helpers/axiosInstance';
 
 export default function Signup() {
@@ -46,7 +48,7 @@ export default function Signup() {
           },
         ]}
       >
-        <Input style={{ width: '80%' }} />
+        <Input className={styles.inputs} />
       </Form.Item>
 
       <Form.Item
@@ -59,7 +61,7 @@ export default function Signup() {
           },
         ]}
       >
-        <Input.Password style={{ width: '80%' }} />
+        <Input.Password className={styles.inputs} />
       </Form.Item>
 
       <Form.Item
@@ -72,7 +74,7 @@ export default function Signup() {
           },
         ]}
       >
-        <Input.Password style={{ width: '80%' }} />
+        <Input.Password className={styles.inputs} />
       </Form.Item>
 
       <Form.Item
