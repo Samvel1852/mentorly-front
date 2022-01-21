@@ -34,12 +34,7 @@ export default function Confirm() {
         <Input style={{ width: '80%' }} />
       </Form.Item>
 
-      <Form.Item
-        wrapperCol={{
-          offset: 13,
-          span: 16,
-        }}
-      >
+      <Form.Item wrapperCol={{ offset: 13, span: 16 }} >
         <Button type='primary' htmlType='submit'>
           Confirm
         </Button>
