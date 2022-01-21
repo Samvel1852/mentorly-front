@@ -97,13 +97,24 @@ export default function FillMyProfile() {
     }
   };
 
-  function handleFirstNameChange(e) {
-    console.log(e)
-    dispatch(setFirstName(e.target.value));
-  }
-
-  function handleLastNameChange(e) {
-    dispatch(setLastName(e.target.value));
+  function handleInputChange ({target}) {
+    if (target.name === 'firstName') {
+      dispatch(setFirstName(target.value));
+    } else if (target.name === 'lastName') {
+      dispatch(setLastName(target.value));
+    } else if (target.name === 'position') {
+      dispatch(setPosition(target.value));
+    } else if (target.name === 'education') {
+      dispatch(setEducation(target.value));
+    } else if (target.name === 'experience') {
+      dispatch(setExperience(target.value));
+    } else if (target.name === 'about') {
+      dispatch(setAbout(target.value));
+    } else if (target.name === 'plans') {
+      dispatch(setPlans(target.value));
+    } else if (target.name === 'skill') {
+      dispatch(setSkillName(target.value));
+    }
   }
 
   function handleChangeRole(value) {
@@ -114,36 +125,12 @@ export default function FillMyProfile() {
     dispatch(setField(value));
   }
 
-  function handleChangePosition(e) {
-    dispatch(setPosition(e.target.value));
-  }
-
-  function handleEducationChange(e) {
-    dispatch(setEducation(e.target.value));
-  }
-
-  function handleExperienceChange(e) {
-    dispatch(setExperience(e.target.value));
-  }
-
-  function handleAboutChange(e) {
-    dispatch(setAbout(e.target.value));
-  }
-
-  function handlePlansChange(e) {
-    dispatch(setPlans(e.target.value));
-  }
-
   function handleAddingSkillChange(e) {
     if (e.target.value) {
       dispatch(setSkills([...skills, { id: Date.now(), name: e.target.value }]));
       dispatch(setSkillName(''));
     }
       dispatch(setAddingSkill(!addingSkill));
-  }
-
-  function handleSkillNameChange(e) {
-    dispatch(setSkillName(e.target.value));
   }
 
   function handleDeleteSkill({ id, e }) {
@@ -212,7 +199,7 @@ export default function FillMyProfile() {
                   },
                 ]}
               >
-                <Input value={firstName} onChange={handleFirstNameChange} />
+                <Input name='firstName' value={firstName} onChange={handleInputChange} />
               </Form.Item>
               <Form.Item
                 name='Last Name'
@@ -233,7 +220,7 @@ export default function FillMyProfile() {
                   },
                 ]}
               >
-                <Input value={lastName} onChange={handleLastNameChange} />
+                <Input name='lastName' value={lastName} onChange={handleInputChange} />
               </Form.Item>
             </div>
             <div className={styles.selectsContainer}>
@@ -287,8 +274,9 @@ export default function FillMyProfile() {
               rules={[{ required: true, message: 'Please input Your Position!' }]}
             >
               <Input
+                name='position'
                 maxLength={50}
-                onChange={handleChangePosition}
+                onChange={handleInputChange}
                 value={position}
               />
             </Form.Item>
@@ -300,8 +288,9 @@ export default function FillMyProfile() {
               ]}
             >
               <TextArea
+                name='education'
                 value={education}
-                onChange={handleEducationChange}
+                onChange={handleInputChange}
                 autoSize={{ minRows: 3 }}
                 showCount
                 maxLength={255}
@@ -314,8 +303,9 @@ export default function FillMyProfile() {
               rules={[{ required: true, message: 'Please input Your Experience!' }]}
             >
               <TextArea
+                name='experience'
                 value={experience}
-                onChange={handleExperienceChange}
+                onChange={handleInputChange}
                 autoSize={{ minRows: 3 }}
                 showCount
                 maxLength={255}
@@ -328,8 +318,9 @@ export default function FillMyProfile() {
               rules={[{ required: true, message: 'Please input Something About You!' }]}
             >
               <TextArea
+                name='about'
                 value={about}
-                onChange={handleAboutChange}
+                onChange={handleInputChange}
                 autoSize={{ minRows: 3 }}
                 showCount
                 maxLength={255}
@@ -347,9 +338,10 @@ export default function FillMyProfile() {
               labelCol={{ span: 24 }}
               rules={[{ required: true, message: 'Please input Your plans!' }]}
             >
-              <TextArea
+              <TextArea 
+                name='plans'
                 value={plans}
-                onChange={handlePlansChange}
+                onChange={handleInputChange}
                 autoSize={{ minRows: 3 }}
                 showCount
                 maxLength={150}
@@ -385,9 +377,10 @@ export default function FillMyProfile() {
                   ))}
                   {addingSkill ? (
                     <Input
+                      name='skill'
                       value={skillName}
                       onPressEnter={handleAddingSkillChange}
-                      onChange={handleSkillNameChange}
+                      onChange={handleInputChange}
                       className={styles.addSkillInput}
                       autoFocus
                       maxLength={30}
