@@ -35,13 +35,6 @@ export default function Signup() {
         name='basic'
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 8 }}
-        style={{
-          maxWidth: '700px',
-          minWidth: '400px',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-        }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete='off'
