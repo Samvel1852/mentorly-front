@@ -66,7 +66,6 @@ export default function FillMyProfile() {
   const onfinish = async () => {
     setSubmitLoader(true);
     try {
-      console.log(params, 'params');
       const { id } = params;
       const result = await dispatch(
         finish({
@@ -99,6 +98,7 @@ export default function FillMyProfile() {
   };
 
   function handleFirstNameChange(e) {
+    console.log(e)
     dispatch(setFirstName(e.target.value));
   }
 
@@ -136,14 +136,10 @@ export default function FillMyProfile() {
 
   function handleAddingSkillChange(e) {
     if (e.target.value) {
-      dispatch(
-        setSkills([...skills, { id: Date.now(), name: e.target.value }]),
-      );
-      dispatch(setAddingSkill(!addingSkill));
+      dispatch(setSkills([...skills, { id: Date.now(), name: e.target.value }]));
       dispatch(setSkillName(''));
-    } else {
-      dispatch(setAddingSkill(!addingSkill));
     }
+      dispatch(setAddingSkill(!addingSkill));
   }
 
   function handleSkillNameChange(e) {
