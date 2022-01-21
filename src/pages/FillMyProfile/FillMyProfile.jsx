@@ -63,7 +63,7 @@ export default function FillMyProfile() {
 
   const [form] = Form.useForm();
 
-  const onfinish = async () => {
+  const onFinish = async () => {
     setSubmitLoader(true);
     try {
       const { id } = params;
@@ -184,7 +184,7 @@ export default function FillMyProfile() {
       <Content className={styles.site_layout} >
         <div className={styles.content}>
           <Form
-            onFinish={onfinish}
+            onFinish={onFinish}
             name='submit'
             form={form}
             className={styles.form}
