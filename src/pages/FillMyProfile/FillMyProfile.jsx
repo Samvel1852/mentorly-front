@@ -25,6 +25,7 @@ import {
   setField,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
 import {
+  getLocalStorage,
   removeFromLocalStorage,
   setLocalStorage,
 } from '../../helpers/localStorage';
@@ -33,16 +34,14 @@ const { Header, Content, Footer } = Layout;
 const { Option } = Select;
 const { TextArea } = Input;
 
-export default function FillMyProfile({ accessToken }) {
+export default function FillMyProfile() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [submitLoader, setSubmitLoader] = useState(false);
   const navigate = useNavigate();
   const params = useParams();
 
-  console.log(accessToken);
-
   useEffect(() => {
-    if (!accessToken) navigate('/login');
+    if (!getLocalStorage('accessToken')) navigate('/login');
   }, []);
 
   const {
@@ -59,7 +58,7 @@ export default function FillMyProfile({ accessToken }) {
     skillName,
     skills,
   } = useSelector((state) => state.fillMyProfile);
-  console.log(selectedRole, 'selectedRole');
+
   const dispatch = useDispatch();
 
   const [form] = Form.useForm();
@@ -166,10 +165,6 @@ export default function FillMyProfile({ accessToken }) {
     setIsModalVisible(false);
   };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-
   return (
     <Layout>
       <Header className={styles.head} >
@@ -185,7 +180,7 @@ export default function FillMyProfile({ accessToken }) {
         title='Something went wrong'
         visible={isModalVisible}
         onOk={handleOk}
-        onCancel={handleCancel}
+        onCancel={handleOk}
       >
         <p>Please check whether all the fields are filled right!</p>
         <p>and Please try Again</p>
