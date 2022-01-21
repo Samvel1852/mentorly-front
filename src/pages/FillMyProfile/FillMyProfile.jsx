@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import PropTypes from 'prop-types';
 import { Layout, Menu, Form, Input, Button, Select, Modal } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import './FillMyProfile.less';
+import styles from './FillMyProfile.module.less';
 import 'antd/dist/antd.css';
 import Skill from '../../components/Skill/Skill';
 
@@ -13,6 +13,7 @@ import {
   setFirstName,
   setLastName,
   setExperience,
+  setPosition,
   setEducation,
   setAbout,
   setPlans,
@@ -23,16 +24,20 @@ import {
   setRole,
   setField,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
-import { removeFromLocalStorage } from '../../helpers/localStorage';
+import {
+  removeFromLocalStorage,
+  setLocalStorage,
+} from '../../helpers/localStorage';
 
 const { Header, Content, Footer } = Layout;
 const { Option } = Select;
 const { TextArea } = Input;
 
-export default function MyProfile({ accessToken }) {
+export default function FillMyProfile({ accessToken }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [submitLoader, setSubmitLoader] = useState(false);
   const navigate = useNavigate();
+  const params = useParams();
 
   console.log(accessToken);
 
@@ -44,7 +49,9 @@ export default function MyProfile({ accessToken }) {
     firstName,
     lastName,
     selectedRole,
+    selectedField,
     experience,
+    position,
     education,
     about,
     plans,
@@ -52,20 +59,23 @@ export default function MyProfile({ accessToken }) {
     skillName,
     skills,
   } = useSelector((state) => state.fillMyProfile);
-
+  console.log(selectedRole, 'selectedRole');
   const dispatch = useDispatch();
-
-  let skillId = 1;
 
   const [form] = Form.useForm();
 
   const onfinish = async () => {
     setSubmitLoader(true);
     try {
+      console.log(params, 'params');
+      const { id } = params;
       const result = await dispatch(
         finish({
           firstName,
           lastName,
+          selectedRole,
+          selectedField,
+          position,
           experience,
           education,
           about,
@@ -73,18 +83,19 @@ export default function MyProfile({ accessToken }) {
           addingSkill,
           skillName,
           skills,
+          id,
         }),
       );
-      setSubmitLoader(false);
 
-      console.log('resFill', result);
+      setSubmitLoader(false);
       if (result.payload && !result.errors) {
-        navigate('/users/:id');
+        await setLocalStorage('verified', true);
+        navigate(`/${id}`);
       } else {
         setIsModalVisible(true);
       }
-    } catch (err) {
-      console.log('err', err);
+    } catch ({ response }) {
+      console.log('errResponse', { response });
     }
   };
 
@@ -98,12 +109,14 @@ export default function MyProfile({ accessToken }) {
 
   function handleChangeRole(value) {
     dispatch(setRole(value));
-    // console.log(`selected ${value}`);
   }
 
   function handleChangeField(value) {
     dispatch(setField(value));
-    // console.log(`selected ${value}`);
+  }
+
+  function handleChangePosition(e) {
+    dispatch(setPosition(e.target.value));
   }
 
   function handleEducationChange(e) {
@@ -124,7 +137,9 @@ export default function MyProfile({ accessToken }) {
 
   function handleAddingSkillChange(e) {
     if (e.target.value) {
-      dispatch(setSkills([...skills, { id: skillId, name: e.target.value }]));
+      dispatch(
+        setSkills([...skills, { id: Date.now(), name: e.target.value }]),
+      );
       dispatch(setAddingSkill(!addingSkill));
       dispatch(setSkillName(''));
     } else {
@@ -138,7 +153,6 @@ export default function MyProfile({ accessToken }) {
 
   function handleDeleteSkill({ id, e }) {
     const filteredSkills = skills.filter((skill) => skill.id !== id);
-    console.log('filteredSkills', filteredSkills);
     e.preventDefault();
     dispatch(setSkills(filteredSkills));
   }
@@ -158,16 +172,8 @@ export default function MyProfile({ accessToken }) {
 
   return (
     <Layout>
-      <Header
-        style={{
-          position: 'fixed',
-          zIndex: 1,
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
-        <div className='logo'>LOGO</div>
+      <Header className={styles.head} >
+        <div className={styles.logo}>Mentorly</div>
         <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['1']}>
           <Menu.Item key='1'>My Profile</Menu.Item>
           <Menu.Item key='2' onClick={handleLogOut}>
@@ -184,34 +190,30 @@ export default function MyProfile({ accessToken }) {
         <p>Please check whether all the fields are filled right!</p>
         <p>and Please try Again</p>
       </Modal>
-      <Content
-        className='site-layout'
-        style={{ padding: '0 50px', marginTop: 64 }}
-      >
-        <div className='content'>
+      <Content className={styles.site_layout} >
+        <div className={styles.content}>
           <Form
             onFinish={onfinish}
             name='submit'
             form={form}
-            style={{ maxWidth: '600px' }}
+            className={styles.form}
+            requiredMark={false}
           >
-            <div className='namesContainer'>
+            <div className={styles.namesContainer}>
               <Form.Item
                 name='First Name'
                 label='First Name'
                 labelCol={{ span: 24 }}
+                grid={{ gutter: 16 }}
+                className={styles.firstName}
                 rules={[
                   { required: true, message: 'Please input your First Name!' },
-                  {
-                    min: 2,
-                    message: 'First Name should contain at least two letters.',
-                  },
+                  { min: 2, message: 'First Name should contain at least two letters.' },
                   {
                     validator(_, value) {
                       if (/^[A-z]+$/.test(value)) {
                         return Promise.resolve();
                       }
-
                       return Promise.reject(
                         new Error('First Name should contain only letters.'),
                       );
@@ -227,16 +229,12 @@ export default function MyProfile({ accessToken }) {
                 labelCol={{ span: 24 }}
                 rules={[
                   { required: true, message: 'Please input your Last Name!' },
-                  {
-                    min: 2,
-                    message: 'Last Name should contain at least two letters.',
-                  },
+                  { min: 2, message: 'Last Name should contain at least two letters.' },
                   {
                     validator(_, value) {
                       if (/^[A-z]+$/.test(value)) {
                         return Promise.resolve();
                       }
-
                       return Promise.reject(
                         new Error('Last Name should contain only letters.'),
                       );
@@ -247,18 +245,16 @@ export default function MyProfile({ accessToken }) {
                 <Input value={lastName} onChange={handleLastNameChange} />
               </Form.Item>
             </div>
-            <div className='selectsContainer'>
+            <div className={styles.selectsContainer}>
               <Form.Item
                 name='Role'
                 label='Choose Role'
                 labelCol={{ span: 24 }}
-                rules={[
-                  { required: true, message: 'Please select Your Role!' },
-                ]}
+                rules={[{ required: true, message: 'Please select Your Role!' }]}
+                className={styles.role}
               >
                 <Select
                   initialvalue='--Select Role'
-                  // style={{ width: 265 }}
                   onChange={handleChangeRole}
                   placeholder='--Select Role'
                 >
@@ -271,15 +267,15 @@ export default function MyProfile({ accessToken }) {
               </Form.Item>
               <Form.Item
                 name='Field'
-                label='Field'
+                label='Choose Field'
                 labelCol={{ span: 24 }}
                 rules={[
                   { required: true, message: 'Please select Your Field!' },
                 ]}
+                className={styles.field}
               >
                 <Select
                   initialvalue='--Select Field'
-                  // style={{ width: '100%' }}
                   onChange={handleChangeField}
                   placeholder='Select Field'
                 >
@@ -299,18 +295,19 @@ export default function MyProfile({ accessToken }) {
               name='Position'
               label='Position'
               labelCol={{ span: 24 }}
-              rules={[
-                { required: true, message: 'Please input Your Position!' },
-              ]}
+              rules={[{ required: true, message: 'Please input Your Position!' }]}
             >
-              <Input maxLength={50} />
+              <Input
+                maxLength={50}
+                onChange={handleChangePosition}
+                value={position}
+              />
             </Form.Item>
             <Form.Item
               name='Education'
               label='Education'
               labelCol={{ span: 24 }}
-              rules={[
-                { required: true, message: 'Please input Your Education!' },
+              rules={[{ required: true, message: 'Please input Your Education!' },
               ]}
             >
               <TextArea
@@ -325,9 +322,7 @@ export default function MyProfile({ accessToken }) {
               name='Experience'
               label='Experience'
               labelCol={{ span: 24 }}
-              rules={[
-                { required: true, message: 'Please input Your Experience!' },
-              ]}
+              rules={[{ required: true, message: 'Please input Your Experience!' }]}
             >
               <TextArea
                 value={experience}
@@ -341,12 +336,7 @@ export default function MyProfile({ accessToken }) {
               name='About'
               label='About'
               labelCol={{ span: 24 }}
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input Something About You!',
-                },
-              ]}
+              rules={[{ required: true, message: 'Please input Something About You!' }]}
             >
               <TextArea
                 value={about}
@@ -359,19 +349,14 @@ export default function MyProfile({ accessToken }) {
             <Form.Item
               name='Plans'
               label={
-                selectedRole === 'mentor'
+                selectedRole === 'Mentor'
                   ? 'Who can request mentorship'
-                  : selectedRole === 'mentee'
+                  : selectedRole === 'Mentee'
                   ? 'My plans'
                   : 'Who can request mentorship (for mentor) / My plans (for mentee)'
               }
               labelCol={{ span: 24 }}
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input Your plans!',
-                },
-              ]}
+              rules={[{ required: true, message: 'Please input Your plans!' }]}
             >
               <TextArea
                 value={plans}
@@ -385,26 +370,27 @@ export default function MyProfile({ accessToken }) {
               name='Skills'
               label='Skills'
               labelCol={{ span: 24 }}
-              rules={[
+              rules={[{ required: true, message: 'Please Provide Your Skills!' },
                 {
-                  required: true,
-                  message: 'Please Provide Your Skills!',
+                  validator() {
+                    if (skills.length < 10) {
+                      return Promise.resolve();
+                    } else {
+                      return Promise.reject(
+                        new Error('Skills can contain maximum 10 fields.'),
+                      );
+                    }
+                  },
                 },
               ]}
             >
-              <Layout
-                style={{
-                  minHeight: '100px',
-                  display: 'flex',
-                  backgroundColor: '#fff',
-                }}
-              >
-                <div className='skillsContainer'>
+              <Layout className={styles.skillsContainer} >
+                <div className={styles.skillsContainer}>
                   {skills.map((skill) => (
                     <Skill
-                      key={skillId++}
+                      key={skill.id}
                       name={skill.name}
-                      id={skillId}
+                      id={skill.id}
                       handleDeleteSkill={handleDeleteSkill}
                     />
                   ))}
@@ -413,14 +399,12 @@ export default function MyProfile({ accessToken }) {
                       value={skillName}
                       onPressEnter={handleAddingSkillChange}
                       onChange={handleSkillNameChange}
-                      style={{ width: '15%', minWidth: '100px' }}
+                      className={styles.addSkillInput}
                       autoFocus
+                      maxLength={30}
                     />
                   ) : (
-                    <Button
-                      onClick={handleAddingSkillChange}
-                      style={{ width: '15%', minWidth: '100px' }}
-                    >
+                    <Button onClick={handleAddingSkillChange} className={styles.newSkillBtn} >
                       + New skill
                     </Button>
                   )}
@@ -434,13 +418,14 @@ export default function MyProfile({ accessToken }) {
           </Form>
         </div>
       </Content>
-      <Footer style={{ textAlign: 'center' }}>
+      <Footer className={styles.foot}>
         Simply Technologies ©2022 Created with Pleasure
       </Footer>
     </Layout>
   );
 }
 
-MyProfile.propTypes = {
+FillMyProfile.propTypes = {
   accessToken: PropTypes.string,
+  skillId: PropTypes.number,
 };

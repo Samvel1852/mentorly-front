@@ -9,6 +9,8 @@ import Login from './pages/Login/Login';
 
 function App() {
   const accessToken = localStorage.getItem('accessToken');
+  let skillId = 1;
+  
   return (
     <div className='App'>
       <Router>
@@ -17,9 +19,12 @@ function App() {
           <Route path='/confirm' element={<Confirm />} />
           <Route path='/login' element={<Login />} />
           <Route
-            path='/users/verify'
-            element={<FillMyProfile accessToken={accessToken} />}
+            path='/users/:id'
+            element={
+              <FillMyProfile accessToken={accessToken} skillId={skillId} />
+            }
           />
+          <Route path='/:id' element={<div>It is my profile</div>} />
         </Routes>
       </Router>
     </div>
