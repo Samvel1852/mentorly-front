@@ -30,17 +30,10 @@ export default function Signup() {
       onFinishFailed={onFinishFailed}
       autoComplete='off'
     >
-      <Form.Item
-        wrapperCol={{
-          offset: 13,
-          span: 16,
-        }}
-      >
+      <Form.Item wrapperCol={{ offset: 13, span: 16 }} >
         <h1>Sign Up</h1>
       </Form.Item>
-      <Form.Item
-        label='Email'
-        name='email'
+      <Form.Item label='Email' name='email'
         rules={[
           {
             required: true,
@@ -51,9 +44,7 @@ export default function Signup() {
         <Input className={styles.inputs} />
       </Form.Item>
 
-      <Form.Item
-        label='Password'
-        name='password'
+      <Form.Item label='Password' name='password'
         rules={[
           {
             required: true,
@@ -64,9 +55,7 @@ export default function Signup() {
         <Input.Password className={styles.inputs} />
       </Form.Item>
 
-      <Form.Item
-        label='Confirm Password'
-        name='confirmPassword'
+      <Form.Item label='Confirm Password' name='confirmPassword'
         rules={[
           {
             required: true,
@@ -77,12 +66,7 @@ export default function Signup() {
         <Input.Password className={styles.inputs} />
       </Form.Item>
 
-      <Form.Item
-        wrapperCol={{
-          offset: 13,
-          span: 16,
-        }}
-      >
+      <Form.Item wrapperCol={{ offset: 13, span: 16 }} >
         <Button type='primary' htmlType='submit'>
           Sign Up
         </Button>
