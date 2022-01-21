@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import PropTypes from 'prop-types';
-import { Col, Layout, List, Menu, Row, Typography } from 'antd';
+import { Button, Col, Layout, List, Menu, Row, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 import styles from './ViewMyProfile.module.less';
@@ -29,7 +29,7 @@ export default function ViewMyProfile({ accessToken }) {
   ];
 
   const skills = [
-    'HTML', 'CSS', 'JS', 'React'
+    'HTML', 'CSS', 'JS', 'React', 'Anuglar', 'Vue', 'Java'
   ];
 
   useEffect(() => {
@@ -68,7 +68,7 @@ export default function ViewMyProfile({ accessToken }) {
         style={{ padding: '20px', marginTop: 64 }}
       >
           <Row style={{width: '100%', height: '100%'}}>
-            <Col flex="300px">
+            <Col flex="30%">
               <Title level={3}>Personal Info</Title>
               <List
                 size="small"
@@ -81,6 +81,7 @@ export default function ViewMyProfile({ accessToken }) {
                 dataSource={skills}
                 renderItem={item => <Skill name={item}></Skill>}
               />
+              <Button type='primary' style={{marginTop: '15px'}}>Connect</Button>
             </Col>
             <Col flex="auto">Fill Rest</Col>
           </Row>
