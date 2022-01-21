@@ -1,8 +1,9 @@
-import { Form, Input, Button } from 'antd';
-import axios from 'axios';
 import { useState } from 'react';
+import { Form, Input, Button } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
-import { setLocalStorage } from '../../helpers/localstorage';
+
+import { myAxios } from '../../helpers/axiosInstance';
+import { setLocalStorage } from '../../helpers/localStorage';
 
 import styles from './Login.module.less';
 
@@ -13,50 +14,34 @@ export default function Login() {
 
   const onFinish = async (values) => {
     setErrorVisibility(true);
-    console.log(values);
+
     try {
-      const response = await axios.post('http://localhost:4000/login', values);
+      const response = await myAxios.post(`login`, values);
 
       if (response.status === 200) {
-        //   console.log('login successRes', response, response.data.data.token);
         setLocalStorage('accessToken', response.data.data.token);
         navigate('/users/verify');
       }
-      console.log('res', response);
+
     } catch (error) {
       setErrorVisibility(false);
-      console.log('error', error.response);
       setErrorMessage(error.response.data.errors[0]);
     }
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
   };
 
   return (
     <div className={styles.formContainer}>
       <Form
         name='basic'
-        labelCol={{
-          span: 10,
-        }}
-        wrapperCol={{
-          span: 10,
-        }}
-        initialValues={{
-          remember: true,
-        }}
+        labelCol={{ span: 10 }}
+        wrapperCol={{ span: 10 }}
+        initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete='off'
         requiredMark={false}
       >
         <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
+          wrapperCol={{ offset: 8, span: 16 }}
         >
           <h1>Login</h1>
         </Form.Item>
@@ -69,7 +54,7 @@ export default function Login() {
           rules={[
             {
               required: true,
-              message: 'Please input your username!',
+              message: 'Please input your e-mail!',
             },
           ]}
         >
@@ -91,14 +76,9 @@ export default function Login() {
           <Input.Password />
         </Form.Item>
 
-        <Form.Item
-          wrapperCol={{
-            offset: 2,
-            span: 24,
-          }}
-        >
+        <Form.Item wrapperCol={{ offset: 2, span: 24 }} >
           <div
-            style={{ color: 'red', fontSize: '9px' }}
+            className={styles.errMessage}
             hidden={errorVisibility}
           >
             {errorMessage}
@@ -106,21 +86,13 @@ export default function Login() {
         </Form.Item>
 
         <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
+          wrapperCol={{ offset: 8, span: 16 }}
         >
           <Button type='primary' htmlType='submit'>
             Login
           </Button>
         </Form.Item>
-        <Form.Item
-          wrapperCol={{
-            offset: 4,
-            span: 24,
-          }}
-        >
+        <Form.Item wrapperCol={{ offset: 4, span: 24 }} >
           Don`t have an account <Link to='/signup'>Sign Up</Link>
         </Form.Item>
       </Form>

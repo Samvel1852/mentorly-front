@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
 import PropTypes from 'prop-types';
 import { Layout, Menu, Form, Input, Button, Select, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -23,7 +22,7 @@ import {
   setRole,
   setField,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
-import { removeFromLocalStorage } from '../../helpers/localstorage';
+import { removeFromLocalStorage } from '../../helpers/localStorage';
 
 const { Header, Content, Footer } = Layout;
 const { Option } = Select;
