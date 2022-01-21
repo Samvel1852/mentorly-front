@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
-import axios from 'axios';
 
 import styles from './Signup.module.less';
+import { myAxios } from '../../helpers/axiosInstance';
 
 export default function Signup() {
   const [errorHidden, setErrorHidden] = useState(true);
@@ -14,17 +14,13 @@ export default function Signup() {
   const onFinish = async (values) => {
     try {
       setErrorHidden(true);
-      console.log('signUpValues', values);
-      const response = await axios.post('http://localhost:4000/signup', values);
-      console.log('bad response', response);
+      const response = await myAxios.post('signup', values);
 
       if (response.status === 201) {
-        console.log('signUp resOk response', response);
         navigate('/confirm');
       }
     } catch ({ response }) {
       setErrorHidden(false);
-      console.log('signErr', response);
       setErrorMessage(response.data.errors[0]);
     }
   };
@@ -37,15 +33,8 @@ export default function Signup() {
     <div className={styles.formContainer}>
       <Form
         name='basic'
-        labelCol={{
-          span: 8,
-        }}
-        wrapperCol={{
-          span: 8,
-        }}
-        initialValues={{
-          remember: true,
-        }}
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 8 }}
         style={{
           maxWidth: '700px',
           minWidth: '400px',
@@ -58,12 +47,7 @@ export default function Signup() {
         autoComplete='off'
         requiredMark={false}
       >
-        <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        >
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }} >
           <h1>Sign Up</h1>
         </Form.Item>
         <Form.Item
@@ -111,23 +95,13 @@ export default function Signup() {
           <Input.Password />
         </Form.Item>
 
-        <Form.Item
-          wrapperCol={{
-            offset: 2,
-            span: 24,
-          }}
-        >
+        <Form.Item wrapperCol={{ offset: 2, span: 24 }} >
           <div style={{ color: 'red' }} hidden={errorHidden}>
             {errorMessage}
           </div>
         </Form.Item>
 
-        <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        >
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }} >
           <Button type='primary' htmlType='submit'>
             Sign Up
           </Button>
