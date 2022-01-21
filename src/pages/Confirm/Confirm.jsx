@@ -20,37 +20,17 @@ export default function Confirm() {
 
   return (
     <Form name='basic'
-      labelCol={{
-        span: 10,
-      }}
-      wrapperCol={{
-        span: 10,
-      }}
-      initialValues={{
-        remember: true,
-      }}
+      labelCol={{ span: 10 }}
+      wrapperCol={{ span: 10 }}
+      initialValues={{ remember: true }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
-      autoComplete='off'
-    >
-      <Form.Item
-        wrapperCol={{
-          offset: 13,
-          span: 16,
-        }}
-      >
+      autoComplete='off'>
+      <Form.Item wrapperCol={{ offset: 13, span: 16 }} >
         <h1>Please confirm Your Email</h1>
       </Form.Item>
-      <Form.Item
-        label='Verification code'
-        name='verificationCode'
-        rules={[
-          {
-            required: true,
-            message: 'Please input your username!',
-          },
-        ]}
-      >
+      <Form.Item label='Verification code' name='verificationCode'
+        rules={[{ required: true, message: 'Please input your username!' }]} >
         <Input style={{ width: '80%' }} />
       </Form.Item>
 
