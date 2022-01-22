@@ -1,36 +1,50 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import PropTypes from 'prop-types';
-import { Button, Col, Layout, List, Menu, Row, Typography } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { Button, Col, Layout, Row, Typography } from 'antd';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import styles from './ViewMyProfile.module.less';
 import 'antd/dist/antd.css';
 
 import { removeFromLocalStorage } from '../../helpers/localStorage';
 import Skill from '../../components/Skill/Skill';
+import MainHeader from '../../components/Header/MainHeader';
+import axios from 'axios';
 
-const { Header, Content, Footer } = Layout;
+const { Content, Footer } = Layout;
 
 const { Title } = Typography;
 
 export default function ViewMyProfile({ accessToken }) {
+  const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
 
-  console.log(accessToken);
+  const { id } = useParams();
 
-  const personalData = [
-    ['First Name:', 'John'], 
-    ['Last Name:', 'Doe'],
-    ['Email:', 'john@gmail.com'],
-    ['Role:', 'Mentor'], 
-    ['Position:', 'Engineer'], 
-    ['Field:', 'IT'],
-  ];
+  useEffect(async () => {
+    const userResponse = await axios.get(`http://localhost:4000/${id}`)
+    setUserData(userResponse.data.user);
+    console.log('useEffectUserData', userData);
+    // console.log('arrayUserData', Object.entries(userData))
+  }, []);
 
-  const skills = [
-    'HTML', 'CSS', 'JS', 'React', 'Anuglar', 'Vue', 'Java'
-  ];
+  console.log('userData', userData);
+
+  // console.log(accessToken);
+
+  // const personalData = [
+  //   ['First Name:', 'John'], 
+  //   ['Last Name:', 'Doe'],
+  //   ['Email:', 'john@gmail.com'],
+  //   ['Role:', 'Mentor'], 
+  //   ['Position:', 'Engineer'], 
+  //   ['Field:', 'IT'],
+  // ];
+
+  // const skills = [
+  //   'HTML', 'CSS', 'JS', 'React', 'Anuglar', 'Vue', 'Java'
+  // ];
 
   useEffect(() => {
     if (!accessToken) navigate('/login');
@@ -43,47 +57,58 @@ export default function ViewMyProfile({ accessToken }) {
 
   return (
     <Layout>
-      <Header
-        style={{
-          position: 'fixed',
-          zIndex: 1,
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
-        <div className='logo'>Mentorly</div>
-        <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['1']}>
-          <Menu.Item key='1'>Dashboard</Menu.Item>
-          <Menu.Item key='2'>Message Requests</Menu.Item>
-          <Menu.Item key='3'>My Profile</Menu.Item>
-          <Menu.Item key='4' onClick={handleLogOut}>
-            Log Out
-          </Menu.Item>
-        </Menu>
-      </Header>
+      <MainHeader handleLogOut={handleLogOut} verified={true} />
 
       <Content
         className={styles.site_layout}
         style={{ padding: '20px', marginTop: 64 }}
       >
           <Row style={{width: '100%', height: '100%'}}>
-            <Col flex="30%">
+            <Col flex="200px">
               <Title level={3}>Personal Info</Title>
-              <List
-                size="small"
-                dataSource={personalData}
-                renderItem={item => <List.Item>{item[0]} {item[1]}</List.Item>}
-              />
+                <Typography>First Name: {userData && userData.firstName}</Typography>
+                <Typography>Last Name: {userData && userData.lastName}</Typography>
+                <Typography>Email: {userData && userData.email}</Typography>
+                <Typography>Role: {userData && userData.selectedRole}</Typography>
+                <Typography>Position: {userData && userData.position}</Typography>
+                <Typography>Field: {userData && userData.selectedField}</Typography>
               <Title level={3}>Skills</Title>
-              <List
+              {
+                userData && userData.skills.map((skill) => <Skill name={skill.name} key={skill._id}></Skill>)
+              }
+              {/* <List
                 size="small"
                 dataSource={skills}
                 renderItem={item => <Skill name={item}></Skill>}
-              />
-              <Button type='primary' style={{marginTop: '15px'}}>Connect</Button>
+              /> */}
+              <Button type='primary' style={{marginTop: '15px', display: 'block'}}>Connect</Button>
             </Col>
-            <Col flex="auto">Fill Rest</Col>
+            <Col flex="auto" style={{paddingLeft: '90px'}}>
+              <Title level={3}>Education</Title>
+              <Typography style={{minWidth: '300px', maxWidth:'900px'}}>Lorem ipsum dolor sit, amet consectetur 
+                adipisicing elit. Deserunt necessitatibus explicabo enim 
+                similique eum non sit dolor voluptatum dolore! Hic praesentium 
+                rerum exercitationem reprehenderit deleniti dolorum vero similique
+                 amet incidunt?</Typography>
+              <Title level={3}>Experience</Title>
+              <Typography style={{minWidth: '300px', maxWidth:'900px'}}>Lorem ipsum dolor sit, amet consectetur 
+                adipisicing elit. Deserunt necessitatibus explicabo enim 
+                similique eum non sit dolor voluptatum dolore! Hic praesentium 
+                rerum exercitationem reprehenderit deleniti dolorum vero similique
+                 amet incidunt?</Typography>
+              <Title level={3}>About</Title>
+              <Typography style={{minWidth: '300px', maxWidth:'900px'}}>Lorem ipsum dolor sit, amet consectetur 
+                adipisicing elit. Deserunt necessitatibus explicabo enim 
+                similique eum non sit dolor voluptatum dolore! Hic praesentium 
+                rerum exercitationem reprehenderit deleniti dolorum vero similique
+                 amet incidunt?</Typography>
+              <Title level={3}>Who can request mentorship (for mentor) / My plans (for mentee)</Title>
+              <Typography style={{minWidth: '300px', maxWidth:'900px'}}>Lorem ipsum dolor sit, amet consectetur 
+                adipisicing elit. Deserunt necessitatibus explicabo enim 
+                similique eum non sit dolor voluptatum dolore! Hic praesentium 
+                rerum exercitationem reprehenderit deleniti dolorum vero similique
+                 amet incidunt?</Typography>
+            </Col>
           </Row>
       </Content>
       <Footer style={{ textAlign: 'center' }}>
