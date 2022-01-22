@@ -40,7 +40,7 @@ export default function ViewMyProfile({ accessToken }) {
   return (
     <Layout>
       <MainHeader handleLogOut={handleLogOut} verified={true} />
-
+      
       <Content
         className={styles.site_layout}
         style={{ padding: '20px', marginTop: 64 }}
@@ -63,17 +63,17 @@ export default function ViewMyProfile({ accessToken }) {
             </Col>
             <Col flex="auto" style={{paddingLeft: '90px'}}>
               <Title level={3}>Education</Title>
-              <Typography style={{minWidth: '300px', maxWidth:'900px'}}>{ userData && 
+              <Typography style={{minWidth: '100px', maxWidth:'900px'}}>{ userData && 
                   userData.education}</Typography>
               <Title level={3}>Experience</Title>
-              <Typography style={{minWidth: '300px', maxWidth:'900px'}}>{ userData && 
+              <Typography style={{minWidth: '100px', maxWidth:'900px'}}>{ userData && 
                   userData.experience}</Typography>
               <Title level={3}>About</Title>
-              <Typography style={{minWidth: '300px', maxWidth:'900px'}}>{ userData &&
+              <Typography style={{minWidth: '100px', maxWidth:'900px'}}>{ userData &&
                   userData.about}</Typography>
               <Title level={3}> { userData && userData.selectedRole === 'Mentor' ? 'Who can request mentorship'
                   : 'My plans' }</Title>
-              <Typography style={{minWidth: '300px', maxWidth:'900px'}}>{userData && 
+              <Typography style={{minWidth: '100px', maxWidth:'900px'}}>{userData && 
                   userData.plans}</Typography>
             </Col>
           </Row>
