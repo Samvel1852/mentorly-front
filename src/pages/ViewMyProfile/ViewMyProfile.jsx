@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import PropTypes from 'prop-types';
 import { Button, Col, Layout, Row, Typography } from 'antd';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import styles from './ViewMyProfile.module.less';
 import 'antd/dist/antd.css';
@@ -65,7 +65,8 @@ export default function ViewMyProfile({ accessToken }) {
       >
           <Row style={{width: '100%', height: '100%'}}>
             <Col flex="200px">
-              <Title level={3}>Personal Info</Title>
+              <Title level={3}>Personal Info </Title>
+                <Title level={4} className={styles.mentorBeige} style={{color: '#1890FF'}}> {userData && userData.selectedRole === 'Mentor'? 'Mentor': null} </Title>
                 <Typography>First Name: {userData && userData.firstName}</Typography>
                 <Typography>Last Name: {userData && userData.lastName}</Typography>
                 <Typography>Email: {userData && userData.email}</Typography>
@@ -76,38 +77,22 @@ export default function ViewMyProfile({ accessToken }) {
               {
                 userData && userData.skills.map((skill) => <Skill name={skill.name} key={skill._id}></Skill>)
               }
-              {/* <List
-                size="small"
-                dataSource={skills}
-                renderItem={item => <Skill name={item}></Skill>}
-              /> */}
-              <Button type='primary' style={{marginTop: '15px', display: 'block'}}>Connect</Button>
+              <Button type='primary' style={{marginTop: '15px', display: 'block'}}><Link to={`/edit/${id}`}>Edit</Link></Button>
             </Col>
             <Col flex="auto" style={{paddingLeft: '90px'}}>
               <Title level={3}>Education</Title>
-              <Typography style={{minWidth: '300px', maxWidth:'900px'}}>Lorem ipsum dolor sit, amet consectetur 
-                adipisicing elit. Deserunt necessitatibus explicabo enim 
-                similique eum non sit dolor voluptatum dolore! Hic praesentium 
-                rerum exercitationem reprehenderit deleniti dolorum vero similique
-                 amet incidunt?</Typography>
+              <Typography style={{minWidth: '300px', maxWidth:'900px'}}>{ userData && 
+                  userData.education}</Typography>
               <Title level={3}>Experience</Title>
-              <Typography style={{minWidth: '300px', maxWidth:'900px'}}>Lorem ipsum dolor sit, amet consectetur 
-                adipisicing elit. Deserunt necessitatibus explicabo enim 
-                similique eum non sit dolor voluptatum dolore! Hic praesentium 
-                rerum exercitationem reprehenderit deleniti dolorum vero similique
-                 amet incidunt?</Typography>
+              <Typography style={{minWidth: '300px', maxWidth:'900px'}}>{ userData && 
+                  userData.experience}</Typography>
               <Title level={3}>About</Title>
-              <Typography style={{minWidth: '300px', maxWidth:'900px'}}>Lorem ipsum dolor sit, amet consectetur 
-                adipisicing elit. Deserunt necessitatibus explicabo enim 
-                similique eum non sit dolor voluptatum dolore! Hic praesentium 
-                rerum exercitationem reprehenderit deleniti dolorum vero similique
-                 amet incidunt?</Typography>
-              <Title level={3}>Who can request mentorship (for mentor) / My plans (for mentee)</Title>
-              <Typography style={{minWidth: '300px', maxWidth:'900px'}}>Lorem ipsum dolor sit, amet consectetur 
-                adipisicing elit. Deserunt necessitatibus explicabo enim 
-                similique eum non sit dolor voluptatum dolore! Hic praesentium 
-                rerum exercitationem reprehenderit deleniti dolorum vero similique
-                 amet incidunt?</Typography>
+              <Typography style={{minWidth: '300px', maxWidth:'900px'}}>{ userData &&
+                  userData.about}</Typography>
+              <Title level={3}> { userData && userData.selectedRole === 'Mentor' ? 'Who can request mentorship'
+                  : 'My plans' }</Title>
+              <Typography style={{minWidth: '300px', maxWidth:'900px'}}>{userData && 
+                  userData.plans}</Typography>
             </Col>
           </Row>
       </Content>
