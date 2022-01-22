@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Layout, Menu, Form, Input, Button, Select, Modal } from 'antd';
+import axios from 'axios';
 
 import './FillMyProfile.less';
 import 'antd/dist/antd.css';
@@ -23,6 +24,7 @@ import {
   setField,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
 import {
+  getLocalStorage,
   removeFromLocalStorage,
   setLocalStorage,
 } from '../../helpers/localStorage';
@@ -39,8 +41,10 @@ export default function MyProfile({ accessToken }) {
 
   console.log(accessToken);
 
-  useEffect(() => {
+  useEffect(async () => {
     if (!accessToken) navigate('/login');
+    const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}${getLocalStorage('currentUserId')}`);
+    if (res.data.user.status === 'verified') navigate(`/${getLocalStorage('currentUserId')}`)
   }, []);
 
   const {

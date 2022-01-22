@@ -24,31 +24,13 @@ export default function ViewMyProfile({ accessToken }) {
 
   useEffect(async () => {
     const userResponse = await axios.get(`http://localhost:4000/${id}`)
-    setUserData(userResponse.data.user);
+    await setUserData(userResponse.data.user);
     console.log('useEffectUserData', userData);
     // console.log('arrayUserData', Object.entries(userData))
+    if (!accessToken) navigate('/login');
   }, []);
 
   console.log('userData', userData);
-
-  // console.log(accessToken);
-
-  // const personalData = [
-  //   ['First Name:', 'John'], 
-  //   ['Last Name:', 'Doe'],
-  //   ['Email:', 'john@gmail.com'],
-  //   ['Role:', 'Mentor'], 
-  //   ['Position:', 'Engineer'], 
-  //   ['Field:', 'IT'],
-  // ];
-
-  // const skills = [
-  //   'HTML', 'CSS', 'JS', 'React', 'Anuglar', 'Vue', 'Java'
-  // ];
-
-  useEffect(() => {
-    if (!accessToken) navigate('/login');
-  }, []);
 
   function handleLogOut() {
     removeFromLocalStorage('accessToken');

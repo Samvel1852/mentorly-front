@@ -20,6 +20,7 @@ export default function Login() {
       if (response.status === 200) {
         console.log('login successRes', response, response.data);
         setLocalStorage('accessToken', response.data.data.token);
+        setLocalStorage('currentUserId', response.data.data.user._id)
         console.log('user.id', response.data.data.user._id);
         navigate(`/users/${response.data.data.user._id}`);
       }

@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import './App.less';
 import Signup from './pages/Signup/Signup';
@@ -8,15 +8,27 @@ import Confirm from './pages/Confirm/Confirm';
 import Login from './pages/Login/Login';
 import ViewMyProfile from './pages/ViewMyProfile/ViewMyProfile';
 import { getLocalStorage } from './helpers/localStorage';
+import axios from 'axios';
 
 function App() {
+  const [verified, setVerified] = useState(false);
+
+  useEffect(async () => {
+    const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}${getLocalStorage('currentUserId')}`);
+    console.log(res.data.user.status);
+    setVerified(res.data.user.status);
+  }, [])
+
   const accessToken = getLocalStorage('accessToken');
+  const currentUserId = getLocalStorage('currentUserId')
   let skillId = 1;
 
   return (
     <div className='App'>
       <Router>
         <Routes>
+          <Route path='/' element={ accessToken && verified ? <Navigate to={`/${currentUserId}`} /> :
+          accessToken ? <Navigate to={`/users/${currentUserId}`} /> : <Navigate to='login' />} />
           <Route path='/signup' element={<Signup />} />
           <Route path='/confirm' element={<Confirm />} />
           <Route path='/login' element={<Login />} />
