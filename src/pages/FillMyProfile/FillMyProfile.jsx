@@ -33,7 +33,7 @@ const { Header, Content, Footer } = Layout;
 const { Option } = Select;
 const { TextArea } = Input;
 
-export default function MyProfile({ edit }) {
+export default function FillMyProfile({ edit }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [submitLoader, setSubmitLoader] = useState(false);
   
@@ -484,7 +484,7 @@ export default function MyProfile({ edit }) {
   );
 }
 
-MyProfile.propTypes = {
+FillMyProfile.propTypes = {
   accessToken: PropTypes.string,
   skillId: PropTypes.number,
   edit: PropTypes.string,

@@ -43,7 +43,7 @@ export default function FillMyProfile() {
 
   const navigate = useNavigate();
   const params = useParams();
-  const { state } = useLocation()
+  const { state } = useLocation();
   console.log('state', state);
 
   useEffect(async () => {
@@ -52,7 +52,9 @@ export default function FillMyProfile() {
     // console.log('useEffectUserData', userResponse.data.user, userData);
     // if (userResponse.data.user) {
         // console.log('dispFirstName', userResponse.data.user.firstName)
-        dispatch(setSkills(state.skills))
+        dispatch(setSkills(state.skills));
+        dispatch(setFirstName(state.firstName));
+        dispatch(setLastName(state.lastName));
     // }
     if (!getLocalStorage('accessToken')) navigate('/login');
   }, []);
@@ -180,6 +182,12 @@ export default function FillMyProfile() {
             className={styles.form}
             requiredMark={false}
             validateTrigger='onSubmit'
+            initialValues={{ ['First Name']: state.firstName, ['Last Name']: state.lastName,
+            ['Role']: state.selectedRole, ['Field']: state.selectedField,
+            ['Position']: state.position, ['Education']: state.education,
+            ['Experience']: state.experience, ['About']: state.about,
+            ['Plans']: state.plans, ['Skills']: state.skills }
+          }
           >
             <div className={styles.namesContainer}>
               <Form.Item
@@ -203,7 +211,8 @@ export default function FillMyProfile() {
                   },
                 ]}
               >
-                <Input defaultValue={state.firstName} name='firstName' value={firstName} onChange={handleInputChange} />
+                <Input name='firstName' 
+                value={ firstName } onChange={handleInputChange} />
               </Form.Item>
               <Form.Item
                 name='Last Name'
@@ -225,7 +234,7 @@ export default function FillMyProfile() {
                   },
                 ]}
               >
-                <Input defaultValue={state.lastName} name='lastName' value={lastName} onChange={handleInputChange} />
+                <Input name='lastName' value={lastName} onChange={handleInputChange} />
               </Form.Item>
             </div>
             <div className={styles.selectsContainer}>
@@ -237,7 +246,6 @@ export default function FillMyProfile() {
                 className={styles.role}
               >
                 <Select
-                  defaultValue={state.selectedRole}
                   onChange={handleChangeRole}
                   placeholder='--Select Role'
                 >
@@ -258,7 +266,6 @@ export default function FillMyProfile() {
                 className={styles.field}
               >
                 <Select
-                  defaultValue={state.selectedField}
                   onChange={handleChangeField}
                   placeholder='--Select Field'
                 >
@@ -283,7 +290,6 @@ export default function FillMyProfile() {
               <Input
                 name='position'
                 maxLength={50}
-                defaultValue={state.position}
                 onChange={handleInputChange}
                 value={position}
               />
@@ -297,7 +303,6 @@ export default function FillMyProfile() {
               <TextArea
                 name='education'
                 value={education}
-                defaultValue={state.education}
                 onChange={handleInputChange}
                 autoSize={{ minRows: 3 }}
                 showCount
@@ -314,7 +319,6 @@ export default function FillMyProfile() {
               <TextArea
                 name='experience'
                 value={experience}
-                defaultValue={state.experience}
                 onChange={handleInputChange}
                 autoSize={{ minRows: 3 }}
                 showCount
@@ -331,7 +335,6 @@ export default function FillMyProfile() {
               <TextArea
                 name='about'
                 value={about}
-                defaultValue={state.about}
                 onChange={handleInputChange}
                 autoSize={{ minRows: 3 }}
                 showCount
@@ -354,7 +357,6 @@ export default function FillMyProfile() {
               <TextArea
                 name='plans'
                 value={plans}
-                defaultValue={state.plans}
                 onChange={handleInputChange}
                 autoSize={{ minRows: 3 }}
                 showCount
