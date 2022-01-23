@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react';
-
 import PropTypes from 'prop-types';
 import { Button, Col, Layout, Row, Typography } from 'antd';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-
 import styles from './ViewMyProfile.module.less';
 import 'antd/dist/antd.css';
 
 import { removeFromLocalStorage } from '../../helpers/localStorage';
 import Skill from '../../components/Skill/Skill';
 import MainHeader from '../../components/Header/MainHeader';
-import axios from 'axios';
+import { myAxios } from '../../helpers/axiosInstance';
 
 const { Content, Footer } = Layout;
 
@@ -23,7 +21,7 @@ export default function ViewMyProfile({ accessToken }) {
   const { id } = useParams();
 
   useEffect(async () => {
-    const userResponse = await axios.get(`http://localhost:4000/${id}`)
+    const userResponse = await myAxios.get(`http://localhost:4000/${id}`)
     await setUserData(userResponse.data.user);
     console.log('useEffectUserData', userData);
     // console.log('arrayUserData', Object.entries(userData))
