@@ -44,7 +44,7 @@ export default function ViewMyProfile() {
         style={{ padding: '20px', marginTop: 64 }}
       >
           <Row style={{width: '100%', height: '100%'}}>
-            <Col flex="200px">
+            <Col flex='200px' className={styles.personalInfoContainer}>
               <Title level={3}>Personal Info </Title>
                 <Title level={4} className={styles.mentorBeige} style={{color: '#1890FF'}}> {userData && userData.selectedRole === 'Mentor'? 'Mentor': null} </Title>
                 <Typography>First Name: {userData && userData.firstName}</Typography>
@@ -57,9 +57,12 @@ export default function ViewMyProfile() {
               {
                 userData && userData.skills.map((skill) => <Skill name={skill.name} key={skill._id}></Skill>)
               }
-              <Button type='primary' style={{marginTop: '15px', display: 'block'}}><Link to={`/edit/${id}`}>Edit</Link></Button>
+              <Button type='primary' style={{marginTop: '15px', display: 'block'}}>{
+                 id === getLocalStorage('currentUserId') ? <Link to={`/edit/${id}`}>Edit</Link> 
+                 : 'Connect'
+                }</Button>
             </Col>
-            <Col flex="auto" style={{paddingLeft: '90px'}}>
+            <Col flex='500px' className={styles.generalInfoContainer}>
               <Title level={3}>Education</Title>
               <Typography style={{minWidth: '100px', maxWidth:'900px'}}>{ userData && 
                   userData.education}</Typography>
