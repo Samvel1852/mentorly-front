@@ -6,6 +6,7 @@ const initialState = {
   lastName: '',
   selectedRole: '',
   selectedField: '',
+  position: '',
   experience: '',
   education: '',
   about: '',
@@ -16,24 +17,27 @@ const initialState = {
 };
 
 export const finish = createAsyncThunk(
-  '/fill-my-profile',
+  '/users/:id',
   ({
     firstName,
     lastName,
     selectedRole,
     selectedField,
+    position,
     experience,
     education,
     about,
     plans,
     addingSkill,
     skills,
+    id,
   }) => {
-    return myAxios.post('http://localhost:4000/users/verify', {
+    return myAxios.put(`users/${id}`, {
       firstName,
       lastName,
       selectedRole,
       selectedField,
+      position,
       experience,
       education,
       about,
@@ -81,6 +85,9 @@ export const fillMyProfileSlice = createSlice({
     setAddingSkill: (state, { payload }) => {
       state.addingSkill = payload;
     },
+    setPosition: (state, { payload }) => {
+      state.position = payload;
+    },
   },
 });
 
@@ -89,6 +96,7 @@ export const {
   setLastName,
   setRole,
   setField,
+  setPosition,
   setEducation,
   setExperience,
   setPlans,

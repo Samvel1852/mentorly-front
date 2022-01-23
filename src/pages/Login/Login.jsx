@@ -20,7 +20,7 @@ export default function Login() {
 
       if (response.status === 200) {
         setLocalStorage('accessToken', response.data.data.token);
-        navigate('/users/verify');
+        navigate(`/users/${response.data.data.user._id}`);
       }
 
     } catch (error) {

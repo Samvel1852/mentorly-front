@@ -12,6 +12,7 @@ export default function Signup() {
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
+
     try {
       setErrorHidden(true);
       const response = await myAxios.post('signup', values);
