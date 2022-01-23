@@ -90,7 +90,7 @@ export default function Signup() {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 2, span: 24 }} >
-          <div style={{ color: 'red' }} hidden={errorHidden}>
+          <div className={styles.errMessage} hidden={errorHidden}>
             {errorMessage}
           </div>
         </Form.Item>
