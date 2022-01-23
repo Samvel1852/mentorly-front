@@ -46,10 +46,13 @@ export default function ViewMyProfile() {
           <Row style={{width: '100%', height: '100%'}}>
             <Col flex='200px' className={styles.personalInfoContainer}>
               <Title level={3}>Personal Info </Title>
-                <Title level={4} className={styles.mentorBeige} style={{color: '#1890FF'}}> {userData && userData.selectedRole === 'Mentor'? 'Mentor': null} </Title>
+                <Title level={4} className={styles.mentorBeige} style={{color: '#1890FF'}}> 
+                {userData && userData.selectedRole === 'Mentor'? 'Mentor': null} </Title>
                 <Typography>First Name: {userData && userData.firstName}</Typography>
                 <Typography>Last Name: {userData && userData.lastName}</Typography>
-                <Typography>Email: {userData && userData.email}</Typography>
+                {id === getLocalStorage('currentUserId') && 
+                  <Typography>Email: {userData && userData.email}</Typography>
+                }
                 <Typography>Role: {userData && userData.selectedRole}</Typography>
                 <Typography>Position: {userData && userData.position}</Typography>
                 <Typography>Field: {userData && userData.selectedField}</Typography>
@@ -58,7 +61,8 @@ export default function ViewMyProfile() {
                 userData && userData.skills.map((skill) => <Skill name={skill.name} key={skill._id}></Skill>)
               }
               <Button type='primary' style={{marginTop: '15px', display: 'block'}}>{
-                 id === getLocalStorage('currentUserId') ? <Link to={`/edit/${id}`}>Edit</Link> 
+                 id === getLocalStorage('currentUserId') ? <Link to={`/edit/${id}`} 
+                 state={userData}>Edit</Link> 
                  : 'Connect'
                 }</Button>
             </Col>

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import PropTypes from 'prop-types';
 import { Layout, Form, Input, Button, Select, Modal } from 'antd';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import styles from './EditMyProfile.module.less';
 import 'antd/dist/antd.css';
@@ -30,28 +30,30 @@ import {
   setLocalStorage,
 } from '../../helpers/localStorage';
 import MainHeader from '../../components/Header/MainHeader';
-import { myAxios } from '../../helpers/axiosInstance';
+// import { myAxios } from '../../helpers/axiosInstance';
 
 const { Content, Footer } = Layout;
 const { Option } = Select;
 const { TextArea } = Input;
 
 export default function FillMyProfile() {
-const [userData, setUserData] = useState(null);
+// const [userData, setUserData] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [submitLoader, setSubmitLoader] = useState(false);
 
   const navigate = useNavigate();
   const params = useParams();
+  const { state } = useLocation()
+  console.log('state', state);
 
   useEffect(async () => {
-    const userResponse = await myAxios.get(`${params.id}`)
-    await setUserData(userResponse.data.user);
-    console.log('useEffectUserData', userResponse.data.user, userData);
-    if (userResponse.data.user) {
-        console.log('dispFirstName', userResponse.data.user.firstName)
-        dispatch(setFirstName(userResponse.data.user.firstName));
-    }
+    // const userResponse = await myAxios.get(`${params.id}`)
+    // await setUserData(userResponse.data.user);
+    // console.log('useEffectUserData', userResponse.data.user, userData);
+    // if (userResponse.data.user) {
+        // console.log('dispFirstName', userResponse.data.user.firstName)
+        dispatch(setSkills(state.skills))
+    // }
     if (!getLocalStorage('accessToken')) navigate('/login');
   }, []);
 
@@ -201,7 +203,7 @@ const [userData, setUserData] = useState(null);
                   },
                 ]}
               >
-                <Input name='firstName' value={firstName} onChange={handleInputChange} />
+                <Input defaultValue={state.firstName} name='firstName' value={firstName} onChange={handleInputChange} />
               </Form.Item>
               <Form.Item
                 name='Last Name'
@@ -223,7 +225,7 @@ const [userData, setUserData] = useState(null);
                   },
                 ]}
               >
-                <Input name='lastName' value={lastName} onChange={handleInputChange} />
+                <Input defaultValue={state.lastName} name='lastName' value={lastName} onChange={handleInputChange} />
               </Form.Item>
             </div>
             <div className={styles.selectsContainer}>
@@ -235,7 +237,7 @@ const [userData, setUserData] = useState(null);
                 className={styles.role}
               >
                 <Select
-                  initialvalue='--Select Role'
+                  defaultValue={state.selectedRole}
                   onChange={handleChangeRole}
                   placeholder='--Select Role'
                 >
@@ -256,7 +258,7 @@ const [userData, setUserData] = useState(null);
                 className={styles.field}
               >
                 <Select
-                  initialvalue='--Select Field'
+                  defaultValue={state.selectedField}
                   onChange={handleChangeField}
                   placeholder='--Select Field'
                 >
@@ -281,6 +283,7 @@ const [userData, setUserData] = useState(null);
               <Input
                 name='position'
                 maxLength={50}
+                defaultValue={state.position}
                 onChange={handleInputChange}
                 value={position}
               />
@@ -294,6 +297,7 @@ const [userData, setUserData] = useState(null);
               <TextArea
                 name='education'
                 value={education}
+                defaultValue={state.education}
                 onChange={handleInputChange}
                 autoSize={{ minRows: 3 }}
                 showCount
@@ -310,6 +314,7 @@ const [userData, setUserData] = useState(null);
               <TextArea
                 name='experience'
                 value={experience}
+                defaultValue={state.experience}
                 onChange={handleInputChange}
                 autoSize={{ minRows: 3 }}
                 showCount
@@ -326,6 +331,7 @@ const [userData, setUserData] = useState(null);
               <TextArea
                 name='about'
                 value={about}
+                defaultValue={state.about}
                 onChange={handleInputChange}
                 autoSize={{ minRows: 3 }}
                 showCount
@@ -348,6 +354,7 @@ const [userData, setUserData] = useState(null);
               <TextArea
                 name='plans'
                 value={plans}
+                defaultValue={state.plans}
                 onChange={handleInputChange}
                 autoSize={{ minRows: 3 }}
                 showCount
@@ -380,6 +387,7 @@ const [userData, setUserData] = useState(null);
                       name={skill.name}
                       id={skill.id}
                       handleDeleteSkill={handleDeleteSkill}
+                      withDelete={true}
                     />
                   ))}
                   {addingSkill ? (
