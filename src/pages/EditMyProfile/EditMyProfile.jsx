@@ -55,6 +55,15 @@ export default function FillMyProfile() {
         dispatch(setSkills(state.skills));
         dispatch(setFirstName(state.firstName));
         dispatch(setLastName(state.lastName));
+        dispatch(setExperience(state.experience));
+        dispatch(setPosition(state.position));
+        dispatch(setEducation(state.education));
+        dispatch(setAbout(state.about));
+        dispatch(setPlans(state.plans));
+        // dispatch(setAddingSkill(state));
+        // dispatch(setSkillName());
+        dispatch(setRole(state.selectedRole));
+        dispatch(setField(state.selectedField));
     // }
     if (!getLocalStorage('accessToken')) navigate('/login');
   }, []);
