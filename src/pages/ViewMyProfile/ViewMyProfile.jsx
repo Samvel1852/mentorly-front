@@ -43,7 +43,7 @@ export default function ViewMyProfile() {
         className={styles.site_layout}
         style={{ padding: '20px', marginTop: 64 }}
       >
-          <Row style={{width: '100%', height: '100%'}}>
+          <Row className={styles.mainRow} >
             <Col flex='200px' className={styles.personalInfoContainer}>
               <Title level={3}>Personal Info </Title>
                 <Title level={4} className={styles.mentorBeige} style={{color: '#1890FF'}}> 
@@ -66,7 +66,7 @@ export default function ViewMyProfile() {
                  : 'Connect'
                 }</Button>
             </Col>
-            <Col flex='500px' className={styles.generalInfoContainer}>
+            <Col xs={5} sm={6} md={15} lg={16} xl={17} className={styles.generalInfoContainer}>
               <Title level={3}>Education</Title>
               <Typography style={{minWidth: '100px', maxWidth:'900px'}}>{ userData && 
                   userData.education}</Typography>
