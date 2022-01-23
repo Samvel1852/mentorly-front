@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { myAxios } from '../../helpers/axiosInstance';
+import { getLocalStorage } from '../../helpers/localStorage';
 
 const initialState = {
   firstName: '',
@@ -43,7 +44,9 @@ export const finish = createAsyncThunk(
       addingSkill,
       skills,
     });
-  },
+  },  {headers: {
+    Authorization: `Bearer ${getLocalStorage('accessToken')}`
+  }}
 );
 
 export const fillMyProfileSlice = createSlice({

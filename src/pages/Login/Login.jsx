@@ -1,39 +1,42 @@
-import { Form, Input, Button } from 'antd';
 import { useState } from 'react';
+import { Form, Input, Button } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { setLocalStorage } from '../../helpers/localStorage';
 import { myAxios } from '../../helpers/axiosInstance';
+import { setLocalStorage } from '../../helpers/localStorage';
+
 import styles from './Login.module.less';
 
 export default function Login() {
   const [errorVisibility, setErrorVisibility] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
+  const [loginLoader, setLoginLoader] = useState(false);
+
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
+    setLoginLoader(true);
     setErrorVisibility(true);
-    console.log(values);
+
     try {
-      const response = await myAxios.post('http://localhost:4000/login', values);
+      const response = await myAxios.post('login', values);
 
       if (response.status === 200) {
-        console.log('login successRes', response, response.data);
         setLocalStorage('accessToken', response.data.data.token);
-        setLocalStorage('currentUserId', response.data.data.user._id)
-        console.log('user.id', response.data.data.user._id);
-        navigate(`/users/${response.data.data.user._id}`);
+        console.log('resData', response.data);
+        console.log('userStatus', response.data.data.user.status);
+        if (response.data.data.user.status === 'verified') {
+          navigate(`/${response.data.data.user._id}`);
+        } else {
+          navigate(`/users/${response.data.data.user._id}`);
+        }
       }
-      console.log('res', response);
+
     } catch (error) {
       setErrorVisibility(false);
-      console.log('error', error.response);
       setErrorMessage(error.response.data.errors[0]);
+      setLoginLoader(false);
     }
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
   };
 
   return (
@@ -44,11 +47,12 @@ export default function Login() {
         wrapperCol={{ span: 10 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete='off'
         requiredMark={false}
       >
-        <Form.Item  wrapperCol={{ offset: 8, span: 16 }} >
+        <Form.Item
+          wrapperCol={{ offset: 8, span: 16 }}
+        >
           <h1>Login</h1>
         </Form.Item>
 
@@ -60,7 +64,7 @@ export default function Login() {
           rules={[
             {
               required: true,
-              message: 'Please input your username!',
+              message: 'Please input your e-mail!',
             },
           ]}
         >
@@ -84,15 +88,17 @@ export default function Login() {
 
         <Form.Item wrapperCol={{ offset: 2, span: 24 }} >
           <div
-            style={{ color: 'red', fontSize: '9px' }}
+            className={styles.errMessage}
             hidden={errorVisibility}
           >
             {errorMessage}
           </div>
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }} >
-          <Button type='primary' htmlType='submit'>
+        <Form.Item
+          wrapperCol={{ offset: 8, span: 16 }}
+        >
+          <Button type='primary' htmlType='submit' loading={loginLoader}>
             Login
           </Button>
         </Form.Item>

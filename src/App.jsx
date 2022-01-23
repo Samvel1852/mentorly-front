@@ -9,14 +9,17 @@ import Login from './pages/Login/Login';
 import ViewMyProfile from './pages/ViewMyProfile/ViewMyProfile';
 import { getLocalStorage } from './helpers/localStorage';
 import axios from 'axios';
+import EditMyProfile from './pages/EditMyProfile/EditMyProfile';
 
 function App() {
   const [verified, setVerified] = useState(false);
 
   useEffect(async () => {
-    const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}${getLocalStorage('currentUserId')}`);
-    console.log(res.data.user.status);
-    setVerified(res.data.user.status);
+    if (getLocalStorage('currentUserId') && getLocalStorage('accessToken')) {
+      const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}${getLocalStorage('currentUserId')}`);
+      console.log(res.data.user.status);
+      setVerified(res.data.user.status);
+    }
   }, [])
 
   const accessToken = getLocalStorage('accessToken');
@@ -42,6 +45,7 @@ function App() {
             path='/:id'
             element={<ViewMyProfile accessToken={accessToken} />}
           />
+          <Route path='/edit/:id' element={<EditMyProfile edit='edit' accessToken={accessToken} />} />
         </Routes>
       </Router>
     </div>

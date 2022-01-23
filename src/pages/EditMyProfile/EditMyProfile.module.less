@@ -1,0 +1,94 @@
+.ant-layout-content {
+  background-color: #e6effc;
+}
+
+.ant-form-item {
+  margin-bottom: 10px !important;
+}
+
+.form {
+  max-width: 600px;
+}
+
+.site_layout {
+  background: #e6effc !important;
+  margin-top: 64px;
+  padding: 0 50px;
+  margin-top: 0 !important;
+}
+[data-theme='dark'] .site_layout .site-layout-background {
+  background: #141414;
+}
+
+.content {
+  min-height: 600px;
+  display: flex;
+  justify-content: center;
+}
+
+.namesContainer {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  > div {
+    width: 265px;
+  }
+  > .firstName {
+    margin-right: 70px;
+  }
+}
+
+.selectsContainer {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  > .role {
+    width: 265px;
+    margin-right: 70px;
+  }
+  > .field {
+    width: 265px;
+  }
+}
+
+.skillsContainer {
+  min-height: 100px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #fff;
+  > .addSkillInput {
+    width: 15%;
+    min-width: 100px;
+    height: 30px;
+  }
+  > .newSkillBtn {
+    width: 15%;
+    min-width: 100px;
+  }
+}
+
+.foot {
+  text-align: center;
+  background-color: #001529 !important;
+  color: #E6EFFC !important;
+  margin-top: 3px !important;
+}
+
+@media screen and (max-width: 720px) {
+  .firstName {
+    width: 100% !important;
+    margin-right: 0 !important;
+  }
+
+  .lastName {
+    width: 100% !important;
+  }
+
+  .selectsContainer > div {
+    width: 100% !important;
+    margin-right: 0 !important;
+  }
+}

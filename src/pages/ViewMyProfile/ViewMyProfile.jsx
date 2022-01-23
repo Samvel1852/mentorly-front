@@ -5,7 +5,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import styles from './ViewMyProfile.module.less';
 import 'antd/dist/antd.css';
 
-import { removeFromLocalStorage } from '../../helpers/localStorage';
+import { getLocalStorage, removeFromLocalStorage } from '../../helpers/localStorage';
 import Skill from '../../components/Skill/Skill';
 import MainHeader from '../../components/Header/MainHeader';
 import { myAxios } from '../../helpers/axiosInstance';
@@ -14,7 +14,7 @@ const { Content, Footer } = Layout;
 
 const { Title } = Typography;
 
-export default function ViewMyProfile({ accessToken }) {
+export default function ViewMyProfile() {
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
 
@@ -24,14 +24,14 @@ export default function ViewMyProfile({ accessToken }) {
     const userResponse = await myAxios.get(`http://localhost:4000/${id}`)
     await setUserData(userResponse.data.user);
     console.log('useEffectUserData', userData);
-    // console.log('arrayUserData', Object.entries(userData))
-    if (!accessToken) navigate('/login');
+    if (!getLocalStorage('accessToken')) navigate('/login');
   }, []);
 
   console.log('userData', userData);
 
   function handleLogOut() {
     removeFromLocalStorage('accessToken');
+    removeFromLocalStorage('currentUserId');
     navigate('/login');
   }
 

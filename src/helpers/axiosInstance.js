@@ -9,7 +9,7 @@ console.log('accessToken', accessToken)
 
 export const myAxios = axios.create({
   baseURL: `${REACT_APP_MAIN_URL}`,
-  // headers: {
-  //   Authorization: `Bearer ${getLocalStorage('accessToken')}`,
-  // },
+  headers: {
+    Authorization: `Bearer ${getLocalStorage('accessToken')}`,
+  },
 });
