@@ -22,7 +22,12 @@ export default function Login() {
       if (response.status === 200) {
         setLocalStorage('accessToken', response.data.data.token);
         setLocalStorage('currentUserId', response.data.data.user._id);
-        navigate(`/users/${response.data.data.user._id}`);
+        setLocalStorage('verified', response.data.data.user.status);
+        if (response.data.data.user.status === 'verified') {
+          navigate(`/${response.data.data.user._id}`)
+        } else {
+          navigate(`/users/${response.data.data.user._id}`);
+        }
       }
 
     } catch (error) {
