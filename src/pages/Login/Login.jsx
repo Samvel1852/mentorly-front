@@ -23,9 +23,11 @@ export default function Login() {
 
       if (response.status === 200) {
         setLocalStorage('accessToken', response.data.data.token);
+        setLocalStorage('currentUserId', response.data.data.user._id);
         console.log('resData', response.data);
         console.log('userStatus', response.data.data.user.status);
         if (response.data.data.user.status === 'verified') {
+          setLocalStorage('verified', response.data.data.user.status);
           navigate(`/${response.data.data.user._id}`);
         } else {
           navigate(`/users/${response.data.data.user._id}`);

@@ -16,7 +16,7 @@ export default function MainHeader ({handleLogOut, verified}) {
         <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['1']} className={styles.menu}>
           <Menu.Item key='1'>Dashboard</Menu.Item>
           <Menu.Item key='2'>Message Requests</Menu.Item>
-          <Menu.Item key='3'>My Profile</Menu.Item>
+          <Menu.Item key='3'><Link to='/' >My Profile</Link></Menu.Item>
           <Menu.Item key='4' onClick={handleLogOut}>
             Log Out
           </Menu.Item>

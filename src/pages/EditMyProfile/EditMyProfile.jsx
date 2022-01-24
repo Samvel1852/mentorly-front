@@ -47,11 +47,6 @@ export default function FillMyProfile() {
   console.log('state', state);
 
   useEffect(async () => {
-    // const userResponse = await myAxios.get(`${params.id}`)
-    // await setUserData(userResponse.data.user);
-    // console.log('useEffectUserData', userResponse.data.user, userData);
-    // if (userResponse.data.user) {
-        // console.log('dispFirstName', userResponse.data.user.firstName)
         dispatch(setSkills(state.skills));
         dispatch(setFirstName(state.firstName));
         dispatch(setLastName(state.lastName));
@@ -60,11 +55,8 @@ export default function FillMyProfile() {
         dispatch(setEducation(state.education));
         dispatch(setAbout(state.about));
         dispatch(setPlans(state.plans));
-        // dispatch(setAddingSkill(state));
-        // dispatch(setSkillName());
         dispatch(setRole(state.selectedRole));
         dispatch(setField(state.selectedField));
-    // }
     if (!getLocalStorage('accessToken')) navigate('/login');
   }, []);
 
@@ -163,6 +155,8 @@ export default function FillMyProfile() {
 
   function handleLogOut() {
     removeFromLocalStorage('accessToken');
+    removeFromLocalStorage('currentUserId');
+    removeFromLocalStorage('verified');
     navigate('/login');
   }
 

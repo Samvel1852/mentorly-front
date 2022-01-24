@@ -166,6 +166,7 @@ export default function FillMyProfile({ edit }) {
   function handleLogOut() {
     removeFromLocalStorage('accessToken');
     removeFromLocalStorage('currentUserId');
+    removeFromLocalStorage('verified');
     navigate('/login');
   }
 

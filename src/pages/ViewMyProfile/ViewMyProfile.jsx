@@ -32,6 +32,7 @@ export default function ViewMyProfile() {
   function handleLogOut() {
     removeFromLocalStorage('accessToken');
     removeFromLocalStorage('currentUserId');
+    removeFromLocalStorage('verified');
     navigate('/login');
   }
 

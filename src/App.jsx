@@ -19,18 +19,20 @@ function App() {
       const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}${getLocalStorage('currentUserId')}`);
       console.log(res.data.user.status);
       setVerified(res.data.user.status);
+      console.log(verified);
     }
   }, [])
 
   const accessToken = getLocalStorage('accessToken');
-  const currentUserId = getLocalStorage('currentUserId')
+  const currentUserId = getLocalStorage('currentUserId');
+  const userVerified = getLocalStorage('verified');
   let skillId = 1;
 
   return (
     <div className='App'>
       <Router>
         <Routes>
-          <Route path='/' element={ accessToken && verified ? <Navigate to={`/${currentUserId}`} /> :
+          <Route path='/' element={ accessToken && userVerified ? <Navigate to={`/${currentUserId}`} /> :
           accessToken ? <Navigate to={`/users/${currentUserId}`} /> : <Navigate to='login' />} />
           <Route path='/signup' element={<Signup />} />
           <Route path='/confirm' element={<Confirm />} />
