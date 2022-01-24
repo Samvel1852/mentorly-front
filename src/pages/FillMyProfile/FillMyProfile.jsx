@@ -345,6 +345,7 @@ export default function FillMyProfile() {
                       name={skill.name}
                       id={skill.id}
                       handleDeleteSkill={handleDeleteSkill}
+                      withDelete={true}
                     />
                   ))}
                   {addingSkill ? (
