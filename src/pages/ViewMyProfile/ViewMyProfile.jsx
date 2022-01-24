@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Col, Layout, Row, Typography } from 'antd';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from './ViewMyProfile.module.less';
 import 'antd/dist/antd.css';
 
@@ -10,13 +10,22 @@ import Skill from '../../components/Skill/Skill';
 import MainHeader from '../../components/Header/MainHeader';
 import { myAxios } from '../../helpers/axiosInstance';
 
+import {
+  setProfileState,
+} from '../../features/fillMyProfile/fillMyProfileSlice';
+import { useDispatch } from 'react-redux';
+
 const { Content, Footer } = Layout;
 
 const { Title } = Typography;
 
 export default function ViewMyProfile() {
   const [userData, setUserData] = useState(null);
+  const [editLoader, setEditLoader] = useState(false);
+
   const navigate = useNavigate();
+
+  const dispatch = useDispatch()
 
   const { id } = useParams();
 
@@ -34,6 +43,13 @@ export default function ViewMyProfile() {
     removeFromLocalStorage('currentUserId');
     removeFromLocalStorage('verified');
     navigate('/login');
+  }
+
+  async function handleEditProfileClick () {
+    setEditLoader(true);
+    const userResponse = await myAxios.get(`http://localhost:4000/${id}`);
+    dispatch(setProfileState(userResponse.data.user));
+    navigate(`/users/${id}`);
   }
 
   return (
@@ -61,11 +77,13 @@ export default function ViewMyProfile() {
               {
                 userData && userData.skills.map((skill) => <Skill name={skill.name} key={skill._id}></Skill>)
               }
-              <Button type='primary' style={{marginTop: '15px', display: 'block'}}>{
-                 id === getLocalStorage('currentUserId') ? <Link to={`/edit/${id}`} 
-                 state={userData}>Edit</Link> 
-                 : 'Connect'
-                }</Button>
+              {
+                 id === getLocalStorage('currentUserId') ? <Button type='primary' 
+                 style={{marginTop: '15px', display: 'block'}} onClick={handleEditProfileClick}
+                 loading={editLoader}>Edit</Button>
+                 : <Button type='primary' 
+                 style={{marginTop: '15px', display: 'block'}}>Connect</Button>
+                }
             </Col>
             <Col xs={5} sm={6} md={15} lg={16} xl={17} className={styles.generalInfoContainer}>
               <Title level={3}>Education</Title>

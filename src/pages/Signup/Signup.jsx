@@ -1,69 +1,45 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
-import axios from 'axios';
 
 import styles from './Signup.module.less';
+import { myAxios } from '../../helpers/axiosInstance';
 
 export default function Signup() {
-  const [errorHidden, setErrorHidden] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
+  const [signUpLoader, setSignUpLoader] = useState(false);
 
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
+      setSignUpLoader(true);
+
     try {
-      setErrorHidden(true);
-      console.log('signUpValues', values);
-      const response = await axios.post('http://localhost:4000/signup', values);
-      console.log('bad response', response);
+      setErrorMessage('');
+      const response = await myAxios.post('signup', values);
 
       if (response.status === 201) {
-        console.log('signUp resOk response', response);
         navigate('/confirm');
       }
     } catch ({ response }) {
-      setErrorHidden(false);
-      console.log('signErr', response);
       setErrorMessage(response.data.errors[0]);
+      setSignUpLoader(false);
     }
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
+  const validateRequiredFields = (message) => ({required: true, message})
 
   return (
     <div className={styles.formContainer}>
       <Form
         name='basic'
-        labelCol={{
-          span: 8,
-        }}
-        wrapperCol={{
-          span: 8,
-        }}
-        initialValues={{
-          remember: true,
-        }}
-        style={{
-          maxWidth: '700px',
-          minWidth: '400px',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-        }}
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 8 }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete='off'
         requiredMark={false}
       >
-        <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        >
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }} >
           <h1>Sign Up</h1>
         </Form.Item>
         <Form.Item
@@ -71,12 +47,7 @@ export default function Signup() {
           name='email'
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: 'Please input your username!',
-            },
-          ]}
+          rules={[ validateRequiredFields('Please input your username!') ]}
         >
           <Input />
         </Form.Item>
@@ -86,12 +57,7 @@ export default function Signup() {
           name='password'
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: 'Please input your password!',
-            },
-          ]}
+          rules={[ validateRequiredFields('Please input your password!')]}
         >
           <Input.Password />
         </Form.Item>
@@ -101,34 +67,19 @@ export default function Signup() {
           name='confirmPassword'
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: 'Confirm password must be the same as password!',
-            },
-          ]}
+          rules={[ validateRequiredFields('Confirm password must be the same as password!') ]}
         >
           <Input.Password />
         </Form.Item>
 
-        <Form.Item
-          wrapperCol={{
-            offset: 2,
-            span: 24,
-          }}
-        >
-          <div style={{ color: 'red' }} hidden={errorHidden}>
+        <Form.Item wrapperCol={{ offset: 2, span: 24 }} hidden={!errorMessage} >
+          <div className={styles.errMessage} >
             {errorMessage}
           </div>
         </Form.Item>
 
-        <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        >
-          <Button type='primary' htmlType='submit'>
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }} >
+          <Button type='primary' htmlType='submit' loading={signUpLoader}>
             Sign Up
           </Button>
         </Form.Item>
