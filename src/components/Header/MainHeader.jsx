@@ -7,7 +7,7 @@ import { removeFromLocalStorage } from '../../helpers/localStorage';
 import styles from './MainHeader.module.less'
 
 export default function MainHeader ({ verified }) {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     function handleLogOut() {
         removeFromLocalStorage('accessToken');
