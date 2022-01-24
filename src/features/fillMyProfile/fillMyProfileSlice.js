@@ -46,7 +46,7 @@ export const finish = createAsyncThunk(
       addingSkill,
       skills,
     }, {headers: {
-      Authorization: getLocalStorage('accessToken') || '',
+      Authorization: `Bearer ${getLocalStorage('accessToken')}` || '',
     }});
   },
 );
@@ -72,8 +72,6 @@ export const fillMyProfileSlice = createSlice({
 
 export const {
   setProfileState,
-  setRole,
-  setField,
   setAddingSkill,
   setSkills,
 } = fillMyProfileSlice.actions;
