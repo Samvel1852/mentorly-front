@@ -1,13 +1,23 @@
-/* eslint-disable react/prop-types */
-import './Skill.less';
+import PropTypes from 'prop-types'
 
-export default function Skill({ name, id, handleDeleteSkill }) {
+import styles from './Skill.module.less';
+
+export default function Skill({ name, id, handleDeleteSkill, withDelete }) {
   return (
-    <div className='skill'>
+    <div className={styles.skill}>
       <span>{name}</span>
-      <button onClick={(e) => handleDeleteSkill({ id, e })} className='delete'>
+      {withDelete &&
+      <button onClick={(e) => handleDeleteSkill({ id, e })} className={styles.delete}>
         x
       </button>
+      }
     </div>
   );
+}
+
+Skill.propTypes = {
+  name: PropTypes.string,
+  id: PropTypes.number,
+  handleDeleteSkill: PropTypes.func,
+  withDelete: PropTypes.bool,
 }

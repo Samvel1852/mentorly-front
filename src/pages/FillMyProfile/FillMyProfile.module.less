@@ -6,29 +6,6 @@
   margin-bottom: 10px !important;
 }
 
-.head {
-  position: fixed;
-  z-Index: 1;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-
-.logo {
-  float: left;
-  width: 120px;
-  height: 31px;
-  margin: 16px 24px 16px 0;
-  background: rgba(255, 255, 255, 0.2);
-  color: #1890FF;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 20px;
-  font-family:Georgia, 'Times New Roman', Times, serif;
-  border-radius: 50%;
-}
-
 .form {
   max-width: 600px;
 }
@@ -37,7 +14,7 @@
   background: #e6effc !important;
   margin-top: 64px;
   padding: 0 50px;
-
+  margin-top: 0 !important;
 }
 [data-theme='dark'] .site_layout .site-layout-background {
   background: #141414;
@@ -95,7 +72,23 @@
 
 .foot {
   text-align: center;
-  background-color: #001529;
-  color: #E6EFFC;
-  margin-top: 3px;
+  background-color: #001529 !important;
+  color: #E6EFFC !important;
+  margin-top: 3px !important;
+}
+
+@media screen and (max-width: 720px) {
+  .firstName {
+    width: 100% !important;
+    margin-right: 0 !important;
+  }
+
+  .lastName {
+    width: 100% !important;
+  }
+
+  .selectsContainer > div {
+    width: 100% !important;
+    margin-right: 0 !important;
+  }
 }

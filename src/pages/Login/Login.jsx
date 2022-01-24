@@ -8,24 +8,25 @@ import { setLocalStorage } from '../../helpers/localStorage';
 import styles from './Login.module.less';
 
 export default function Login() {
-  const [errorVisibility, setErrorVisibility] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
-    setErrorVisibility(true);
     try {
       const response = await myAxios.post(`login`, values);
 
       if (response.status === 200) {
         setLocalStorage('accessToken', response.data.data.token);
+        setLocalStorage('currentUserId', response.data.data.user._id);
         navigate(`/users/${response.data.data.user._id}`);
       }
+
     } catch (error) {
-      setErrorVisibility(false);
       setErrorMessage(error.response.data.errors[0]);
     }
   };
+
+  const validateRequiredFields = (message) => ({required: true, message})
 
   return (
     <div className={styles.formContainer}>
@@ -49,12 +50,7 @@ export default function Login() {
           name='email'
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: 'Please input your e-mail!',
-            },
-          ]}
+          rules={[ validateRequiredFields('Please input your e-mail!') ]}
         >
           <Input />
         </Form.Item>
@@ -64,28 +60,18 @@ export default function Login() {
           name='password'
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: 'Please input your password!',
-            },
-          ]}
+          rules={[ validateRequiredFields('Please input your password!') ]}
         >
           <Input.Password />
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 2, span: 24 }} >
-          <div
-            className={styles.errMessage}
-            hidden={errorVisibility}
-          >
+        <Form.Item wrapperCol={{ offset: 2, span: 24 }} hidden={!errorMessage} >
+          <div className={styles.errMessage} >
             {errorMessage}
           </div>
         </Form.Item>
 
-        <Form.Item
-          wrapperCol={{ offset: 8, span: 16 }}
-        >
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }} >
           <Button type='primary' htmlType='submit'>
             Login
           </Button>

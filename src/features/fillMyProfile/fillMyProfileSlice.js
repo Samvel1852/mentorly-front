@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { myAxios } from '../../helpers/axiosInstance';
+import { getLocalStorage } from '../../helpers/localStorage';
 
 const initialState = {
   firstName: '',
@@ -16,7 +17,7 @@ const initialState = {
   addingSkill: false,
 };
 
-export const finish = createAsyncThunk(
+export const verifyUser = createAsyncThunk(
   '/users/:id',
   ({
     firstName,
@@ -44,7 +45,9 @@ export const finish = createAsyncThunk(
       plans,
       addingSkill,
       skills,
-    });
+    }, {headers: {
+      Authorization: `Bearer ${getLocalStorage('accessToken')}` || '',
+    }});
   },
 );
 
@@ -52,58 +55,17 @@ export const fillMyProfileSlice = createSlice({
   name: 'fillMyProfile',
   initialState,
   reducers: {
-    setFirstName: (state, { payload }) => {
-      state.firstName = payload;
-    },
-    setLastName: (state, { payload }) => {
-      state.lastName = payload;
-    },
-    setRole: (state, { payload }) => {
-      state.selectedRole = payload;
-    },
-    setField: (state, { payload }) => {
-      state.selectedField = payload;
-    },
-    setEducation: (state, { payload }) => {
-      state.education = payload;
-    },
-    setExperience: (state, { payload }) => {
-      state.experience = payload;
-    },
-    setAbout: (state, { payload }) => {
-      state.about = payload;
-    },
-    setPlans: (state, { payload }) => {
-      state.plans = payload;
-    },
-    setSkillName: (state, { payload }) => {
-      state.skillName = payload;
-    },
-    setSkills: (state, { payload }) => {
-      state.skills = payload;
-    },
-    setAddingSkill: (state, { payload }) => {
-      state.addingSkill = payload;
-    },
-    setPosition: (state, { payload }) => {
-      state.position = payload;
+    setProfileState: (state, { payload }) => {
+      return {
+      ...state,
+      ...payload
+      }
     },
   },
 });
 
 export const {
-  setFirstName,
-  setLastName,
-  setRole,
-  setField,
-  setPosition,
-  setEducation,
-  setExperience,
-  setPlans,
-  setAbout,
-  setAddingSkill,
-  setSkills,
-  setSkillName,
+  setProfileState,
 } = fillMyProfileSlice.actions;
 
 export default fillMyProfileSlice.reducer;
