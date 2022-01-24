@@ -183,7 +183,6 @@ export default function FillMyProfile() {
                 name='First Name'
                 label='First Name'
                 labelCol={{ span: 24 }}
-                grid={{ gutter: 16 }}
                 className={styles.firstName}
                 rules={[
                   getRequiredMessage('Please input your First Name!'),
@@ -197,6 +196,7 @@ export default function FillMyProfile() {
                 name='Last Name'
                 label='Last Name'
                 labelCol={{ span: 24 }}
+                className={styles.lastName}
                 rules={[
                   getRequiredMessage('Please input your Last Name!'),
                   validateMinTwoCharacters(),
