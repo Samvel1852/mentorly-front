@@ -61,19 +61,11 @@ export const fillMyProfileSlice = createSlice({
       ...payload
       }
     },
-    // setSkills: (state, { payload }) => {
-    //   state.skills = payload;
-    // },
-    // setAddingSkill: (state, { payload }) => {
-    //   state.addingSkill = payload;
-    // },
   },
 });
 
 export const {
   setProfileState,
-  // setAddingSkill,
-  // setSkills,
 } = fillMyProfileSlice.actions;
 
 export default fillMyProfileSlice.reducer;

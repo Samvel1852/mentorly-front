@@ -10,8 +10,6 @@ import Skill from '../../components/Skill/Skill';
 import MainHeader from '../../components/Header/MainHeader';
 
 import {
-  // setAddingSkill,
-  // setSkills,
   finish,
   setProfileState,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
