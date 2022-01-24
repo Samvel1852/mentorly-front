@@ -17,7 +17,7 @@ const initialState = {
   addingSkill: false,
 };
 
-export const finish = createAsyncThunk(
+export const verifyUser = createAsyncThunk(
   '/users/:id',
   ({
     firstName,

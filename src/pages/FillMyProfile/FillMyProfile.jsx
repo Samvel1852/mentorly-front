@@ -10,7 +10,7 @@ import Skill from '../../components/Skill/Skill';
 import MainHeader from '../../components/Header/MainHeader';
 
 import {
-  finish,
+  verifyUser,
   setProfileState,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
 
@@ -59,7 +59,7 @@ export default function FillMyProfile() {
     try {
       const { id } = params;
       const result = await dispatch(
-        finish({
+        verifyUser({
           firstName,
           lastName,
           selectedRole,
@@ -88,13 +88,7 @@ export default function FillMyProfile() {
     }
   };
 
-  function handleInputChange ({ target }) {
-      dispatch(setProfileState({
-        [target.name]: target.value
-      }));
-  }
-
-  function handleSelectsChange (value, name) {
+  function handleChange (value, name) {
     dispatch(setProfileState({
       [name]: value
     }));
@@ -188,7 +182,8 @@ export default function FillMyProfile() {
                   validateNamesOnlyLetters(),
                 ]}
               >
-                <Input name='firstName' value={firstName} onChange={handleInputChange} />
+                <Input name='firstName' value={firstName} onChange={({target}) => 
+                        handleChange(target.value, target.name)} />
               </Form.Item>
               <Form.Item
                 name='Last Name'
@@ -201,7 +196,8 @@ export default function FillMyProfile() {
                   validateNamesOnlyLetters(),
                 ]}
               >
-                <Input name='lastName' value={lastName} onChange={handleInputChange} />
+                <Input name='lastName' value={lastName} onChange={({target}) => 
+                        handleChange(target.value, target.name)} />
               </Form.Item>
             </div>
             <div className={styles.selectsContainer}>
@@ -214,7 +210,7 @@ export default function FillMyProfile() {
               >
                 <Select
                   initialvalue='--Select Role'
-                  onChange={(value) => handleSelectsChange(value, 'selectedRole')}
+                  onChange={(value) => handleChange(value, 'selectedRole')}
                   placeholder='--Select Role'
                 >
                   <Option value='--Select Role' disabled>
@@ -233,7 +229,7 @@ export default function FillMyProfile() {
               >
                 <Select
                   initialvalue='--Select Field'
-                  onChange={(value) => handleSelectsChange(value, 'selectedField')}
+                  onChange={(value) => handleChange(value, 'selectedField')}
                   placeholder='Select Field'
                 >
                   <Option value='--Select Field' disabled>
@@ -257,7 +253,8 @@ export default function FillMyProfile() {
               <Input
                 name='position'
                 maxLength={50}
-                onChange={handleInputChange}
+                onChange={({target}) => 
+                    handleChange(target.value, target.name)}
                 value={position}
               />
             </Form.Item>
@@ -271,7 +268,8 @@ export default function FillMyProfile() {
               <TextArea
                 name='education'
                 value={education}
-                onChange={handleInputChange}
+                onChange={({target}) => 
+                      handleChange(target.value, target.name)}
                 autoSize={{ minRows: 3 }}
                 showCount
                 maxLength={255}
@@ -287,7 +285,8 @@ export default function FillMyProfile() {
               <TextArea
                 name='experience'
                 value={experience}
-                onChange={handleInputChange}
+                onChange={({target}) => 
+                handleChange(target.value, target.name)}
                 autoSize={{ minRows: 3 }}
                 showCount
                 maxLength={255}
@@ -303,7 +302,8 @@ export default function FillMyProfile() {
               <TextArea
                 name='about'
                 value={about}
-                onChange={handleInputChange}
+                onChange={({target}) => 
+                handleChange(target.value, target.name)}
                 autoSize={{ minRows: 3 }}
                 showCount
                 maxLength={255}
@@ -325,7 +325,8 @@ export default function FillMyProfile() {
               <TextArea 
                 name='plans'
                 value={plans}
-                onChange={handleInputChange}
+                onChange={({target}) => 
+                handleChange(target.value, target.name)}
                 autoSize={{ minRows: 3 }}
                 showCount
                 maxLength={150}
@@ -353,7 +354,8 @@ export default function FillMyProfile() {
                       name='skillName'
                       value={skillName}
                       onPressEnter={handleAddingSkillChange}
-                      onChange={handleInputChange}
+                      onChange={({target}) => 
+                          handleChange(target.value, target.name)}
                       className={styles.addSkillInput}
                       autoFocus
                       maxLength={30}

@@ -20,6 +20,7 @@ export default function Login() {
 
       if (response.status === 200) {
         setLocalStorage('accessToken', response.data.data.token);
+        setLocalStorage('currentUserId', response.data.data.user._id);
         navigate(`/users/${response.data.data.user._id}`);
       }
 
