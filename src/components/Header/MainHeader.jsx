@@ -7,8 +7,6 @@ import styles from './MainHeader.module.less'
 
 export default function MainHeader ({handleLogOut, verified}) {
     return(
-      <>
-      <div className={styles.advertisment}>We offer you the best way to teach or learn</div>
       <Header className={styles.head} >
       <div className={styles.logo}><Link to='/' >Mentorly</Link></div>
       {
@@ -28,8 +26,7 @@ export default function MainHeader ({handleLogOut, verified}) {
           </Menu.Item>
         </Menu>
       }
-    </Header>
-    </>)
+    </Header>)
 }
 
 MainHeader.propTypes = {

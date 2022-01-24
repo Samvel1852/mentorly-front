@@ -84,7 +84,7 @@ export default function ViewMyProfile() {
             </Col>
           </Row>
       </Content>
-      <Footer style={{ textAlign: 'center' }}>
+      <Footer className={styles.foot}>
         Simply Technologies ©2022 Created with Pleasure
       </Footer>
     </Layout>
