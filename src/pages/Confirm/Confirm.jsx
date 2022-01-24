@@ -51,7 +51,7 @@ export default function Confirm() {
           <Input />
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 2, span: 24 }} >
+        <Form.Item wrapperCol={{ offset: 2, span: 24 }} hidden={!errorMessage} >
           <div className={styles.errorMessage} >
             {errorMessage}
           </div>

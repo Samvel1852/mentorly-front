@@ -8,13 +8,10 @@ import { setLocalStorage } from '../../helpers/localStorage';
 import styles from './Login.module.less';
 
 export default function Login() {
-  const [errorVisibility, setErrorVisibility] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
-    setErrorVisibility(true);
-
     try {
       const response = await myAxios.post(`login`, values);
 
@@ -25,7 +22,6 @@ export default function Login() {
       }
 
     } catch (error) {
-      setErrorVisibility(false);
       setErrorMessage(error.response.data.errors[0]);
     }
   };
@@ -69,18 +65,13 @@ export default function Login() {
           <Input.Password />
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 2, span: 24 }} >
-          <div
-            className={styles.errMessage}
-            hidden={errorVisibility}
-          >
+        <Form.Item wrapperCol={{ offset: 2, span: 24 }} hidden={!errorMessage} >
+          <div className={styles.errMessage} >
             {errorMessage}
           </div>
         </Form.Item>
 
-        <Form.Item
-          wrapperCol={{ offset: 8, span: 16 }}
-        >
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }} >
           <Button type='primary' htmlType='submit'>
             Login
           </Button>
