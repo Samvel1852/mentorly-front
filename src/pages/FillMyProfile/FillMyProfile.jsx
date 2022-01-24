@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Layout, Menu, Form, Input, Button, Select, Modal } from 'antd';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Layout, Form, Input, Button, Select, Modal } from 'antd';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import styles from './FillMyProfile.module.less';
 import 'antd/dist/antd.css';
 import Skill from '../../components/Skill/Skill';
+import MainHeader from '../../components/Header/MainHeader';
 
 import {
   setAddingSkill,
@@ -17,11 +18,10 @@ import {
 
 import {
   getLocalStorage,
-  removeFromLocalStorage,
   setLocalStorage,
 } from '../../helpers/localStorage';
 
-const { Header, Content, Footer } = Layout;
+const { Content, Footer } = Layout;
 const { Option } = Select;
 const { TextArea } = Input;
 
@@ -118,13 +118,6 @@ export default function FillMyProfile() {
     dispatch(setSkills(filteredSkills));
   }
 
-  function handleLogOut() {
-    removeFromLocalStorage('accessToken');
-    removeFromLocalStorage('currentUserId');
-    removeFromLocalStorage('verified');
-    navigate('/login');
-  }
-
   const handleOk = () => {
     setIsModalVisible(false);
   };
@@ -166,15 +159,7 @@ export default function FillMyProfile() {
 
   return (
     <Layout>
-      <Header className={styles.head} >
-        <div className={styles.logo}>Mentorly</div>
-        <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['1']}>
-          <Menu.Item key='1'><Link to='/'>My Profile</Link></Menu.Item>
-          <Menu.Item key='2' onClick={handleLogOut}>
-            Log Out
-          </Menu.Item>
-        </Menu>
-      </Header>
+      <MainHeader />
       <Modal
         title='Something went wrong'
         visible={isModalVisible}
@@ -282,7 +267,8 @@ export default function FillMyProfile() {
               name='Education'
               label='Education'
               labelCol={{ span: 24 }}
-              rules={[getRequiredMessage('Please input your Education!')]}
+              rules={[getRequiredMessage('Please input your Education!'),
+              {min: 10, message: 'The Education field must contain at least 10 characters'}]}
             >
               <TextArea
                 name='education'
@@ -297,7 +283,8 @@ export default function FillMyProfile() {
               name='Experience'
               label='Experience'
               labelCol={{ span: 24 }}
-              rules={[getRequiredMessage('Please input your Experience!')]}
+              rules={[getRequiredMessage('Please input your Experience!'),
+              {min: 10, message: 'The Experience field must contain at least 10 characters'}]}
             >
               <TextArea
                 name='experience'
@@ -312,7 +299,8 @@ export default function FillMyProfile() {
               name='About'
               label='About'
               labelCol={{ span: 24 }}
-              rules={[getRequiredMessage('Please input something About You!')]}
+              rules={[getRequiredMessage('Please input something About You!'), 
+              {min: 10, message: 'The About field must contain at least 10 characters'}]}
             >
               <TextArea
                 name='about'
@@ -333,7 +321,8 @@ export default function FillMyProfile() {
                   : 'Who can request mentorship (for mentor) / My plans (for mentee)'
               }
               labelCol={{ span: 24 }}
-              rules={[getRequiredMessage('Please input your Your Plans!'),]}
+              rules={[getRequiredMessage('Please input your Your Plans!'),
+              {min: 10, message: 'This field must contain at least 10 characters'}]}
             >
               <TextArea 
                 name='plans'
@@ -371,7 +360,8 @@ export default function FillMyProfile() {
                       maxLength={30}
                     />
                   ) : (
-                    <Button type='button' onClick={handleAddingSkillChange} className={styles.newSkillBtn} >
+                    <Button type='button' onClick={handleAddingSkillChange} 
+                            className={styles.newSkillBtn} >
                       + New skill
                     </Button>
                   )}
