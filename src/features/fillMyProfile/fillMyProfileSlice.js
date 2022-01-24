@@ -61,12 +61,6 @@ export const fillMyProfileSlice = createSlice({
       ...payload
       }
     },
-    setRole: (state, { payload }) => {
-      state.selectedRole = payload;
-    },
-    setField: (state, { payload }) => {
-      state.selectedField = payload;
-    },
     setSkills: (state, { payload }) => {
       state.skills = payload;
     },
