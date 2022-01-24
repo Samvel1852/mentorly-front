@@ -9,7 +9,6 @@ import Login from './pages/Login/Login';
 import ViewMyProfile from './pages/ViewMyProfile/ViewMyProfile';
 import { getLocalStorage } from './helpers/localStorage';
 import axios from 'axios';
-import EditMyProfile from './pages/EditMyProfile/EditMyProfile';
 
 function App() {
   const [verified, setVerified] = useState(false);
@@ -47,7 +46,6 @@ function App() {
             path='/:id'
             element={<ViewMyProfile accessToken={accessToken} />}
           />
-          <Route path='/edit/:id' element={<EditMyProfile edit='edit' accessToken={accessToken} />} />
         </Routes>
       </Router>
     </div>
