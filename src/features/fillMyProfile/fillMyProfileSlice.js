@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { myAxios } from '../../helpers/axiosInstance';
+import { getLocalStorage } from '../../helpers/localStorage';
 
 const initialState = {
   firstName: '',
@@ -44,7 +45,9 @@ export const finish = createAsyncThunk(
       plans,
       addingSkill,
       skills,
-    });
+    }, {headers: {
+      Authorization: getLocalStorage('accessToken') || '',
+    }});
   },
 );
 
@@ -52,11 +55,11 @@ export const fillMyProfileSlice = createSlice({
   name: 'fillMyProfile',
   initialState,
   reducers: {
-    setFirstName: (state, { payload }) => {
-      state.firstName = payload;
-    },
-    setLastName: (state, { payload }) => {
-      state.lastName = payload;
+    setProfileState: (state, { payload }) => {
+      return {
+      ...state,
+      ...payload
+      }
     },
     setRole: (state, { payload }) => {
       state.selectedRole = payload;
@@ -64,46 +67,21 @@ export const fillMyProfileSlice = createSlice({
     setField: (state, { payload }) => {
       state.selectedField = payload;
     },
-    setEducation: (state, { payload }) => {
-      state.education = payload;
-    },
-    setExperience: (state, { payload }) => {
-      state.experience = payload;
-    },
-    setAbout: (state, { payload }) => {
-      state.about = payload;
-    },
-    setPlans: (state, { payload }) => {
-      state.plans = payload;
-    },
-    setSkillName: (state, { payload }) => {
-      state.skillName = payload;
-    },
     setSkills: (state, { payload }) => {
       state.skills = payload;
     },
     setAddingSkill: (state, { payload }) => {
       state.addingSkill = payload;
     },
-    setPosition: (state, { payload }) => {
-      state.position = payload;
-    },
   },
 });
 
 export const {
-  setFirstName,
-  setLastName,
+  setProfileState,
   setRole,
   setField,
-  setPosition,
-  setEducation,
-  setExperience,
-  setPlans,
-  setAbout,
   setAddingSkill,
   setSkills,
-  setSkillName,
 } = fillMyProfileSlice.actions;
 
 export default fillMyProfileSlice.reducer;

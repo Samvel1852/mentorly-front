@@ -29,6 +29,8 @@ export default function Login() {
     }
   };
 
+  const validateRequiredFields = (message) => ({required: true, message})
+
   return (
     <div className={styles.formContainer}>
       <Form
@@ -51,12 +53,7 @@ export default function Login() {
           name='email'
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: 'Please input your e-mail!',
-            },
-          ]}
+          rules={[ validateRequiredFields('Please input your e-mail!') ]}
         >
           <Input />
         </Form.Item>
@@ -66,12 +63,7 @@ export default function Login() {
           name='password'
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: 'Please input your password!',
-            },
-          ]}
+          rules={[ validateRequiredFields('Please input your password!') ]}
         >
           <Input.Password />
         </Form.Item>

@@ -6,7 +6,6 @@ import styles from './Confirm.module.less';
 import { myAxios } from '../../helpers/axiosInstance';
 
 export default function Confirm() {
-  const [errorHidden, setErrorHidden] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate();
@@ -14,26 +13,22 @@ export default function Confirm() {
   const onFinish = async (values) => {
     try {
       const response = await myAxios.post('verify', values);
-      setErrorHidden(true);
+      setErrorMessage('');
 
       if (response.status === 200) {
         navigate('/login');
       }
     } catch ({ response }) {
-      setErrorHidden(false);
       setErrorMessage(response.data.errors[0]);
     }
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
+  const validateRequiredFields = (message) => ({required: true, message})
 
   return (
     <div className={styles.formContainer}>
       <Form name='basic' initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete='off'
         requiredMark={false}
       >
@@ -51,13 +46,13 @@ export default function Confirm() {
           name='verificationCode'
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 100 }}
-          rules={[{ required: true, message: 'Please input messaged code!' }]}
+          rules={[ validateRequiredFields('Please input messaged code!') ]}
         >
           <Input />
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 2, span: 24 }} >
-          <div style={{ color: 'red' }} hidden={errorHidden}>
+          <div className={styles.errorMessage} >
             {errorMessage}
           </div>
         </Form.Item>

@@ -5,7 +5,7 @@ export default function Skill({ name, id, handleDeleteSkill }) {
   return (
     <div className='skill'>
       <span>{name}</span>
-      <button onClick={(e) => handleDeleteSkill({ id, e })} className='delete'>
+      <button type='button' onClick={(e) => handleDeleteSkill({ id, e })} className='delete'>
         x
       </button>
     </div>

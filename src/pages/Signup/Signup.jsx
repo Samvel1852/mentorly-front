@@ -6,7 +6,6 @@ import styles from './Signup.module.less';
 import { myAxios } from '../../helpers/axiosInstance';
 
 export default function Signup() {
-  const [errorHidden, setErrorHidden] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate();
@@ -14,21 +13,18 @@ export default function Signup() {
   const onFinish = async (values) => {
 
     try {
-      setErrorHidden(true);
+      setErrorMessage('');
       const response = await myAxios.post('signup', values);
 
       if (response.status === 201) {
         navigate('/confirm');
       }
     } catch ({ response }) {
-      setErrorHidden(false);
       setErrorMessage(response.data.errors[0]);
     }
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
+  const validateRequiredFields = (message) => ({required: true, message})
 
   return (
     <div className={styles.formContainer}>
@@ -37,7 +33,6 @@ export default function Signup() {
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 8 }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete='off'
         requiredMark={false}
       >
@@ -49,12 +44,7 @@ export default function Signup() {
           name='email'
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: 'Please input your username!',
-            },
-          ]}
+          rules={[ validateRequiredFields('Please input your username!') ]}
         >
           <Input />
         </Form.Item>
@@ -64,12 +54,7 @@ export default function Signup() {
           name='password'
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: 'Please input your password!',
-            },
-          ]}
+          rules={[ validateRequiredFields('Please input your password!')]}
         >
           <Input.Password />
         </Form.Item>
@@ -79,18 +64,13 @@ export default function Signup() {
           name='confirmPassword'
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: 'Confirm password must be the same as password!',
-            },
-          ]}
+          rules={[ validateRequiredFields('Confirm password must be the same as password!') ]}
         >
           <Input.Password />
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 2, span: 24 }} >
-          <div className={styles.errMessage} hidden={errorHidden}>
+          <div className={styles.errMessage} >
             {errorMessage}
           </div>
         </Form.Item>

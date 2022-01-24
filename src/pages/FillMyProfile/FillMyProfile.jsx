@@ -2,26 +2,17 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Layout, Menu, Form, Input, Button, Select, Modal } from 'antd';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import styles from './FillMyProfile.module.less';
 import 'antd/dist/antd.css';
 import Skill from '../../components/Skill/Skill';
 
 import {
-  setFirstName,
-  setLastName,
-  setExperience,
-  setPosition,
-  setEducation,
-  setAbout,
-  setPlans,
   setAddingSkill,
-  setSkillName,
   setSkills,
   finish,
-  setRole,
-  setField,
+  setProfileState,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
 
 import {
@@ -37,6 +28,7 @@ const { TextArea } = Input;
 export default function FillMyProfile() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [submitLoader, setSubmitLoader] = useState(false);
+
   const navigate = useNavigate();
   const params = useParams();
 
@@ -65,6 +57,7 @@ export default function FillMyProfile() {
 
   const onFinish = async () => {
     setSubmitLoader(true);
+
     try {
       const { id } = params;
       const result = await dispatch(
@@ -97,50 +90,38 @@ export default function FillMyProfile() {
     }
   };
 
-  function handleInputChange ({target}) {
-    if (target.name === 'firstName') {
-      dispatch(setFirstName(target.value));
-    } else if (target.name === 'lastName') {
-      dispatch(setLastName(target.value));
-    } else if (target.name === 'position') {
-      dispatch(setPosition(target.value));
-    } else if (target.name === 'education') {
-      dispatch(setEducation(target.value));
-    } else if (target.name === 'experience') {
-      dispatch(setExperience(target.value));
-    } else if (target.name === 'about') {
-      dispatch(setAbout(target.value));
-    } else if (target.name === 'plans') {
-      dispatch(setPlans(target.value));
-    } else if (target.name === 'skill') {
-      dispatch(setSkillName(target.value));
-    }
+  function handleInputChange ({ target }) {
+      dispatch(setProfileState({
+        [target.name]: target.value
+      }));
   }
 
-  function handleChangeRole(value) {
-    dispatch(setRole(value));
-  }
-
-  function handleChangeField(value) {
-    dispatch(setField(value));
+  function handleSelectsChange (value, name) {
+    dispatch(setProfileState({
+      [name]: value
+    }));
   }
 
   function handleAddingSkillChange(e) {
+    e.preventDefault();
     if (e.target.value) {
       dispatch(setSkills([...skills, { id: Date.now(), name: e.target.value }]));
-      dispatch(setSkillName(''));
+      dispatch(setProfileState({
+        [e.target.name]: ''
+      }));
     }
       dispatch(setAddingSkill(!addingSkill));
   }
 
-  function handleDeleteSkill({ id, e }) {
+  function handleDeleteSkill({ id }) {
     const filteredSkills = skills.filter((skill) => skill.id !== id);
-    e.preventDefault();
     dispatch(setSkills(filteredSkills));
   }
 
   function handleLogOut() {
     removeFromLocalStorage('accessToken');
+    removeFromLocalStorage('currentUserId');
+    removeFromLocalStorage('verified');
     navigate('/login');
   }
 
@@ -148,12 +129,47 @@ export default function FillMyProfile() {
     setIsModalVisible(false);
   };
 
+  function getRequiredMessage (message) {
+    return {required: true, message}
+  } 
+
+  function validateNamesOnlyLetters () {
+    return ({
+      validator(_, value) {
+        if (/^[A-z]+$/.test(value)) {
+          return Promise.resolve();
+        }
+        return Promise.reject(
+          new Error('Last Name should contain only letters.'),
+        );
+      },
+    })
+  }
+
+  function validateMinTwoCharacters () {
+    return ({ min: 2, message: 'Last Name should contain at least two letters.' })
+  }
+
+  function validateMaxTen (array) {
+    return ({
+      validator() {
+        if (array.length < 11) {
+          return Promise.resolve();
+        } else {
+          return Promise.reject(
+            new Error('Skills can contain maximum 10 fields.'),
+          );
+        }
+      },
+    })
+  }
+
   return (
     <Layout>
       <Header className={styles.head} >
         <div className={styles.logo}>Mentorly</div>
         <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['1']}>
-          <Menu.Item key='1'>My Profile</Menu.Item>
+          <Menu.Item key='1'><Link to='/'>My Profile</Link></Menu.Item>
           <Menu.Item key='2' onClick={handleLogOut}>
             Log Out
           </Menu.Item>
@@ -185,18 +201,9 @@ export default function FillMyProfile() {
                 grid={{ gutter: 16 }}
                 className={styles.firstName}
                 rules={[
-                  { required: true, message: 'Please input your First Name!' },
-                  { min: 2, message: 'First Name should contain at least two letters.' },
-                  {
-                    validator(_, value) {
-                      if (/^[A-z]+$/.test(value)) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(
-                        new Error('First Name should contain only letters.'),
-                      );
-                    },
-                  },
+                  getRequiredMessage('Please input your First Name!'),
+                  validateMinTwoCharacters(),
+                  validateNamesOnlyLetters(),
                 ]}
               >
                 <Input name='firstName' value={firstName} onChange={handleInputChange} />
@@ -206,18 +213,9 @@ export default function FillMyProfile() {
                 label='Last Name'
                 labelCol={{ span: 24 }}
                 rules={[
-                  { required: true, message: 'Please input your Last Name!' },
-                  { min: 2, message: 'Last Name should contain at least two letters.' },
-                  {
-                    validator(_, value) {
-                      if (/^[A-z]+$/.test(value)) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(
-                        new Error('Last Name should contain only letters.'),
-                      );
-                    },
-                  },
+                  getRequiredMessage('Please input your Last Name!'),
+                  validateMinTwoCharacters(),
+                  validateNamesOnlyLetters(),
                 ]}
               >
                 <Input name='lastName' value={lastName} onChange={handleInputChange} />
@@ -228,12 +226,12 @@ export default function FillMyProfile() {
                 name='Role'
                 label='Choose Role'
                 labelCol={{ span: 24 }}
-                rules={[{ required: true, message: 'Please select Your Role!' }]}
+                rules={[getRequiredMessage('Please select Your Role!')]}
                 className={styles.role}
               >
                 <Select
                   initialvalue='--Select Role'
-                  onChange={handleChangeRole}
+                  onChange={(value) => handleSelectsChange(value, 'selectedRole')}
                   placeholder='--Select Role'
                 >
                   <Option value='--Select Role' disabled>
@@ -247,12 +245,12 @@ export default function FillMyProfile() {
                 name='Field'
                 label='Choose Field'
                 labelCol={{ span: 24 }}
-                rules={[{ required: true, message: 'Please select Your Field!' }]}
+                rules={[getRequiredMessage('Please select Your Field!'),]}
                 className={styles.field}
               >
                 <Select
                   initialvalue='--Select Field'
-                  onChange={handleChangeField}
+                  onChange={(value) => handleSelectsChange(value, 'selectedField')}
                   placeholder='Select Field'
                 >
                   <Option value='--Select Field' disabled>
@@ -271,7 +269,7 @@ export default function FillMyProfile() {
               name='Position'
               label='Position'
               labelCol={{ span: 24 }}
-              rules={[{ required: true, message: 'Please input Your Position!' }]}
+              rules={[getRequiredMessage('Please input your Position!')]}
             >
               <Input
                 name='position'
@@ -284,8 +282,7 @@ export default function FillMyProfile() {
               name='Education'
               label='Education'
               labelCol={{ span: 24 }}
-              rules={[{ required: true, message: 'Please input Your Education!' },
-              ]}
+              rules={[getRequiredMessage('Please input your Education!')]}
             >
               <TextArea
                 name='education'
@@ -300,7 +297,7 @@ export default function FillMyProfile() {
               name='Experience'
               label='Experience'
               labelCol={{ span: 24 }}
-              rules={[{ required: true, message: 'Please input Your Experience!' }]}
+              rules={[getRequiredMessage('Please input your Experience!')]}
             >
               <TextArea
                 name='experience'
@@ -315,7 +312,7 @@ export default function FillMyProfile() {
               name='About'
               label='About'
               labelCol={{ span: 24 }}
-              rules={[{ required: true, message: 'Please input Something About You!' }]}
+              rules={[getRequiredMessage('Please input something About You!')]}
             >
               <TextArea
                 name='about'
@@ -336,7 +333,7 @@ export default function FillMyProfile() {
                   : 'Who can request mentorship (for mentor) / My plans (for mentee)'
               }
               labelCol={{ span: 24 }}
-              rules={[{ required: true, message: 'Please input Your plans!' }]}
+              rules={[getRequiredMessage('Please input your Your Plans!'),]}
             >
               <TextArea 
                 name='plans'
@@ -351,20 +348,8 @@ export default function FillMyProfile() {
               name='Skills'
               label='Skills'
               labelCol={{ span: 24 }}
-              rules={[{ required: true, message: 'Please Provide Your Skills!' },
-                {
-                  validator() {
-                    if (skills.length < 10) {
-                      return Promise.resolve();
-                    } else {
-                      return Promise.reject(
-                        new Error('Skills can contain maximum 10 fields.'),
-                      );
-                    }
-                  },
-                },
-              ]}
-            >
+              rules={[getRequiredMessage('Please provide Your Skills!'),
+                    validateMaxTen(skills)]} >
               <Layout className={styles.skillsContainer} >
                 <div className={styles.skillsContainer}>
                   {skills.map((skill) => (
@@ -377,7 +362,7 @@ export default function FillMyProfile() {
                   ))}
                   {addingSkill ? (
                     <Input
-                      name='skill'
+                      name='skillName'
                       value={skillName}
                       onPressEnter={handleAddingSkillChange}
                       onChange={handleInputChange}
@@ -386,7 +371,7 @@ export default function FillMyProfile() {
                       maxLength={30}
                     />
                   ) : (
-                    <Button onClick={handleAddingSkillChange} className={styles.newSkillBtn} >
+                    <Button type='button' onClick={handleAddingSkillChange} className={styles.newSkillBtn} >
                       + New skill
                     </Button>
                   )}
