@@ -74,9 +74,11 @@ export default function ViewMyProfile() {
                 <Typography>Position: {userData && userData.position}</Typography>
                 <Typography>Field: {userData && userData.selectedField}</Typography>
               <Title level={3}>Skills</Title>
+              <div className={styles.skillsContainer}>
               {
                 userData && userData.skills.map((skill) => <Skill name={skill.name} key={skill._id}></Skill>)
               }
+              </div>
               {
                  id === getLocalStorage('currentUserId') ? <Button type='primary' 
                  style={{marginTop: '15px', display: 'block'}} onClick={handleEditProfileClick}

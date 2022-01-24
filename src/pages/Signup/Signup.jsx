@@ -17,6 +17,7 @@ export default function Signup() {
     try {
       setErrorMessage('');
       const response = await myAxios.post('signup', values);
+      console.log('vals', values)
 
       if (response.status === 201) {
         navigate('/confirm');
