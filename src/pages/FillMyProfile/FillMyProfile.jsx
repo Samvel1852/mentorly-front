@@ -10,8 +10,8 @@ import Skill from '../../components/Skill/Skill';
 import MainHeader from '../../components/Header/MainHeader';
 
 import {
-  setAddingSkill,
-  setSkills,
+  // setAddingSkill,
+  // setSkills,
   finish,
   setProfileState,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
@@ -105,17 +105,17 @@ export default function FillMyProfile() {
   function handleAddingSkillChange(e) {
     e.preventDefault();
     if (e.target.value) {
-      dispatch(setSkills([...skills, { id: Date.now(), name: e.target.value }]));
+      dispatch(setProfileState({skills: [...skills, { id: Date.now(), name: e.target.value }]}));
       dispatch(setProfileState({
         [e.target.name]: ''
       }));
     }
-      dispatch(setAddingSkill(!addingSkill));
+      dispatch(setProfileState({addingSkill: !addingSkill}));
   }
 
   function handleDeleteSkill({ id }) {
     const filteredSkills = skills.filter((skill) => skill.id !== id);
-    dispatch(setSkills(filteredSkills));
+    dispatch(setProfileState({skills: filteredSkills}));
   }
 
   const handleOk = () => {
