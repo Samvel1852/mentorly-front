@@ -22,8 +22,8 @@ export default function MainHeader ({ verified }) {
       {
         verified ?
         <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['3']} className={styles.menu}>
-          <Menu.Item key='1' className={styles['ant-menu-item']}><Link to='dashboard'>Dashboard</Link></Menu.Item>
-          <Menu.Item key='2' className={styles['ant-menu-item']}><Link to='requests'>Message Requests</Link></Menu.Item>
+          <Menu.Item key='1' className={styles['ant-menu-item']}><Link to='/dashboard'>Dashboard</Link></Menu.Item>
+          <Menu.Item key='2' className={styles['ant-menu-item']}><Link to='/requests'>Message Requests</Link></Menu.Item>
           <Menu.Item key='3' className={styles['ant-menu-item-selected']}><Link to='/'>My Profile</Link></Menu.Item>
           <Menu.Item key='4' className={styles['ant-menu-item']} onClick={handleLogOut}>
             Log Out
