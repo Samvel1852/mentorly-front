@@ -6,6 +6,6 @@ const {REACT_APP_MAIN_URL} = process.env
 export const myAxios = axios.create({
   baseURL: `${REACT_APP_MAIN_URL}`,
   headers: {
-    Authorization: `Bearer ${getLocalStorage('accessToken')}`,
+    Authorization: `Bearer ${getLocalStorage('accessToken')}` || '',
   },
 });

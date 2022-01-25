@@ -8,6 +8,7 @@ import Confirm from './pages/Confirm/Confirm';
 import Login from './pages/Login/Login';
 import ViewMyProfile from './pages/ViewMyProfile/ViewMyProfile';
 import { getLocalStorage } from './helpers/localStorage';
+import Dashboard from './pages/Dashboard/Dashboard';
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
           <Route path='/signup' element={accessToken ? <Navigate to='/'/> : <Signup />} />
           <Route path='/confirm' element={accessToken ? <Navigate to='/'/> :<Confirm />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/dashboard' element={<Dashboard/>}/>
           <Route
             exact
             path='/users/:id'
