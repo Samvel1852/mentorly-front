@@ -15,31 +15,26 @@ function App() {
   const accessToken = getLocalStorage('accessToken');
   const currentUserId = getLocalStorage('currentUserId');
   const userStatus = getLocalStorage('verified');
-  let skillId = 1;
 
   return (
     <div className='App'>
       <Router>
         <Routes>
           <Route path='/' element={ accessToken && userStatus === 'verified' 
-          ? <Navigate to={`/${currentUserId}`} /> :
+            ? <Navigate to={`/${currentUserId}`} /> :
             accessToken && userStatus !== 'verified' ? 
-            <Navigate to={`/users/${currentUserId}`} /> : <Navigate to='login' />} />
-          <Route path='/signup' element={accessToken ? <Navigate to='/'/> : <Signup />} />
-          <Route path='/confirm' element={accessToken ? <Navigate to='/'/> :<Confirm />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/dashboard' element={<Dashboard/>}/>
-          <Route
-            exact
-            path='/users/:id'
-            element={
-              <FillMyProfile accessToken={accessToken} skillId={skillId} />
-            }
+            <Navigate to={ `/users/${currentUserId}`} /> : <Navigate to='login' /> } />
+          <Route path='/signup' element={ accessToken ? <Navigate to='/'/> : <Signup /> } />
+          <Route path='/confirm' element={ accessToken ? <Navigate to='/'/> :<Confirm /> } />
+          <Route path='/login' element={ <Login /> } />
+          <Route path='/dashboard' element={ <Dashboard/> }/>
+          <Route path='/users/:id'
+            element={ !accessToken ? <Navigate to='/login' /> 
+            : <FillMyProfile accessToken={ accessToken } /> }
           />
-          <Route
-            exact
-            path='/:id'
-            element={<ViewMyProfile accessToken={accessToken} />}
+          <Route path='/:id'
+            element={ userStatus === 'verified' ? <ViewMyProfile accessToken={accessToken} /> 
+            : <Navigate to='/login' /> }
           />
         </Routes>
       </Router>
