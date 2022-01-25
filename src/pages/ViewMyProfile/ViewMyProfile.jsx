@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Col, Layout, Row, Spin, Typography } from 'antd';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
@@ -8,19 +8,19 @@ import 'antd/dist/antd.css';
 import { getLocalStorage } from '../../helpers/localStorage';
 import Skill from '../../components/Skill/Skill';
 import MainHeader from '../../components/Header/MainHeader';
-import { myAxios } from '../../helpers/axiosInstance';
 import {
   setProfileState,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
 import { useDispatch } from 'react-redux';
+import { getUserData } from '../../features/profile/profile';
+import { useSelector } from 'react-redux';
 
 const { Content, Footer } = Layout;
 
 const { Title } = Typography;
 
 export default function ViewMyProfile() {
-  const [userData, setUserData] = useState(null);
-  const [editLoader, setEditLoader] = useState(false);
+  const {userData, editLoader} = useSelector((state) => state.profile);
 
   const navigate = useNavigate();
 
@@ -29,18 +29,12 @@ export default function ViewMyProfile() {
   const { id } = useParams();
 
   useEffect(async () => {
-    const userResponse = await myAxios.get(`http://localhost:4000/${id}`)
-    await setUserData(userResponse.data.user);
-    console.log('useEffectUserData', userData);
+    await dispatch(getUserData(id));
     if (!getLocalStorage('accessToken') && getLocalStorage('verified') !== 'verified') navigate('/login');
   }, []);
-  
-  console.log('userData', userData);
 
   async function handleEditProfileClick () {
-    setEditLoader(true);
-    const userResponse = await myAxios.get(`http://localhost:4000/${id}`);
-    dispatch(setProfileState(userResponse.data.user));
+    await dispatch(setProfileState(userData));
     navigate(`/users/${id}`);
   }
 

@@ -25,7 +25,6 @@ const { TextArea } = Input;
 
 export default function FillMyProfile() {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [submitLoader, setSubmitLoader] = useState(false);
   
   const navigate = useNavigate();
   const params = useParams();
@@ -47,14 +46,21 @@ export default function FillMyProfile() {
     addingSkill,
     skillName,
     skills,
+    submitLoader,
   } = useSelector((state) => state.fillMyProfile);
 
   const dispatch = useDispatch();
 
   const [form] = Form.useForm();
 
+  const initialValues = { 
+    ['firstName']: firstName, ['lastName']: lastName,
+    ['role']: selectedRole, ['field']: selectedField,
+    ['position']: position, ['education']: education,
+    ['experience']: experience, ['about']: about,
+    ['plans']: plans, ['skills']: skills }
+
   const onFinish = async () => {
-    setSubmitLoader(true);
 
     try {
       const { id } = params;
@@ -75,8 +81,7 @@ export default function FillMyProfile() {
           id,
         }),
       );
-
-      setSubmitLoader(false);
+      
       if (result.payload && !result.errors) {
         await setLocalStorage('verified', 'verified');
         navigate(`/${id}`);
@@ -97,10 +102,8 @@ export default function FillMyProfile() {
   function handleAddingSkillChange(e) {
     e.preventDefault();
     if (e.target.value) {
-      dispatch(setProfileState({skills: [...skills, { id: Date.now(), name: e.target.value }]}));
-      dispatch(setProfileState({
-        [e.target.name]: ''
-      }));
+      dispatch(setProfileState({skills: [...skills, { id: Date.now(), name: e.target.value }], 
+                                [e.target.name]: ''}));
     }
       dispatch(setProfileState({addingSkill: !addingSkill}));
   }
@@ -170,15 +173,11 @@ export default function FillMyProfile() {
             className={styles.form}
             requiredMark={false}
             validateTrigger='onSubmit'
-            initialValues={{ ['First Name']: firstName, ['Last Name']: lastName,
-            ['Role']: selectedRole, ['Field']: selectedField,
-            ['Position']: position, ['Education']: education,
-            ['Experience']: experience, ['About']: about,
-            ['Plans']: plans, ['Skills']: skills }}
+            initialValues={initialValues}
           >
             <div className={styles.namesContainer}>
               <Form.Item
-                name='First Name'
+                name='firstName'
                 label='First Name'
                 labelCol={{ span: 24 }}
                 className={styles.firstName}
@@ -192,7 +191,7 @@ export default function FillMyProfile() {
                         handleChange(target.value, target.name)} />
               </Form.Item>
               <Form.Item
-                name='Last Name'
+                name='lastName'
                 label='Last Name'
                 labelCol={{ span: 24 }}
                 className={styles.lastName}
@@ -208,7 +207,7 @@ export default function FillMyProfile() {
             </div>
             <div className={styles.selectsContainer}>
               <Form.Item
-                name='Role'
+                name='role'
                 label='Choose Role'
                 labelCol={{ span: 24 }}
                 rules={[getRequiredMessage('Please select Your Role!')]}
@@ -227,7 +226,7 @@ export default function FillMyProfile() {
                 </Select>
               </Form.Item>
               <Form.Item
-                name='Field'
+                name='field'
                 label='Choose Field'
                 labelCol={{ span: 24 }}
                 rules={[getRequiredMessage('Please select Your Field!'),]}
@@ -251,7 +250,7 @@ export default function FillMyProfile() {
               </Form.Item>
             </div>
             <Form.Item
-              name='Position'
+              name='position'
               label='Position'
               labelCol={{ span: 24 }}
               rules={[getRequiredMessage('Please input your Position!')]}
@@ -265,7 +264,7 @@ export default function FillMyProfile() {
               />
             </Form.Item>
             <Form.Item
-              name='Education'
+              name='education'
               label='Education'
               labelCol={{ span: 24 }}
               rules={[getRequiredMessage('Please input your Education!'),
@@ -282,7 +281,7 @@ export default function FillMyProfile() {
               />
             </Form.Item>
             <Form.Item
-              name='Experience'
+              name='experience'
               label='Experience'
               labelCol={{ span: 24 }}
               rules={[getRequiredMessage('Please input your Experience!'),
@@ -299,7 +298,7 @@ export default function FillMyProfile() {
               />
             </Form.Item>
             <Form.Item
-              name='About'
+              name='about'
               label='About'
               labelCol={{ span: 24 }}
               rules={[getRequiredMessage('Please input something About You!'), 
@@ -316,7 +315,7 @@ export default function FillMyProfile() {
               />
             </Form.Item>
             <Form.Item
-              name='Plans'
+              name='plans'
               label={
                 selectedRole === 'Mentor'
                   ? 'Who can request mentorship'
@@ -339,7 +338,7 @@ export default function FillMyProfile() {
               />
             </Form.Item>
             <Form.Item
-              name='Skills'
+              name='skills'
               label='Skills'
               labelCol={{ span: 24 }}
               rules={[getRequiredMessage('Please provide Your Skills!'),
