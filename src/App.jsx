@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 import './App.less';
 import Signup from './pages/Signup/Signup';
@@ -9,6 +9,8 @@ import Login from './pages/Login/Login';
 import ViewMyProfile from './pages/ViewMyProfile/ViewMyProfile';
 import { getLocalStorage } from './helpers/localStorage';
 import Dashboard from './pages/Dashboard/Dashboard';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+// import PrivateRoute from './components/HOC/PrivateRoute';
 
 function App() {
 
@@ -18,7 +20,6 @@ function App() {
 
   return (
     <div className='App'>
-      <Router>
         <Routes>
           <Route path='/' element={ accessToken && userStatus === 'verified' 
             ? <Navigate to={`/${currentUserId}`} /> :
@@ -26,18 +27,15 @@ function App() {
             <Navigate to={ `/users/${currentUserId}`} /> : <Navigate to='login' /> } />
           <Route path='/signup' element={ accessToken ? <Navigate to='/'/> : <Signup /> } />
           <Route path='/confirm' element={ accessToken ? <Navigate to='/'/> :<Confirm /> } />
-          <Route path='/login' element={ <Login /> } />
-          <Route path='/dashboard' element={ <Dashboard/> }/>
+          <Route path='/login' element={ <Login /> } />          
           <Route path='/users/:id'
-            element={ !accessToken ? <Navigate to='/login' /> 
-            : <FillMyProfile accessToken={ accessToken } /> }
+            element={ <FillMyProfile accessToken={ accessToken } /> }
           />
-          <Route path='/:id'
-            element={ userStatus === 'verified' ? <ViewMyProfile accessToken={accessToken} /> 
-            : <Navigate to='/login' /> }
-          />
+          <Route element={<PrivateRoute />} >
+            <Route path='/dashboard' element={ <Dashboard/> } />
+            <Route path='/:id' element={ <ViewMyProfile accessToken={accessToken} /> } />
+          </Route>
         </Routes>
-      </Router>
     </div>
   );
 }

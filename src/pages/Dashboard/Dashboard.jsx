@@ -27,7 +27,7 @@ function Dashboard() {
             title: 'First Name',
             dataIndex: 'firstName',
             key: 'firstName',
-            render: text => <Link to={ `/:${ text._id }` }> { text.firstName }</Link>
+            render: text => <Link to={ `/${ text._id }` }> { text.firstName }</Link>
         },
         {
             title: 'Last Name',
