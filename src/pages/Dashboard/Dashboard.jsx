@@ -15,7 +15,7 @@ function Dashboard() {
     });
 
     useEffect(async () => {
-        dispatch(getUsers(params));
+       await getData(params)
     }, []);
 
     const getData = async (params) => {

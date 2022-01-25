@@ -5,7 +5,7 @@ export const getUsers = createAsyncThunk(
     'users/getUsers',
     async function ( params ,{rejectWithValue}) {
         try {
-            let result =  await myAxios.get(`users`, { params: { ...params } });
+            let result =  await myAxios.get(`users`, { params });
             return result.data.data;
         } catch (err) {
             return rejectWithValue(err)
