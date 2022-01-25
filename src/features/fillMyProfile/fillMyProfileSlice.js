@@ -34,7 +34,7 @@ export const verifyUser = createAsyncThunk(
     addingSkill,
     skills,
     id,
-  }, {rejectWithValue}) => {
+  }, { rejectWithValue }) => {
     try {
     const userData = await myAxios.put(`users/${id}`, {
       firstName,
