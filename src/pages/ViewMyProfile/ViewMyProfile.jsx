@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Col, Layout, Row, Typography } from 'antd';
+import { Button, Col, Layout, Row, Spin, Typography } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from './ViewMyProfile.module.less';
 import 'antd/dist/antd.css';
@@ -55,7 +55,7 @@ export default function ViewMyProfile() {
   return (
     <Layout>
       <MainHeader handleLogOut={handleLogOut} verified={true} />
-      
+      { userData ?
       <Content
         className={styles.site_layout}
         style={{ padding: '20px', marginTop: 64 }}
@@ -103,7 +103,8 @@ export default function ViewMyProfile() {
                   userData.plans}</Typography>
             </Col>
           </Row>
-      </Content>
+      </Content> : <div className={styles.pageLoaderContainer}><Spin tip='Loading...' /></div>
+      }
       <Footer className={styles.foot}>
         Simply Technologies ©2022 Created with Pleasure
       </Footer>
