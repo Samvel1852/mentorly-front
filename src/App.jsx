@@ -31,6 +31,7 @@ function App() {
     <div className='App'>
       <Router>
         <Routes>
+          {/* <Route path='*' element={<Navigate to='/' />} /> */}
           <Route path='/' element={ accessToken && userStatus === 'verified' 
           ? <Navigate to={`/${currentUserId}`} /> :
             accessToken && userStatus !== 'verified' ? 
