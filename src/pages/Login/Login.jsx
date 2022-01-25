@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Form, Input, Button } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, Navigate } from 'react-router-dom';
 
 import { myAxios } from '../../helpers/axiosInstance';
-import { setLocalStorage } from '../../helpers/localStorage';
+import { setLocalStorage, getLocalStorage } from '../../helpers/localStorage';
 
 import styles from './Login.module.less';
 
@@ -39,6 +39,8 @@ export default function Login() {
   const validateRequiredFields = (message) => ({required: true, message})
 
   return (
+    <>
+    { getLocalStorage('accessToken') ? <Navigate to='/' /> :
     <div className={styles.formContainer}>
       <Form
         name='basic'
@@ -90,5 +92,7 @@ export default function Login() {
           Don`t have an account <Link to='/signup'>Sign Up</Link>
         </Form.Item>
       </Form>
-    </div>);
+    </div>
+    }
+    </>);
 }

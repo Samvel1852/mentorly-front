@@ -9,10 +9,10 @@ import styles from './MainHeader.module.less'
 export default function MainHeader ({ verified }) {
     const navigate = useNavigate();
 
-    function handleLogOut() {
-        removeFromLocalStorage('accessToken');
-        removeFromLocalStorage('currentUserId');
-        removeFromLocalStorage('verified');
+    async function handleLogOut() {
+        await removeFromLocalStorage('accessToken');
+        await removeFromLocalStorage('currentUserId');
+        await removeFromLocalStorage('verified');
         navigate('/login');
       }
 
