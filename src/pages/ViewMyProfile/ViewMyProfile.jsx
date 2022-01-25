@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Col, Layout, Row, Spin, Typography } from 'antd';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import styles from './ViewMyProfile.module.less';
 import 'antd/dist/antd.css';
 
-import { getLocalStorage, removeFromLocalStorage } from '../../helpers/localStorage';
+import { getLocalStorage } from '../../helpers/localStorage';
 import Skill from '../../components/Skill/Skill';
 import MainHeader from '../../components/Header/MainHeader';
 import { myAxios } from '../../helpers/axiosInstance';
-
 import {
   setProfileState,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
@@ -25,7 +24,7 @@ export default function ViewMyProfile() {
 
   const navigate = useNavigate();
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const { id } = useParams();
 
@@ -33,17 +32,10 @@ export default function ViewMyProfile() {
     const userResponse = await myAxios.get(`http://localhost:4000/${id}`)
     await setUserData(userResponse.data.user);
     console.log('useEffectUserData', userData);
-    if (!getLocalStorage('accessToken')) navigate('/login');
+    if (!getLocalStorage('accessToken') && getLocalStorage('verified') !== 'verified') navigate('/login');
   }, []);
-
+  
   console.log('userData', userData);
-
-  function handleLogOut() {
-    removeFromLocalStorage('accessToken');
-    removeFromLocalStorage('currentUserId');
-    removeFromLocalStorage('verified');
-    navigate('/login');
-  }
 
   async function handleEditProfileClick () {
     setEditLoader(true);
@@ -54,8 +46,10 @@ export default function ViewMyProfile() {
 
   return (
     <Layout>
-      <MainHeader handleLogOut={handleLogOut} verified={true} />
-      { userData ?
+      <MainHeader verified={true} />
+
+      { userData && userData.status === 'verified'  ?
+        
       <Content
         className={styles.site_layout}
         style={{ padding: '20px', marginTop: 64 }}
@@ -103,7 +97,9 @@ export default function ViewMyProfile() {
                   userData.plans}</Typography>
             </Col>
           </Row>
-      </Content> : <div className={styles.pageLoaderContainer}><Spin tip='Loading...' /></div>
+      </Content> : (userData) ? <Navigate to='/' />
+      // <div>User not exists click <Link to='/'> here </Link> to go to your profile</div>
+      : <div className={styles.pageLoaderContainer}><Spin tip='Loading...' /></div>
       }
       <Footer className={styles.foot}>
         Simply Technologies ©2022 Created with Pleasure

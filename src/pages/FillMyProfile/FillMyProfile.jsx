@@ -78,7 +78,7 @@ export default function FillMyProfile() {
 
       setSubmitLoader(false);
       if (result.payload && !result.errors) {
-        await setLocalStorage('verified', true);
+        await setLocalStorage('verified', 'verified');
         navigate(`/${id}`);
       } else {
         setIsModalVisible(true);

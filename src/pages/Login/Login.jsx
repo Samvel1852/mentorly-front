@@ -90,6 +90,5 @@ export default function Login() {
           Don`t have an account <Link to='/signup'>Sign Up</Link>
         </Form.Item>
       </Form>
-    </div>
-  );
+    </div>);
 }

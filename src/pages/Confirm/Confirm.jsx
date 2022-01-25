@@ -29,7 +29,7 @@ export default function Confirm() {
   const validateRequiredFields = (message) => ({required: true, message})
 
   return (
-    <div className={styles.formContainer}>
+      <div className={styles.formContainer}>
       <Form name='basic' initialValues={{ remember: true }}
         onFinish={onFinish}
         autoComplete='off'
@@ -66,6 +66,5 @@ export default function Confirm() {
           </Button>
         </Form.Item>
       </Form>
-    </div>
-  );
+    </div>);
 }
