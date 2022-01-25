@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Layout, Form, Input, Button, Select, Modal } from 'antd';
@@ -23,9 +23,7 @@ const { Content, Footer } = Layout;
 const { Option } = Select;
 const { TextArea } = Input;
 
-export default function FillMyProfile() {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  
+export default function FillMyProfile() {  
   const navigate = useNavigate();
   const params = useParams();
 
@@ -47,6 +45,7 @@ export default function FillMyProfile() {
     skillName,
     skills,
     submitLoader,
+    isModalVisible,
   } = useSelector((state) => state.fillMyProfile);
 
   const dispatch = useDispatch();
@@ -81,12 +80,10 @@ export default function FillMyProfile() {
           id,
         }),
       );
-      
-      if (result.payload && !result.errors) {
+
+      if (result.payload && !result.error && !result.errors) {
         await setLocalStorage('verified', 'verified');
         navigate(`/${id}`);
-      } else {
-        setIsModalVisible(true);
       }
     } catch ({ response }) {
       console.log('errResponse', { response });
@@ -114,7 +111,7 @@ export default function FillMyProfile() {
   }
 
   const handleOk = () => {
-    setIsModalVisible(false);
+    dispatch(setProfileState({ isModalVisible: false }))
   };
 
   function getRequiredMessage (message) {

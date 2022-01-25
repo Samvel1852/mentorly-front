@@ -17,6 +17,7 @@ const initialState = {
   skills: [],
   addingSkill: false,
   submitLoader: false,
+  isModalVisible: false,
 };
 
 export const verifyUser = createAsyncThunk(
@@ -70,13 +71,14 @@ export const fillMyProfileSlice = createSlice({
   },
   extraReducers: {
     [verifyUser.pending]: (state) => {
-       state.submitLoader = true;
+        state.submitLoader = true;
     },
     [verifyUser.fulfilled]: (state, {payload}) => {
         state.submitLoader = false;
         state = {...state, ...payload.data.data};
     },
     [verifyUser.rejected]: (state) => {
+        state.isModalVisible = true;
         state.submitLoader = false;
     }
 }
