@@ -27,7 +27,7 @@ function App() {
             <Navigate to={ `/users/${currentUserId}`} /> : <Navigate to='login' /> } />
           <Route path='/signup' element={ accessToken ? <Navigate to='/'/> : <Signup /> } />
           <Route path='/confirm' element={ accessToken ? <Navigate to='/'/> :<Confirm /> } />
-          <Route path='/login' element={ <Login /> } />          
+          <Route path='/login' element={ <Login /> } />            
           <Route path='/users/:id'
             element={ <FillMyProfile accessToken={ accessToken } /> }
           />
