@@ -77,7 +77,6 @@ export const fillMyProfileSlice = createSlice({
         state = {...state, ...payload.data.data};
     },
     [verifyUser.rejected]: (state) => {
-        state.isModalVisible = true;
         state.submitLoader = false;
     }
 }

@@ -24,7 +24,6 @@ const profileSlice = createSlice({
            state.editLoader = true
         },
         [getUserData.fulfilled]: (state, {payload}) => {
-            console.log('fulfilledPayload', payload);
             state.userData = payload;
             state.editLoader = false;
         },

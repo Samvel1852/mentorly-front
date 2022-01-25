@@ -42,57 +42,54 @@ export default function ViewMyProfile() {
     <Layout>
       <MainHeader verified={true} />
 
-      { userData && userData.status === 'verified'  ?
+      { userData?.status === 'verified'  ?
         
-      <Content
-        className={styles.site_layout}
-        style={{ padding: '20px', marginTop: 64 }}
-      >
+      <Content className={styles.site_layout} >
           <Row className={styles.mainRow} >
             <Col flex='200px' className={styles.personalInfoContainer}>
               <Title level={3}>Personal Info </Title>
-                <Title level={4} className={styles.mentorBeige} style={{color: '#1890FF'}}> 
-                {userData && userData.selectedRole === 'Mentor'? 'Mentor': null} </Title>
-                <Typography>First Name: {userData && userData.firstName}</Typography>
-                <Typography>Last Name: {userData && userData.lastName}</Typography>
+                <Title level={4} className={styles.mentorBeige} > 
+                {userData?.selectedRole === 'Mentor'? 'Mentor': null} </Title>
+                <Typography>First Name: {userData?.firstName}</Typography>
+                <Typography>Last Name: {userData?.lastName}</Typography>
                 {id === getLocalStorage('currentUserId') && 
-                  <Typography>Email: {userData && userData.email}</Typography>
+                  <Typography>Email: {userData?.email}</Typography>
                 }
-                <Typography>Role: {userData && userData.selectedRole}</Typography>
-                <Typography>Position: {userData && userData.position}</Typography>
-                <Typography>Field: {userData && userData.selectedField}</Typography>
+                <Typography>Role: {userData?.selectedRole}</Typography>
+                <Typography>Position: {userData?.position}</Typography>
+                <Typography>Field: {userData?.selectedField}</Typography>
               <Title level={3}>Skills</Title>
               <div className={styles.skillsContainer}>
               {
-                userData && userData.skills.map((skill) => <Skill name={skill.name} key={skill._id}></Skill>)
+                userData?.skills.map((skill) => <Skill name={skill.name} key={skill._id}></Skill>)
               }
               </div>
               {
                  id === getLocalStorage('currentUserId') ? <Button type='primary' 
-                 style={{marginTop: '15px', display: 'block'}} onClick={handleEditProfileClick}
+                 className={styles.editBtn}
+                 onClick={handleEditProfileClick}
                  loading={editLoader}>Edit</Button>
                  : <Button type='primary' 
-                 style={{marginTop: '15px', display: 'block'}}>Connect</Button>
+                 className={styles.connectBtn}>Connect</Button>
                 }
             </Col>
             <Col xs={5} sm={6} md={15} lg={16} xl={17} className={styles.generalInfoContainer}>
               <Title level={3}>Education</Title>
-              <Typography style={{minWidth: '100px', maxWidth:'900px'}}>{ userData && 
-                  userData.education}</Typography>
+              <Typography className={styles.genInfoContainers} >{  
+                  userData?.education}</Typography>
               <Title level={3}>Experience</Title>
-              <Typography style={{minWidth: '100px', maxWidth:'900px'}}>{ userData && 
-                  userData.experience}</Typography>
+              <Typography className={styles.genInfoContainers}>{  
+                  userData?.experience}</Typography>
               <Title level={3}>About</Title>
-              <Typography style={{minWidth: '100px', maxWidth:'900px'}}>{ userData &&
-                  userData.about}</Typography>
-              <Title level={3}> { userData && userData.selectedRole === 'Mentor' ? 'Who can request mentorship'
+              <Typography className={styles.genInfoContainers}>{ 
+                  userData?.about}</Typography>
+              <Title level={3}> { userData?.selectedRole === 'Mentor' ? 'Who can request mentorship'
                   : 'My plans' }</Title>
-              <Typography style={{minWidth: '100px', maxWidth:'900px'}}>{userData && 
-                  userData.plans}</Typography>
+              <Typography className={styles.genInfoContainers}>{  
+                  userData?.plans}</Typography>
             </Col>
           </Row>
       </Content> : (userData) ? <Navigate to='/' />
-      // <div>User not exists click <Link to='/'> here </Link> to go to your profile</div>
       : <div className={styles.pageLoaderContainer}><Spin tip='Loading...' /></div>
       }
       <Footer className={styles.foot}>
