@@ -33,11 +33,13 @@ function App() {
         <Routes>
           <Route path='/' element={ accessToken && userStatus === 'verified' 
           ? <Navigate to={`/${currentUserId}`} /> :
-            accessToken ? 
+            accessToken && userStatus !== 'verified' ? 
             <Navigate to={`/users/${currentUserId}`} /> : <Navigate to='login' />} />
           <Route path='/signup' element={accessToken ? <Navigate to='/'/> : <Signup />} />
           <Route path='/confirm' element={accessToken ? <Navigate to='/'/> :<Confirm />} />
-          <Route path='/login' element={<Login />} />
+          <Route path='/login' element={accessToken && userStatus === 'verified' ? 
+          <Navigate to={`/${currentUserId}`}/> : accessToken && userStatus !== 'verified' ? <Navigate to={`/users/${currentUserId}`} /> 
+          : <Login />} />
           <Route
             path='/users/:id'
             element={
