@@ -36,18 +36,17 @@ function App() {
             accessToken ? 
             <Navigate to={`/users/${currentUserId}`} /> : <Navigate to='login' />} />
           <Route path='/signup' element={accessToken ? <Navigate to='/'/> : <Signup />} />
-          <Route path='/confirm' element={accessToken ? <Navigate to='/'/> : <Confirm />} />
-          <Route path='/login' element={accessToken ? <Navigate to='/'/> : <Login />} />
+          <Route path='/confirm' element={accessToken ? <Navigate to='/'/> :<Confirm />} />
+          <Route path='/login' element={<Login />} />
           <Route
             path='/users/:id'
-            element={accessToken ? <FillMyProfile accessToken={accessToken} skillId={skillId} />
-              : <Navigate to='/' />
+            element={
+              <FillMyProfile accessToken={accessToken} skillId={skillId} />
             }
           />
           <Route
             path='/:id'
-            element={accessToken && verified === 'verified' ? <ViewMyProfile accessToken={accessToken} /> 
-            : <Navigate to='/' /> }
+            element={<ViewMyProfile accessToken={accessToken} />}
           />
         </Routes>
       </Router>
