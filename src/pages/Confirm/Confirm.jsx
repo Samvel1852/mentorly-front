@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
 
 import styles from './Confirm.module.less';
-import { myAxios } from '../../helpers/axiosInstance';
+import axiosInstance from '../../helpers/axiosInstance';
 
 export default function Confirm() {
   const [errorMessage, setErrorMessage] = useState('');
@@ -14,7 +14,7 @@ export default function Confirm() {
   const onFinish = async (values) => {
     setConfirmLoader(true);
     try {
-      const response = await myAxios().post('verify', values);
+      const response = await axiosInstance.post('verify', values);
       setErrorMessage('');
 
       if (response.status === 200) {

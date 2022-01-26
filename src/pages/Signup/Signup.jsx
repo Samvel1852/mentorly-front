@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
 
 import styles from './Signup.module.less';
-import { myAxios } from '../../helpers/axiosInstance';
+import axiosInstance from '../../helpers/axiosInstance';
 
 export default function Signup() {
   const [errorMessage, setErrorMessage] = useState('');
@@ -16,7 +16,7 @@ export default function Signup() {
 
     try {
       setErrorMessage('');
-      const response = await myAxios().post('signup', values);
+      const response = await axiosInstance.post('signup', values);
 
       if (response.status === 201) {
         navigate('/confirm');

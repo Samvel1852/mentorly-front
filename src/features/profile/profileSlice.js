@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { myAxios } from '../../helpers/axiosInstance';
+import axiosInstance from '../../helpers/axiosInstance';
 
 const initialState = {
     userData: null,
@@ -9,7 +9,7 @@ const initialState = {
 
 export const getUserData = createAsyncThunk('users/getUser', async (id, {rejectWithValue}) => {
     try {
-        let userData =  await myAxios().get(`users/${id}`);
+        let userData =  await axiosInstance.get(`users/${id}`);
         return userData.data.data;
     } catch (err) {
         return rejectWithValue(err)

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Form, Input, Button } from 'antd';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
 
-import { myAxios } from '../../helpers/axiosInstance';
+import axiosInstance from '../../helpers/axiosInstance';
 import { setLocalStorage, getLocalStorage } from '../../helpers/localStorage';
 
 import styles from './Login.module.less';
@@ -17,7 +17,7 @@ export default function Login() {
     setLoginLoader(true);
 
     try {
-      const response = await myAxios().post(`login`, values);
+      const response = await axiosInstance.post(`login`, values);
 
       if (response.status === 200) {
         setLocalStorage('accessToken', response.data.data.token);
