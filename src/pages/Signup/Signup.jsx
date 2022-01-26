@@ -3,24 +3,27 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
 
 import styles from './Signup.module.less';
-import { myAxios } from '../../helpers/axiosInstance';
+import axiosInstance from '../../helpers/axiosInstance';
 
 export default function Signup() {
   const [errorMessage, setErrorMessage] = useState('');
+  const [signUpLoader, setSignUpLoader] = useState(false);
 
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
+      setSignUpLoader(true);
 
     try {
       setErrorMessage('');
-      const response = await myAxios.post('signup', values);
+      const response = await axiosInstance.post('signup', values);
 
       if (response.status === 201) {
         navigate('/confirm');
       }
     } catch ({ response }) {
       setErrorMessage(response.data.errors[0]);
+      setSignUpLoader(false);
     }
   };
 
@@ -69,14 +72,14 @@ export default function Signup() {
           <Input.Password />
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 2, span: 24 }} hidden={!errorMessage} >
+        <Form.Item wrapperCol={{ offset: 2, span: 15 }} hidden={!errorMessage} >
           <div className={styles.errMessage} >
             {errorMessage}
           </div>
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }} >
-          <Button type='primary' htmlType='submit'>
+          <Button type='primary' htmlType='submit' loading={signUpLoader}>
             Sign Up
           </Button>
         </Form.Item>

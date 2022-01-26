@@ -66,7 +66,7 @@ function Dashboard() {
     };
     return (
         <Layout style={{ height: '100vh'}}>
-            <MainHeader/>
+            <MainHeader verified={true}/>
             <div style={ { 'margin': '30px'} }>
                 <Form
                     onSubmit={ handleSubmit }

@@ -3,16 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
 
 import styles from './Confirm.module.less';
-import { myAxios } from '../../helpers/axiosInstance';
+import axiosInstance from '../../helpers/axiosInstance';
 
 export default function Confirm() {
   const [errorMessage, setErrorMessage] = useState('');
+  const [confirmLoader, setConfirmLoader] = useState(false);
 
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
+    setConfirmLoader(true);
     try {
-      const response = await myAxios.post('verify', values);
+      const response = await axiosInstance.post('verify', values);
       setErrorMessage('');
 
       if (response.status === 200) {
@@ -20,13 +22,14 @@ export default function Confirm() {
       }
     } catch ({ response }) {
       setErrorMessage(response.data.errors[0]);
+      setConfirmLoader(false);
     }
   };
 
   const validateRequiredFields = (message) => ({required: true, message})
 
   return (
-    <div className={styles.formContainer}>
+      <div className={styles.formContainer}>
       <Form name='basic' initialValues={{ remember: true }}
         onFinish={onFinish}
         autoComplete='off'
@@ -58,11 +61,10 @@ export default function Confirm() {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 10, span: 16 }} >
-          <Button type='primary' htmlType='submit'>
+          <Button type='primary' htmlType='submit' loading={confirmLoader}>
             Submit
           </Button>
         </Form.Item>
       </Form>
-    </div>
-  );
+    </div>);
 }

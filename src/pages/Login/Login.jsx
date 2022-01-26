@@ -1,34 +1,47 @@
 import { useState } from 'react';
 import { Form, Input, Button } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, Navigate } from 'react-router-dom';
 
-import { myAxios } from '../../helpers/axiosInstance';
-import { setLocalStorage } from '../../helpers/localStorage';
+import axiosInstance from '../../helpers/axiosInstance';
+import { setLocalStorage, getLocalStorage } from '../../helpers/localStorage';
 
 import styles from './Login.module.less';
 
 export default function Login() {
   const [errorMessage, setErrorMessage] = useState('');
+  const [loginLoader, setLoginLoader] = useState(false);
+
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
+    setLoginLoader(true);
+
     try {
-      const response = await myAxios.post(`login`, values);
+      const response = await axiosInstance.post(`login`, values);
+      const userDetails = response.data.data;
 
       if (response.status === 200) {
-        setLocalStorage('accessToken', response.data.data.token);
-        setLocalStorage('currentUserId', response.data.data.user._id);
-        navigate(`/users/${response.data.data.user._id}`);
+        setLocalStorage('accessToken', userDetails.token);
+        setLocalStorage('currentUserId', userDetails.user._id);
+        setLocalStorage('verified', userDetails.user.status);
+        if (userDetails.user.status === 'verified') {
+          navigate(`/${userDetails.user._id}`)
+        } else {
+          navigate(`/users/${userDetails.user._id}`);
+        }
       }
 
     } catch (error) {
       setErrorMessage(error.response.data.errors[0]);
+      setLoginLoader(false);
     }
   };
 
   const validateRequiredFields = (message) => ({required: true, message})
 
   return (
+    <>
+    { getLocalStorage('accessToken') ? <Navigate to='/' /> :
     <div className={styles.formContainer}>
       <Form
         name='basic'
@@ -72,7 +85,7 @@ export default function Login() {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }} >
-          <Button type='primary' htmlType='submit'>
+          <Button type='primary' htmlType='submit' loading={loginLoader}>
             Login
           </Button>
         </Form.Item>
@@ -81,5 +94,6 @@ export default function Login() {
         </Form.Item>
       </Form>
     </div>
-  );
+    }
+    </>);
 }

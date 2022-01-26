@@ -1,11 +1,11 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import { myAxios } from '../../helpers/axiosInstance';
+import axiosInstance from '../../helpers/axiosInstance';
 
 export const getUsers = createAsyncThunk(
     'users/getUsers',
     async function ( params ,{rejectWithValue}) {
         try {
-            let result =  await myAxios.get(`users`, { params });
+            let result =  await axiosInstance.get(`users`, { params }, );
             return result.data.data;
         } catch (err) {
             return rejectWithValue(err)
