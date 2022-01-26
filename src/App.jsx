@@ -16,7 +16,7 @@ function App() {
   return (
     <div className='App'>
         <Routes>
-          <Route path='/' element={<Navigate to={`/${getLocalStorage('currentUserId')}`} />}></Route>
+          <Route path='/' element={<Navigate to={`/${getLocalStorage('currentUserId')}`} />} />
           <Route element={ <PublicRoute /> }>
             <Route path='/signup' element={ <Signup /> } />
             <Route path='/confirm' element={ <Confirm /> } />

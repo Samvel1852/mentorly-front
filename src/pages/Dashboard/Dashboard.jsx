@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Input, Layout, Row, Select, Table } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUsers } from '../../features/Dashboard/dashboard';
+import { getUsers } from '../../features/Dashboard/dashboardSlice';
 import { Option } from 'antd/es/mentions';
 import MainHeader from '../../components/Header/MainHeader';
 import { Link } from 'react-router-dom';

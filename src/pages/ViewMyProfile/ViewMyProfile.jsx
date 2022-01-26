@@ -12,7 +12,7 @@ import {
   setProfileState,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
 import { useDispatch } from 'react-redux';
-import { getUserData } from '../../features/profile/profile';
+import { getUserData } from '../../features/profile/profileSlice';
 import { useSelector } from 'react-redux';
 
 const { Content, Footer } = Layout;
