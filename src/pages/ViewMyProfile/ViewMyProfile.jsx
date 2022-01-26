@@ -37,9 +37,6 @@ export default function ViewMyProfile() {
     navigate(`/users/${id}`);
   }
 
-  console.log('userStatus', userData?.status);
-  console.log('editLoader', editLoader);
-
   return (
     <Layout>
       <MainHeader verified={true} />

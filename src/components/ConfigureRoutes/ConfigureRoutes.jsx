@@ -27,6 +27,7 @@ export const PublicRoute = () => {
 }
 
 export const SemiPrivateRoute = () => {
+    const isAuth = useAuth();
     const isLogged = useLogged();
-    return isLogged ? <Outlet /> : <Login />
+    return isLogged || isAuth ? <Outlet /> : <Login />
 }

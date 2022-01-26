@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { myAxios } from '../../helpers/axiosInstance';
-import { getLocalStorage } from '../../helpers/localStorage';
 
 const initialState = {
   firstName: '',
@@ -36,7 +35,7 @@ export const verifyUser = createAsyncThunk(
     id,
   }, { rejectWithValue }) => {
     try {
-    const userData = await myAxios.put(`users/${id}`, {
+    const userData = await myAxios().put(`users/${id}`, {
       firstName,
       lastName,
       selectedRole,
@@ -48,9 +47,7 @@ export const verifyUser = createAsyncThunk(
       plans,
       addingSkill,
       skills,
-    }, {headers: {
-      Authorization: `Bearer ${getLocalStorage('accessToken')}` || '',
-    }});
+    });
     return userData;
   }catch (err) {
     return rejectWithValue(err);

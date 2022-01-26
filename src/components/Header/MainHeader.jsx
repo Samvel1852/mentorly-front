@@ -3,7 +3,7 @@ import { Header } from 'antd/lib/layout/layout';
 import PropTypes from 'prop-types';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { removeFromLocalStorage } from '../../helpers/localStorage';
+import { getLocalStorage, removeFromLocalStorage } from '../../helpers/localStorage';
 import styles from './MainHeader.module.less'
 
 export default function MainHeader ({ verified }) {
@@ -32,7 +32,7 @@ export default function MainHeader ({ verified }) {
           </Menu.Item>
         </Menu> : 
         <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['1']} className={styles.unverifiedMenu}>
-          <Menu.Item key='1'><Link to='/'>My Profile</Link></Menu.Item>
+          <Menu.Item key='1'><Link to={`/users/${getLocalStorage('currentUserId')}`}>My Profile</Link></Menu.Item>
           <Menu.Item key='2' onClick={handleLogOut}>
             Log Out
           </Menu.Item>
