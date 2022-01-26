@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Input, Layout, Row, Select, Table } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUsers } from '../../features/Dashboard/dashboard';
+import { getUsers } from '../../features/Dashboard/dashboardSlice';
 import { Option } from 'antd/es/mentions';
 import MainHeader from '../../components/Header/MainHeader';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
     const dispatch = useDispatch();
     const { users, pageTotal, loading } = useSelector(state => state.users);
+    const navigate = useNavigate()
     const [params, setParams] = useState({
         page: 1,
         limit: 5,
@@ -27,7 +28,6 @@ function Dashboard() {
             title: 'First Name',
             dataIndex: 'firstName',
             key: 'firstName',
-            render: text => <Link to={ `/:${ text._id }` }> { text.firstName }</Link>
         },
         {
             title: 'Last Name',
@@ -53,7 +53,7 @@ function Dashboard() {
     const dataSource = users.map((item) => (
         {
             key: item._id,
-            firstName: item,
+            firstName: item.firstName,
             lastName: item.lastName,
             position: item.position,
             filed: item.selectedField,
@@ -65,7 +65,7 @@ function Dashboard() {
         await getData(params);
     };
     return (
-        <Layout>
+        <Layout style={{ height: '100vh'}}>
             <MainHeader/>
             <div style={ { 'margin': '30px'} }>
                 <Form
@@ -105,9 +105,11 @@ function Dashboard() {
                         <Col span={ 4 }>
                             <Form.Item>
                                 <Select
+                                    mode={ 'multiple' }
+                                    allowClear
+                                    style={ { width: '100%' } }
                                     placeholder="Filed"
                                     onChange={ (value) => setParams({ ...params, selectedField: value }) }
-                                    allowClear
                                 >
                                     <Option value="it">IT</Option>
                                     <Option value="marketing">Marketing</Option>
@@ -125,8 +127,8 @@ function Dashboard() {
                                     onChange={ (value) => setParams({ ...params, selectedRole: value }) }
                                     allowClear
                                 >
-                                    <Option value="mentor">mentor</Option>
-                                    <Option value="mentee">mentee</Option>
+                                    <Option value="mentor">Mentor</Option>
+                                    <Option value="mentee">Mentee</Option>
                                 </Select>
                             </Form.Item>
                         </Col>
@@ -143,6 +145,12 @@ function Dashboard() {
                 <Table
                     dataSource={ dataSource }
                     columns={ columns }
+                    onRow={(record) => {
+                        return {
+                            style: {  cursor: 'pointer' },
+                            onClick: () => navigate(`/${record.key}`)
+                          }
+                    }}
                     loading={ loading }
                     pagination={ {
                         total: pageTotal,
