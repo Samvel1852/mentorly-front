@@ -17,7 +17,7 @@ export default function Login() {
     setLoginLoader(true);
 
     try {
-      const response = await myAxios.post(`login`, values);
+      const response = await myAxios().post(`login`, values);
 
       if (response.status === 200) {
         setLocalStorage('accessToken', response.data.data.token);

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Layout, Form, Input, Button, Select, Modal } from 'antd';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import styles from './FillMyProfile.module.less';
 import 'antd/dist/antd.css';
@@ -150,9 +150,9 @@ export default function FillMyProfile() {
   }
 
   return (
-    <>
-    {
-      getLocalStorage('accessToken') ?    
+    
+    
+         
     <Layout>
       <MainHeader />
       <Modal
@@ -384,8 +384,8 @@ export default function FillMyProfile() {
       <Footer className={styles.foot}>
         Simply Technologies ©2022 Created with Pleasure
       </Footer>
-    </Layout> : <Navigate to='/login' />}
-    </>
+    </Layout> 
+    
   );
 }
 

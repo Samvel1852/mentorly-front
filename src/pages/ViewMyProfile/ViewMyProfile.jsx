@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Col, Layout, Row, Spin, Typography } from 'antd';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from './ViewMyProfile.module.less';
 import 'antd/dist/antd.css';
 
@@ -29,8 +29,9 @@ export default function ViewMyProfile() {
   const { id } = useParams();
 
   useEffect(async () => {
+    console.log('ok');
     await dispatch(getUserData(id));
-    if (!getLocalStorage('accessToken') && getLocalStorage('verified') !== 'verified') navigate('/login');
+    // if (!getLocalStorage('accessToken') && getLocalStorage('verified') !== 'verified') navigate('/login');
   }, []);
 
   async function handleEditProfileClick () {
@@ -38,12 +39,13 @@ export default function ViewMyProfile() {
     navigate(`/users/${id}`);
   }
 
+  console.log('userStatus', userData?.status);
+
   return (
     <Layout>
       <MainHeader verified={true} />
 
-      { userData?.status === 'verified'  ?
-        
+      { userData?.status === 'verified'  ? 
       <Content className={styles.site_layout} >
           <Row className={styles.mainRow} >
             <Col flex='200px' className={styles.personalInfoContainer}>
@@ -89,7 +91,7 @@ export default function ViewMyProfile() {
                   userData?.plans}</Typography>
             </Col>
           </Row>
-      </Content> : (userData) ? <Navigate to='/' />
+      </Content> 
       : <div className={styles.pageLoaderContainer}><Spin tip='Loading...' /></div>
       }
       <Footer className={styles.foot}>

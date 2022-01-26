@@ -14,7 +14,7 @@ export default function Confirm() {
   const onFinish = async (values) => {
     setConfirmLoader(true);
     try {
-      const response = await myAxios.post('verify', values);
+      const response = await myAxios().post('verify', values);
       setErrorMessage('');
 
       if (response.status === 200) {
