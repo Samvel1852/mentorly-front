@@ -1,6 +1,5 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axiosInstance from '../../helpers/axiosInstance';
-// import { getLocalStorage } from '../../helpers/localStorage';
 
 export const getUsers = createAsyncThunk(
     'users/getUsers',

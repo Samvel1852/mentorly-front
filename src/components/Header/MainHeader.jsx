@@ -18,24 +18,26 @@ export default function MainHeader ({ verified }) {
         navigate('/login');
     }
 
+    const currentUserId = `/${getLocalStorage('currentUserId')}`;
+
     return(
       <Header className={styles.head} >
-      <div className={styles.logo}><Link to={`/${getLocalStorage('currentUserId')}`}>Mentorly</Link></div>
+      <div className={styles.logo}><Link to={currentUserId}>Mentorly</Link></div>
       {
         verified ?
         <Menu theme='dark' mode='horizontal' defaultSelectedKeys={`${pathname}`} className={styles.menu}
            >
           <Menu.Item key='/dashboard' ><Link to='/dashboard'>Dashboard</Link></Menu.Item>
           <Menu.Item key='/requests' ><Link to='/requests'>Message Requests</Link></Menu.Item>
-          <Menu.Item key={`/${getLocalStorage('currentUserId')}`} >
-            <Link to={`/${getLocalStorage('currentUserId')}`}>My Profile</Link>
+          <Menu.Item key={currentUserId} >
+            <Link to={currentUserId}>My Profile</Link>
           </Menu.Item>
           <Menu.Item key='4' onClick={handleLogOut}>
             Log Out
           </Menu.Item>
         </Menu> : 
         <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['1']} className={styles.unverifiedMenu}>
-          <Menu.Item key='1'><Link to={`/users/${getLocalStorage('currentUserId')}`}>My Profile</Link></Menu.Item>
+          <Menu.Item key='1'><Link to={`/users/${currentUserId}`}>My Profile</Link></Menu.Item>
           <Menu.Item key='2' onClick={handleLogOut}>
             Log Out
           </Menu.Item>

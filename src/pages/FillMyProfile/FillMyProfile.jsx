@@ -53,11 +53,11 @@ export default function FillMyProfile() {
   const [form] = Form.useForm();
 
   const initialValues = { 
-    ['firstName']: firstName, ['lastName']: lastName,
-    ['role']: selectedRole, ['field']: selectedField,
-    ['position']: position, ['education']: education,
-    ['experience']: experience, ['about']: about,
-    ['plans']: plans, ['skills']: skills }
+    firstName, lastName,
+    selectedRole, selectedField,
+    position, education,
+    experience, about,
+    plans, skills }
 
   const onFinish = async () => {
 
@@ -207,7 +207,7 @@ export default function FillMyProfile() {
             </div>
             <div className={styles.selectsContainer}>
               <Form.Item
-                name='role'
+                name='selectedRole'
                 label='Choose Role'
                 labelCol={{ span: 24 }}
                 rules={[getRequiredMessage('Please select Your Role!')]}
@@ -226,7 +226,7 @@ export default function FillMyProfile() {
                 </Select>
               </Form.Item>
               <Form.Item
-                name='field'
+                name='selectedField'
                 label='Choose Field'
                 labelCol={{ span: 24 }}
                 rules={[getRequiredMessage('Please select Your Field!'),]}

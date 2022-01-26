@@ -18,15 +18,16 @@ export default function Login() {
 
     try {
       const response = await axiosInstance.post(`login`, values);
+      const userDetails = response.data.data;
 
       if (response.status === 200) {
-        setLocalStorage('accessToken', response.data.data.token);
-        setLocalStorage('currentUserId', response.data.data.user._id);
-        setLocalStorage('verified', response.data.data.user.status);
-        if (response.data.data.user.status === 'verified') {
-          navigate(`/${response.data.data.user._id}`)
+        setLocalStorage('accessToken', userDetails.token);
+        setLocalStorage('currentUserId', userDetails.user._id);
+        setLocalStorage('verified', userDetails.user.status);
+        if (userDetails.user.status === 'verified') {
+          navigate(`/${userDetails.user._id}`)
         } else {
-          navigate(`/users/${response.data.data.user._id}`);
+          navigate(`/users/${userDetails.user._id}`);
         }
       }
 

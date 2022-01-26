@@ -28,6 +28,8 @@ export default function ViewMyProfile() {
 
   const { id } = useParams();
 
+  const currentUserId = getLocalStorage('currentUserId');
+
   useEffect(async () => {
     await dispatch(getUserData(id));
   }, [id]);
@@ -51,7 +53,7 @@ export default function ViewMyProfile() {
                 {userData?.selectedRole === 'Mentor'? 'Mentor': null} </Title>
                 <Typography>First Name: {userData?.firstName}</Typography>
                 <Typography>Last Name: {userData?.lastName}</Typography>
-                {id === getLocalStorage('currentUserId') && 
+                {id === currentUserId && 
                   <Typography>Email: {userData?.email}</Typography>
                 }
                 <Typography>Role: {userData?.selectedRole}</Typography>
@@ -64,7 +66,7 @@ export default function ViewMyProfile() {
               }
               </div>
               {
-                 id === getLocalStorage('currentUserId') ? <Button type='primary' 
+                 id === currentUserId ? <Button type='primary' 
                  className={styles.editBtn}
                  onClick={handleEditProfileClick}
                  loading={editLoader}>Edit</Button>
