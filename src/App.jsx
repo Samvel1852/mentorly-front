@@ -34,6 +34,7 @@ function App() {
             <Route path='/dashboard' element={ <Dashboard/> } />
             <Route path='/:id' element={ <ViewMyProfile accessToken={accessToken} /> } />
           </Route>
+          <Route path="*" element={<Navigate to={'/'} />} />
         </Routes>
     </div>
   );

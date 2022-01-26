@@ -3,7 +3,7 @@ import { Header } from 'antd/lib/layout/layout';
 import PropTypes from 'prop-types';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { getLocalStorage, removeFromLocalStorage } from '../../helpers/localStorage';
+import { removeFromLocalStorage } from '../../helpers/localStorage';
 import styles from './MainHeader.module.less'
 
 export default function MainHeader ({ verified }) {
@@ -18,14 +18,14 @@ export default function MainHeader ({ verified }) {
 
     return(
       <Header className={styles.head} >
-      <div className={styles.logo}><Link to={`/${getLocalStorage('currentUserId')}`}>Mentorly</Link></div>
+      <div className={styles.logo}><Link to={`/`}>Mentorly</Link></div>
       {
         verified ?
         <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['3']} className={styles.menu}>
           <Menu.Item key='1' className={styles['ant-menu-item']}><Link to='/dashboard'>Dashboard</Link></Menu.Item>
           <Menu.Item key='2' className={styles['ant-menu-item']}><Link to='/requests'>Message Requests</Link></Menu.Item>
           <Menu.Item key='3' className={styles['ant-menu-item-selected']}>
-            <Link to={`/${getLocalStorage('currentUserId')}`}>My Profile</Link>
+            <Link to={`/`}>My Profile</Link>
           </Menu.Item>
           <Menu.Item key='4' className={styles['ant-menu-item']} onClick={handleLogOut}>
             Log Out

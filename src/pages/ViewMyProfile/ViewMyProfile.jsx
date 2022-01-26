@@ -29,9 +29,7 @@ export default function ViewMyProfile() {
   const { id } = useParams();
 
   useEffect(async () => {
-    console.log('ok');
     await dispatch(getUserData(id));
-    // if (!getLocalStorage('accessToken') && getLocalStorage('verified') !== 'verified') navigate('/login');
   }, []);
 
   async function handleEditProfileClick () {
@@ -40,12 +38,14 @@ export default function ViewMyProfile() {
   }
 
   console.log('userStatus', userData?.status);
+  console.log('editLoader', editLoader);
 
   return (
     <Layout>
       <MainHeader verified={true} />
-
-      { userData?.status === 'verified'  ? 
+      { userData?.status !== 'verified' && !editLoader ? 
+      <div className={styles.pageLoaderContainer}>The User not exists</div> :
+       !editLoader  ? 
       <Content className={styles.site_layout} >
           <Row className={styles.mainRow} >
             <Col flex='200px' className={styles.personalInfoContainer}>
@@ -91,7 +91,7 @@ export default function ViewMyProfile() {
                   userData?.plans}</Typography>
             </Col>
           </Row>
-      </Content> 
+      </Content>
       : <div className={styles.pageLoaderContainer}><Spin tip='Loading...' /></div>
       }
       <Footer className={styles.foot}>
