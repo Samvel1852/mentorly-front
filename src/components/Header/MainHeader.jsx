@@ -1,12 +1,14 @@
 import { Menu } from 'antd';
 import { Header } from 'antd/lib/layout/layout';
 import PropTypes from 'prop-types';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { getLocalStorage, removeFromLocalStorage } from '../../helpers/localStorage';
 import styles from './MainHeader.module.less'
 
 export default function MainHeader ({ verified }) {
+    const { pathname } = useLocation()
+
     const navigate = useNavigate();
 
     async function handleLogOut() {
@@ -14,20 +16,21 @@ export default function MainHeader ({ verified }) {
         await removeFromLocalStorage('currentUserId');
         await removeFromLocalStorage('verified');
         navigate('/login');
-      }
+    }
 
     return(
       <Header className={styles.head} >
-      <div className={styles.logo}><Link to={`/`}>Mentorly</Link></div>
+      <div className={styles.logo}><Link to={`/${getLocalStorage('currentUserId')}`}>Mentorly</Link></div>
       {
         verified ?
-        <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['3']} className={styles.menu}>
-          <Menu.Item key='1' className={styles['ant-menu-item']}><Link to='/dashboard'>Dashboard</Link></Menu.Item>
-          <Menu.Item key='2' className={styles['ant-menu-item']}><Link to='/requests'>Message Requests</Link></Menu.Item>
-          <Menu.Item key='3' className={styles['ant-menu-item-selected']}>
-            <Link to={`/`}>My Profile</Link>
+        <Menu theme='dark' mode='horizontal' defaultSelectedKeys={`${pathname}`} className={styles.menu}
+           >
+          <Menu.Item key='/dashboard' ><Link to='/dashboard'>Dashboard</Link></Menu.Item>
+          <Menu.Item key='/requests' ><Link to='/requests'>Message Requests</Link></Menu.Item>
+          <Menu.Item key={`/${getLocalStorage('currentUserId')}`} >
+            <Link to={`/${getLocalStorage('currentUserId')}`}>My Profile</Link>
           </Menu.Item>
-          <Menu.Item key='4' className={styles['ant-menu-item']} onClick={handleLogOut}>
+          <Menu.Item key='4' onClick={handleLogOut}>
             Log Out
           </Menu.Item>
         </Menu> : 

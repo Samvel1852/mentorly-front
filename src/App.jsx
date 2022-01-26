@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 import './App.less';
@@ -12,11 +12,16 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import { PrivateRoute, PublicRoute, SemiPrivateRoute } from './components/ConfigureRoutes/ConfigureRoutes';
 
 function App() {
+  const [currentUserId, setCurrentUserId] = useState(getLocalStorage('currentUserId'));
+
+  useEffect(() => {
+    setCurrentUserId(getLocalStorage('currentUserId'));
+  },[]);
 
   return (
     <div className='App'>
         <Routes>
-          <Route path='/' element={<Navigate to={`/${getLocalStorage('currentUserId')}`} />} />
+          <Route path='/' element={<Navigate to={`/${currentUserId}`} />} />
           <Route element={ <PublicRoute /> }>
             <Route path='/signup' element={ <Signup /> } />
             <Route path='/confirm' element={ <Confirm /> } />

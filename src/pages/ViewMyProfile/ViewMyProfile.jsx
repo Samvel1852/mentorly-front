@@ -30,7 +30,7 @@ export default function ViewMyProfile() {
 
   useEffect(async () => {
     await dispatch(getUserData(id));
-  }, []);
+  }, [id]);
 
   async function handleEditProfileClick () {
     await dispatch(setProfileState(userData));
