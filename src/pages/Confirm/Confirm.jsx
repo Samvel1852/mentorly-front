@@ -4,10 +4,12 @@ import { Form, Input, Button } from 'antd';
 
 import styles from './Confirm.module.less';
 import axiosInstance from '../../helpers/axiosInstance';
+import Modal from 'antd/lib/modal/Modal';
 
 export default function Confirm() {
   const [errorMessage, setErrorMessage] = useState('');
   const [confirmLoader, setConfirmLoader] = useState(false);
+  const [isModalVisible, setIsModalVisible] =useState(false);
 
   const navigate = useNavigate();
 
@@ -18,7 +20,7 @@ export default function Confirm() {
       setErrorMessage('');
 
       if (response.status === 200) {
-        navigate('/login');
+        setIsModalVisible(true);
       }
     } catch ({ response }) {
       setErrorMessage(response.data.errors[0]);
@@ -26,10 +28,23 @@ export default function Confirm() {
     }
   };
 
-  const validateRequiredFields = (message) => ({required: true, message})
+  const validateRequiredFields = (message) => ({required: true, message});
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+    navigate('/login');
+  };
 
   return (
       <div className={styles.formContainer}>
+      <Modal
+        title='You have successfully registered'
+        visible={isModalVisible}
+        onOk={handleOk}
+        cancelButtonProps={{ style: { display: 'none' } }}
+        >
+          <p>Click on Ok button below to Log in</p>
+      </Modal>
       <Form name='basic' initialValues={{ remember: true }}
         onFinish={onFinish}
         autoComplete='off'
