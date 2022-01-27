@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Layout, Form, Button, Select, Modal } from 'antd';
+import { Layout, Form, Button, Select } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import styles from './FillMyProfile.module.less';
@@ -21,8 +21,11 @@ import {
 } from '../../helpers/localStorage';
 import { MainTextarea } from '../../elements/MainTextArea';
 import { MainSelect } from '../../elements/MainSelect';
+import { MainButton } from '../../elements/MainButton';
+import { MainModal } from '../../components/Modal/MainModal';
+import MainFooter from '../../components/Footer/MainFooter';
 
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 const { Option } = Select;
 
 export default function FillMyProfile() {  
@@ -157,15 +160,16 @@ export default function FillMyProfile() {
          
     <Layout>
       <MainHeader />
-      <Modal
+      <MainModal
         title='Something went wrong'
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleOk}
+        cancelButtonProps={{ style: { display: 'none' } }}
+        message={'error'}
       >
-        <p>Please check whether all the fields are filled right!</p>
-        <p>and Please try Again</p>
-      </Modal>
+        <p>Please check your connection and try again!</p>
+      </MainModal>
       <Content className={styles.site_layout} >
         <div className={styles.content}>
           <Form
@@ -383,15 +387,14 @@ export default function FillMyProfile() {
               </Layout>
             </Form.Item>
             <br />
-            <Button type='primary' htmlType='submit' loading={submitLoader}>
+            <MainButton width={'100px'} height={"40px"} type='primary' htmlType='submit' 
+            loading={submitLoader}>
               Submit
-            </Button>
+            </MainButton>
           </Form>
         </div>
       </Content>
-      <Footer className={styles.foot}>
-        Simply Technologies ©2022 Created with Pleasure
-      </Footer>
+      <MainFooter> Simply Technologies ©2022 Created with Pleasure </MainFooter>
     </Layout> 
     
   );

@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
-import Modal from 'antd/lib/modal/Modal';
 
 import MainHeader from '../../components/Header/MainHeader'
 import styles from './Confirm.module.less';
 import axiosInstance from '../../helpers/axiosInstance';
+import { MainModal } from '../../components/Modal/MainModal';
 
 export default function Confirm() {
   const [errorMessage, setErrorMessage] = useState('');
@@ -40,14 +40,15 @@ export default function Confirm() {
     <>
     <MainHeader inPublicPages={true} />
       <div className={styles.formContainer}>
-      <Modal
+      <MainModal
         title='You have successfully registered'
         visible={isModalVisible}
         onOk={handleOk}
         cancelButtonProps={{ style: { display: 'none' } }}
+        message={'success'}
         >
           <p>Click on Ok button below to Log in</p>
-      </Modal>
+      </MainModal>
       <Form name='basic' initialValues={{ remember: true }}
         onFinish={onFinish}
         autoComplete='off'

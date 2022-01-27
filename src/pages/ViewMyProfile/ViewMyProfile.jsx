@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Button, Col, Layout, Row, Spin, Typography } from 'antd';
+import { Col, Layout, Row, Spin, Typography } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
-import styles from './ViewMyProfile.module.less';
 import 'antd/dist/antd.css';
 
 import { getLocalStorage } from '../../helpers/localStorage';
@@ -11,11 +11,13 @@ import MainHeader from '../../components/Header/MainHeader';
 import {
   setProfileState,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
-import { useDispatch } from 'react-redux';
-import { getUserData } from '../../features/profile/profileSlice';
-import { useSelector } from 'react-redux';
 
-const { Content, Footer } = Layout;
+import { getUserData } from '../../features/profile/profileSlice';
+import MainFooter from '../../components/Footer/MainFooter';
+import styles from './ViewMyProfile.module.less';
+import { MainButton } from '../../elements/MainButton';
+
+const { Content } = Layout;
 
 const { Title } = Typography;
 
@@ -66,12 +68,14 @@ export default function ViewMyProfile() {
               }
               </div>
               {
-                 id === currentUserId ? <Button type='primary' 
+                 id === currentUserId ? <MainButton
+                 margin={'40px 0 0 0 '}
+                 width={'100px'} type='primary' 
                  className={styles.editBtn}
                  onClick={handleEditProfileClick}
-                 loading={editLoader}>Edit</Button>
-                 : <Button type='primary' 
-                 className={styles.connectBtn}>Connect</Button>
+                 loading={editLoader}>Edit</MainButton>
+                 : <MainButton width={'150px'} margin={'40px 0 0 0 '} type='primary' 
+                 className={styles.connectBtn}>Connect</MainButton>
                 }
             </Col>
             <Col xs={5} sm={6} md={15} lg={16} xl={17} className={styles.generalInfoContainer}>
@@ -93,9 +97,7 @@ export default function ViewMyProfile() {
       </Content>
       : <div className={styles.pageLoaderContainer}><Spin tip='Loading...' /></div>
       }
-      <Footer className={styles.foot}>
-        Simply Technologies ©2022 Created with Pleasure
-      </Footer>
+      <MainFooter > Simply Technologies ©2022 Created with Pleasure </MainFooter>
     </Layout>
   );
 }

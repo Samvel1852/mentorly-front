@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Form, Input, Button } from 'antd';
+import { Form, Input } from 'antd';
 
 import MainHeader from '../../components/Header/MainHeader'
 import styles from './Signup.module.less';
 import './Signup.less'
 import axiosInstance from '../../helpers/axiosInstance';
+import { MainButton } from '../../elements/MainButton';
 
 export default function Signup() {
   const [errorMessage, setErrorMessage] = useState('');
@@ -81,9 +82,10 @@ export default function Signup() {
         </Form.Item>
 
         <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 9, span: 16 }} >
-          <Button className={styles.signUpBtn} type='primary' htmlType='submit' loading={signUpLoader}>
+          <MainButton width={'78px'} height={'32px'} margin={'10px 0 0 0'}
+                type='primary' htmlType='submit' loading={signUpLoader}>
             Sign Up
-          </Button>
+          </MainButton>
         </Form.Item>
         <Form.Item className={styles.signUpFormItem} wrapperCol={{ span: 24, offset: 5 }}>
           Already have an account? <Link to='/login'>Log in</Link>
