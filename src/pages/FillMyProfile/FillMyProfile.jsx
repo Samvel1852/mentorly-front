@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Layout, Form, Input, Button, Select, Modal } from 'antd';
+import { Layout, Form, Button, Select, Modal } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import styles from './FillMyProfile.module.less';
 import 'antd/dist/antd.css';
 import Skill from '../../components/Skill/Skill';
 import MainHeader from '../../components/Header/MainHeader';
+import { MainInput } from '../../elements/MainInput';
 
 import {
   verifyUser,
@@ -18,10 +19,10 @@ import {
   getLocalStorage,
   setLocalStorage,
 } from '../../helpers/localStorage';
+import { MainTextarea } from '../../elements/MainTextArea';
 
 const { Content, Footer } = Layout;
 const { Option } = Select;
-const { TextArea } = Input;
 
 export default function FillMyProfile() {  
   const navigate = useNavigate();
@@ -176,42 +177,42 @@ export default function FillMyProfile() {
             initialValues={initialValues}
           >
             <div className={styles.namesContainer}>
-              <Form.Item
+              <Form.Item 
+                className={styles.fillMyProfileFormItem, styles.firstName}
                 name='firstName'
                 label='First Name'
                 labelCol={{ span: 24 }}
-                className={styles.firstName}
                 rules={[
                   getRequiredMessage('Please input your First Name!'),
                   validateMinTwoCharacters(),
                   validateNamesOnlyLetters(),
                 ]}
               >
-                <Input name='firstName' value={firstName} onChange={({target}) => 
+                <MainInput name='firstName' value={firstName} onChange={({target}) => 
                         handleChange(target.value, target.name)} />
               </Form.Item>
-              <Form.Item
+              <Form.Item 
+                className={styles.fillMyProfileFormItem, styles.lastName}
                 name='lastName'
                 label='Last Name'
                 labelCol={{ span: 24 }}
-                className={styles.lastName}
                 rules={[
                   getRequiredMessage('Please input your Last Name!'),
                   validateMinTwoCharacters(),
                   validateNamesOnlyLetters(),
                 ]}
               >
-                <Input name='lastName' value={lastName} onChange={({target}) => 
+                <MainInput name='lastName' value={lastName} onChange={({target}) => 
                         handleChange(target.value, target.name)} />
               </Form.Item>
             </div>
             <div className={styles.selectsContainer}>
-              <Form.Item
+              <Form.Item 
+                className={styles.fillMyProfileFormItem, styles.role}
                 name='selectedRole'
                 label='Choose Role'
                 labelCol={{ span: 24 }}
                 rules={[getRequiredMessage('Please select Your Role!')]}
-                className={styles.role}
               >
                 <Select
                   initialvalue='--Select Role'
@@ -225,12 +226,12 @@ export default function FillMyProfile() {
                   <Option value='Mentee'>Mentee</Option>
                 </Select>
               </Form.Item>
-              <Form.Item
+              <Form.Item 
+                className={styles.fillMyProfileFormItem, styles.field}
                 name='selectedField'
                 label='Choose Field'
                 labelCol={{ span: 24 }}
                 rules={[getRequiredMessage('Please select Your Field!'),]}
-                className={styles.field}
               >
                 <Select
                   initialvalue='--Select Field'
@@ -249,13 +250,14 @@ export default function FillMyProfile() {
                 </Select>
               </Form.Item>
             </div>
-            <Form.Item
+            <Form.Item 
+              className={styles.fillMyProfileFormItem}
               name='position'
               label='Position'
               labelCol={{ span: 24 }}
               rules={[getRequiredMessage('Please input your Position!')]}
             >
-              <Input
+              <MainInput
                 name='position'
                 maxLength={50}
                 onChange={({target}) => 
@@ -263,14 +265,15 @@ export default function FillMyProfile() {
                 value={position}
               />
             </Form.Item>
-            <Form.Item
+            <Form.Item 
+              className={styles.fillMyProfileFormItem}
               name='education'
               label='Education'
               labelCol={{ span: 24 }}
               rules={[getRequiredMessage('Please input your Education!'),
               {min: 10, message: 'The Education field must contain at least 10 characters'}]}
             >
-              <TextArea
+              <MainTextarea
                 name='education'
                 value={education}
                 onChange={({target}) => 
@@ -280,14 +283,15 @@ export default function FillMyProfile() {
                 maxLength={255}
               />
             </Form.Item>
-            <Form.Item
+            <Form.Item 
+              className={styles.fillMyProfileFormItem}
               name='experience'
               label='Experience'
               labelCol={{ span: 24 }}
               rules={[getRequiredMessage('Please input your Experience!'),
               {min: 10, message: 'The Experience field must contain at least 10 characters'}]}
             >
-              <TextArea
+              <MainTextarea
                 name='experience'
                 value={experience}
                 onChange={({target}) => 
@@ -297,14 +301,15 @@ export default function FillMyProfile() {
                 maxLength={255}
               />
             </Form.Item>
-            <Form.Item
+            <Form.Item 
+              className={styles.fillMyProfileFormItem}
               name='about'
               label='About'
               labelCol={{ span: 24 }}
               rules={[getRequiredMessage('Please input something About You!'), 
               {min: 10, message: 'The About field must contain at least 10 characters'}]}
             >
-              <TextArea
+              <MainTextarea
                 name='about'
                 value={about}
                 onChange={({target}) => 
@@ -314,7 +319,8 @@ export default function FillMyProfile() {
                 maxLength={255}
               />
             </Form.Item>
-            <Form.Item
+            <Form.Item 
+              className={styles.fillMyProfileFormItem}
               name='plans'
               label={
                 selectedRole === 'Mentor'
@@ -327,7 +333,7 @@ export default function FillMyProfile() {
               rules={[getRequiredMessage('Please input your Your Plans!'),
               {min: 10, message: 'This field must contain at least 10 characters'}]}
             >
-              <TextArea 
+              <MainTextarea 
                 name='plans'
                 value={plans}
                 onChange={({target}) => 
@@ -337,7 +343,8 @@ export default function FillMyProfile() {
                 maxLength={150}
               />
             </Form.Item>
-            <Form.Item
+            <Form.Item 
+              className={styles.fillMyProfileFormItem}
               name='skills'
               label='Skills'
               labelCol={{ span: 24 }}
@@ -355,7 +362,7 @@ export default function FillMyProfile() {
                     />
                   ))}
                   {addingSkill ? (
-                    <Input
+                    <MainInput
                       name='skillName'
                       value={skillName}
                       onPressEnter={handleAddingSkillChange}
