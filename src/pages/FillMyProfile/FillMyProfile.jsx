@@ -32,10 +32,6 @@ export default function FillMyProfile() {
   const navigate = useNavigate();
   const params = useParams();
 
-  useEffect(() => {
-    if (!getLocalStorage('accessToken')) navigate('/login');
-  }, []);
-
   const {
     firstName,
     lastName,
@@ -54,6 +50,17 @@ export default function FillMyProfile() {
   } = useSelector((state) => state.fillMyProfile);
 
   const dispatch = useDispatch();
+
+  const clearState = {
+    firstName: '', lastName: '', selectedRole: '', selectedField: '',
+    position: '', education: '', experience: '', about: '', plans: '',
+    skills: [],
+  }
+
+  useEffect(() => {
+    if (!getLocalStorage('accessToken')) navigate('/login');
+    return () => dispatch(setProfileState(clearState));
+  }, []);
 
   const [form] = Form.useForm();
 

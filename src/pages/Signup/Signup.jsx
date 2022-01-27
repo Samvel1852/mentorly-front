@@ -82,7 +82,7 @@ export default function Signup() {
         </Form.Item>
 
         <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 9, span: 16 }} >
-          <MainButton width={'78px'} height={'32px'} margin={'10px 0 0 0'}
+          <MainButton margin={'15px 0 0 0'}
                 type='primary' htmlType='submit' loading={signUpLoader}>
             Sign Up
           </MainButton>

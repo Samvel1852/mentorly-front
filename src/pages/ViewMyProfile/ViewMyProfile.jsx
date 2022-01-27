@@ -34,6 +34,8 @@ export default function ViewMyProfile() {
 
   useEffect(async () => {
     await dispatch(getUserData(id));
+
+    // return () => dispatch(setProfileState({ userData: null }))
   }, [id]);
 
   async function handleEditProfileClick () {
