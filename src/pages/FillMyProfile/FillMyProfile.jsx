@@ -20,6 +20,7 @@ import {
   setLocalStorage,
 } from '../../helpers/localStorage';
 import { MainTextarea } from '../../elements/MainTextArea';
+import { MainSelect } from '../../elements/MainSelect';
 
 const { Content, Footer } = Layout;
 const { Option } = Select;
@@ -214,7 +215,7 @@ export default function FillMyProfile() {
                 labelCol={{ span: 24 }}
                 rules={[getRequiredMessage('Please select Your Role!')]}
               >
-                <Select
+                <MainSelect
                   initialvalue='--Select Role'
                   onChange={(value) => handleChange(value, 'selectedRole')}
                   placeholder='--Select Role'
@@ -224,7 +225,7 @@ export default function FillMyProfile() {
                   </Option>
                   <Option value='Mentor'>Mentor</Option>
                   <Option value='Mentee'>Mentee</Option>
-                </Select>
+                </MainSelect>
               </Form.Item>
               <Form.Item 
                 className={styles.fillMyProfileFormItem, styles.field}
@@ -233,7 +234,7 @@ export default function FillMyProfile() {
                 labelCol={{ span: 24 }}
                 rules={[getRequiredMessage('Please select Your Field!'),]}
               >
-                <Select
+                <MainSelect
                   initialvalue='--Select Field'
                   onChange={(value) => handleChange(value, 'selectedField')}
                   placeholder='Select Field'
@@ -247,7 +248,7 @@ export default function FillMyProfile() {
                   <Option value='Law'>Law</Option>
                   <Option value='Tourism'>Tourism</Option>
                   <Option value='Business'>Business</Option>
-                </Select>
+                </MainSelect>
               </Form.Item>
             </div>
             <Form.Item 
