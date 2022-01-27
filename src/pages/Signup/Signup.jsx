@@ -41,7 +41,7 @@ export default function Signup() {
         autoComplete='off'
         requiredMark={false}
       >
-        <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 8, span: 16 }} >
+        <Form.Item className={styles.signUpFormTitle} wrapperCol={{ offset: 8, span: 16 }} >
           <h1>Sign Up</h1>
         </Form.Item>
         <Form.Item className={styles.signUpFormItem}
@@ -80,7 +80,7 @@ export default function Signup() {
           </div>
         </Form.Item>
 
-        <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 8, span: 16 }} >
+        <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 9, span: 16 }} >
           <Button className={styles.signUpBtn} type='primary' htmlType='submit' loading={signUpLoader}>
             Sign Up
           </Button>

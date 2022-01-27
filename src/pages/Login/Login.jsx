@@ -45,8 +45,6 @@ export default function Login() {
     <div className={styles.formContainer}>
       <Form
         name='basic'
-        labelCol={{ span: 10 }}
-        wrapperCol={{ span: 10 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
         autoComplete='off'

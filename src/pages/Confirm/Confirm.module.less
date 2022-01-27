@@ -3,9 +3,68 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100vh;
+  height: 88.5vh;
+  background-color: #edeae5;
 }
 
 .errorMessage {
   color: red;
+}
+
+.title {
+  margin-bottom: 0 !important;
+  font-size: 10px;
+}
+
+.confirmFormItem {
+  margin-bottom: 4px !important;
+  > div {
+    padding: 0 !important;
+  }
+
+  button {
+    width: 100px;
+  }
+
+  p {
+    font-size: 8px;
+  }
+}
+
+.confirmBtn {
+  background-color: #026670 !important;
+  border: none !important;
+  margin-top: 15px;
+}
+
+.confirmBtn:hover {
+  opacity: 70%;
+}
+
+.input:hover {
+  border: 1px solid #026670 !important;
+}
+
+.input:focus {
+  border-color: #026670 !important;
+  outline: 0 !important;
+  -webkit-box-shadow: 0 0 0 2px rgb(74,145,183, .2) !important;
+  box-shadow: 0 0 0 2px rgb(74,145,183, .2) !important;
+  opacity: 50%;
+}
+
+@media screen and (min-width: 600px) {
+  .input {
+    width: 450px;
+  }
+
+  .title {
+    margin-bottom: 0 !important;
+    font-size: 10px;
+  }
+  .confirmFormItem {
+    p {
+      font-size: 11px;
+    }
+  }
 }

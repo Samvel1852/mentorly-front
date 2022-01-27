@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
+import Modal from 'antd/lib/modal/Modal';
 
+import MainHeader from '../../components/Header/MainHeader'
 import styles from './Confirm.module.less';
 import axiosInstance from '../../helpers/axiosInstance';
-import Modal from 'antd/lib/modal/Modal';
 
 export default function Confirm() {
   const [errorMessage, setErrorMessage] = useState('');
@@ -36,6 +37,8 @@ export default function Confirm() {
   };
 
   return (
+    <>
+    <MainHeader inPublicPages={true} />
       <div className={styles.formContainer}>
       <Modal
         title='You have successfully registered'
@@ -50,36 +53,36 @@ export default function Confirm() {
         autoComplete='off'
         requiredMark={false}
       >
-        <Form.Item wrapperCol={{ span: 16, offset: 6 }} >
+        <Form.Item className={styles.confirmFormItem, styles.title} wrapperCol={{ span: 16, offset: 8 }} >
           <h1>Confirm e-mail</h1>
         </Form.Item>
-        <Form.Item wrapperCol={{ offset: 2 }}>
+        <Form.Item className={styles.confirmFormItem} wrapperCol={{ offset: 5 }}>
           <p>
             We have sent a verification code to your e-mail. <br /> Please
             insert the code to validate your e-mail address.
           </p>
         </Form.Item>
-        <Form.Item
+        <Form.Item className={styles.confirmFormItem}
           label='Code'
           name='verificationCode'
           labelCol={{ span: 24 }}
-          wrapperCol={{ span: 100 }}
           rules={[ validateRequiredFields('Please input messaged code!') ]}
         >
-          <Input />
+          <Input className={styles.input} />
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 2, span: 24 }} hidden={!errorMessage} >
+        <Form.Item className={styles.confirmFormItem} wrapperCol={{ offset: 0, span: 24 }} hidden={!errorMessage} >
           <div className={styles.errorMessage} >
             {errorMessage}
           </div>
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 10, span: 16 }} >
-          <Button type='primary' htmlType='submit' loading={confirmLoader}>
+        <Form.Item className={styles.confirmFormItem} wrapperCol={{ offset: 9, span: 16 }} >
+          <Button className={styles.confirmBtn} type='primary' htmlType='submit' loading={confirmLoader}>
             Submit
           </Button>
         </Form.Item>
       </Form>
-    </div>);
+    </div>
+  </>);
 }
