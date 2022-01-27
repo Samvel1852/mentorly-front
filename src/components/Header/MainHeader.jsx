@@ -8,7 +8,7 @@ import styles from './MainHeader.module.less';
 import './MainHeader.less';
 import Logo from '../../assets/images/MentorlyLogo.png'
 
-export default function MainHeader ({ verified }) {
+export default function MainHeader ({ verified, inPublicPages }) {
     const { pathname } = useLocation()
 
     const navigate = useNavigate();
@@ -39,13 +39,14 @@ export default function MainHeader ({ verified }) {
           <Menu.Item key='4' onClick={handleLogOut}>
             Log Out
           </Menu.Item>
-        </Menu> : 
+        </Menu> : (!inPublicPages) ?
         <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['1']} className={styles.unverifiedMenu}>
           <Menu.Item key='1'><Link to={`/users/${currentUserId}`}>My Profile</Link></Menu.Item>
           <Menu.Item key='2' onClick={handleLogOut}>
             Log Out
           </Menu.Item>
-        </Menu>
+        </Menu> : 
+        <Menu theme='dark' mode='horizontal'></Menu>
       }
     </Header>)
 }
@@ -53,4 +54,5 @@ export default function MainHeader ({ verified }) {
 MainHeader.propTypes = {
     handleLogOut: PropTypes.func,
     verified: PropTypes.bool,
+    inPublicPages: PropTypes.bool,
 };
