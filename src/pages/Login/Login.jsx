@@ -4,8 +4,8 @@ import { Link, useNavigate, Navigate } from 'react-router-dom';
 
 import axiosInstance from '../../helpers/axiosInstance';
 import { setLocalStorage, getLocalStorage } from '../../helpers/localStorage';
-
 import styles from './Login.module.less';
+import MainHeader from '../../components/Header/MainHeader';
 
 export default function Login() {
   const [errorMessage, setErrorMessage] = useState('');
@@ -41,6 +41,7 @@ export default function Login() {
 
   return (
     <>
+    <MainHeader inPublicPages={true} />
     { getLocalStorage('accessToken') ? <Navigate to='/' /> :
     <div className={styles.formContainer}>
       <Form
@@ -50,23 +51,23 @@ export default function Login() {
         autoComplete='off'
         requiredMark={false}
       >
-        <Form.Item
-          wrapperCol={{ offset: 8, span: 16 }}
-        >
+        <Form.Item className={styles.loginFormTitle} wrapperCol={{ offset: 8, span: 16 }} >
           <h1>Login</h1>
         </Form.Item>
 
         <Form.Item
+          className={styles.loginFormItem}
           label='Email'
           name='email'
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
           rules={[ validateRequiredFields('Please input your e-mail!') ]}
         >
-          <Input />
+          <Input className={styles.input} />
         </Form.Item>
 
         <Form.Item
+          className={styles.loginFormItem}
           label='Password'
           name='password'
           labelCol={{ span: 24 }}
@@ -76,18 +77,20 @@ export default function Login() {
           <Input.Password />
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 2, span: 24 }} hidden={!errorMessage} >
+        <Form.Item  className={styles.loginFormItem} wrapperCol={{ offset: 0, span: 24 }} 
+                    hidden={!errorMessage} >
           <div className={styles.errMessage} >
             {errorMessage}
           </div>
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }} >
-          <Button type='primary' htmlType='submit' loading={loginLoader}>
+        <Form.Item className={styles.loginFormItem} wrapperCol={{ offset: 9, span: 16 }} >
+          <Button className={styles.loginBtn} type='primary' htmlType='submit' loading={loginLoader}>
             Login
           </Button>
         </Form.Item>
-        <Form.Item wrapperCol={{ offset: 4, span: 24 }} >
+        <Form.Item
+          className={styles.loginFormItem} wrapperCol={{ offset: 4, span: 24 }} >
           Don`t have an account <Link to='/signup'>Sign Up</Link>
         </Form.Item>
       </Form>

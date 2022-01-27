@@ -74,7 +74,7 @@ export default function Signup() {
           <Input.Password className={styles.passwordInput} />
         </Form.Item>
 
-        <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 2, span: 15 }} hidden={!errorMessage} >
+        <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 0, span: 15 }} hidden={!errorMessage} >
           <div className={styles.errMessage} >
             {errorMessage}
           </div>
@@ -85,7 +85,7 @@ export default function Signup() {
             Sign Up
           </Button>
         </Form.Item>
-        <Form.Item className={styles.signUpFormItem} wrapperCol={{ span: 24, offset: 4 }}>
+        <Form.Item className={styles.signUpFormItem} wrapperCol={{ span: 24, offset: 5 }}>
           Already have an account? <Link to='/login'>Log in</Link>
         </Form.Item>
       </Form>
