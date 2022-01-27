@@ -1,11 +1,3 @@
-.ant-menu-item-selected {
-    background-color: #3479b9 !important;
-}
-
-.ant-menu-item:hover {
-    background-color: #3479b9 !important;
-}
-
 .head {
     position: sticky;
     top: 0;
@@ -13,14 +5,14 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+    background-color: #026670;
   }
   
-  .logo {
+  .logoContainer {
     min-width: 120px;
     width: 120px;
     height: 31px;
     margin: 16px 24px 16px 0;
-    background: rgba(199, 198, 198, 0.2);
     color: #1890FF;
     display: flex;
     justify-content: center;
@@ -28,11 +20,15 @@
     font-size: 20px;
     font-family: Georgia, 'Times New Roman', Times, serif;
     font-style: italic;
-    border-radius: 50%;
+    > .logo {
+        height: 64px;
+        cursor: pointer;
+    }
   }
 
   .menu {
       width: 500px;
+      background-color: #026670 !important;
   }
 
   @media screen and (max-width: 390px) {

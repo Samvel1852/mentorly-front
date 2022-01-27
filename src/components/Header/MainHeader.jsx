@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { getLocalStorage, removeFromLocalStorage } from '../../helpers/localStorage';
-import styles from './MainHeader.module.less'
+import styles from './MainHeader.module.less';
+import './MainHeader.less';
+import Logo from '../../assets/images/MentorlyLogo.png'
 
 export default function MainHeader ({ verified }) {
     const { pathname } = useLocation()
@@ -22,11 +24,13 @@ export default function MainHeader ({ verified }) {
 
     return(
       <Header className={styles.head} >
-      <div className={styles.logo}><Link to={currentUserId}>Mentorly</Link></div>
+      <div className={styles.logoContainer}><Link to={currentUserId}>
+          <img className={styles.logo} src={Logo} height={40} alt="Logo not loaded" />
+        </Link>
+      </div>
       {
         verified ?
-        <Menu theme='dark' mode='horizontal' defaultSelectedKeys={`${pathname}`} className={styles.menu}
-           >
+        <Menu theme='dark' mode='horizontal' defaultSelectedKeys={`${pathname}`} className={styles.menu}>
           <Menu.Item key='/dashboard' ><Link to='/dashboard'>Dashboard</Link></Menu.Item>
           <Menu.Item key='/requests' ><Link to='/requests'>Message Requests</Link></Menu.Item>
           <Menu.Item key={currentUserId} >
