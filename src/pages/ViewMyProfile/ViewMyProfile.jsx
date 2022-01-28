@@ -11,7 +11,6 @@ import MainHeader from '../../components/Header/MainHeader';
 import {
   setProfileState,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
-
 import { getUserData } from '../../features/profile/profileSlice';
 import MainFooter from '../../components/Footer/MainFooter';
 import styles from './ViewMyProfile.module.less';
@@ -34,8 +33,6 @@ export default function ViewMyProfile() {
 
   useEffect(async () => {
     await dispatch(getUserData(id));
-
-    // return () => dispatch(setProfileState({ userData: null }))
   }, [id]);
 
   async function handleEditProfileClick () {
@@ -51,18 +48,18 @@ export default function ViewMyProfile() {
        !editLoader  ? 
       <Content className={styles.site_layout} >
           <Row className={styles.mainRow} >
-            <Col flex='200px' className={styles.personalInfoContainer}>
+            <Col flex='300px' className={styles.personalInfoContainer}>
               <Title level={3}>Personal Info </Title>
-                <Title level={4} className={styles.mentorBeige} > 
-                {userData?.selectedRole === 'Mentor'? 'Mentor': null} </Title>
-                <Typography>First Name: {userData?.firstName}</Typography>
-                <Typography>Last Name: {userData?.lastName}</Typography>
+                <Title level={4} className={styles.mentorBeige}  hidden={userData?.selectedRole !== 'Mentor'}> 
+                 Mentor </Title>
+                <Typography><b>First Name:</b> {userData?.firstName}</Typography>
+                <Typography><b>Last Name:</b> {userData?.lastName}</Typography>
                 {id === currentUserId && 
-                  <Typography>Email: {userData?.email}</Typography>
+                  <Typography><b>Email:</b> {userData?.email}</Typography>
                 }
-                <Typography>Role: {userData?.selectedRole}</Typography>
-                <Typography>Position: {userData?.position}</Typography>
-                <Typography>Field: {userData?.selectedField}</Typography>
+                <Typography><b>Role:</b> {userData?.selectedRole}</Typography>
+                <Typography><b>Position:</b> {userData?.position}</Typography>
+                <Typography><b>Field:</b> {userData?.selectedField}</Typography>
               <Title level={3}>Skills</Title>
               <div className={styles.skillsContainer}>
               {
@@ -80,7 +77,7 @@ export default function ViewMyProfile() {
                  className={styles.connectBtn}>Connect</MainButton>
                 }
             </Col>
-            <Col xs={5} sm={6} md={15} lg={16} xl={17} className={styles.generalInfoContainer}>
+            <Col xs={5} sm={6} md={10} lg={10} xl={15} className={styles.generalInfoContainer}>
               <Title level={3}>Education</Title>
               <Typography className={styles.genInfoContainers} >{  
                   userData?.education}</Typography>

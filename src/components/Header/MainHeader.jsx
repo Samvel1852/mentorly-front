@@ -8,7 +8,7 @@ import styles from './MainHeader.module.less';
 import './MainHeader.less';
 import Logo from '../../assets/images/MentorlyLogo.png'
 
-export default function MainHeader ({ verified, inPublicPages }) {
+export default function MainHeader ({ inPublicPages }) {
     const { pathname } = useLocation()
 
     const navigate = useNavigate();
@@ -21,6 +21,7 @@ export default function MainHeader ({ verified, inPublicPages }) {
     }
 
     const currentUserId = `/${getLocalStorage('currentUserId')}`;
+    const verified = getLocalStorage('verified');
 
     return(
       <Header className={styles.head} >
@@ -29,7 +30,7 @@ export default function MainHeader ({ verified, inPublicPages }) {
         </Link>
       </div>
       {
-        verified ?
+        verified === 'verified' ?
         <Menu theme='dark' mode='horizontal' defaultSelectedKeys={`${pathname}`} className={styles.menu}>
           <Menu.Item key='/dashboard' ><Link to='/dashboard'>Dashboard</Link></Menu.Item>
           <Menu.Item key='/requests' ><Link to='/requests'>Message Requests</Link></Menu.Item>

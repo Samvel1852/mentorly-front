@@ -55,6 +55,15 @@ export const verifyUser = createAsyncThunk(
   },
 );
 
+export const getUserData = createAsyncThunk('users/getUser', async (id, {rejectWithValue}) => {
+  try {
+      let userData =  await axiosInstance.get(`users/${id}`);
+      return userData.data.data;
+  } catch (err) {
+      return rejectWithValue(err)
+  }
+})
+
 export const fillMyProfileSlice = createSlice({
   name: 'fillMyProfile',
   initialState,
@@ -77,6 +86,17 @@ export const fillMyProfileSlice = createSlice({
     [verifyUser.rejected]: (state) => {
         state.isModalVisible = true;
         state.submitLoader = false;
+    },
+
+    [getUserData.pending]: (state) => {
+      state.editLoader = true
+    },
+    [getUserData.fulfilled]: (state, {payload}) => {
+       state = {...state, ...payload};
+       state.editLoader = false;
+    },
+    [getUserData.rejected]: (state) => {
+       state.editLoader = false
     }
 }
 });

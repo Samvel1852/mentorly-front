@@ -13,6 +13,7 @@ import { MainInput } from '../../elements/MainInput';
 import {
   verifyUser,
   setProfileState,
+  getUserData,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
 
 import {
@@ -32,6 +33,30 @@ export default function FillMyProfile() {
   const navigate = useNavigate();
   const params = useParams();
 
+  const dispatch = useDispatch();
+
+  const clearState = {
+    firstName: '', lastName: '', selectedRole: '', selectedField: '',
+    position: '', education: '', experience: '', about: '', plans: '',
+    skills: [],
+  }
+
+  const userId = getLocalStorage('currentUserId');
+
+  useEffect(() => {
+    if (!getLocalStorage('accessToken')) navigate('/login');
+    
+    return () => dispatch(setProfileState(clearState));
+  }, []);
+
+  useEffect(async () => {
+    const {payload} = await dispatch(getUserData(userId));
+
+    console.log('payload', payload);
+
+    dispatch(setProfileState(payload));
+  }, []);
+
   const {
     firstName,
     lastName,
@@ -48,19 +73,6 @@ export default function FillMyProfile() {
     submitLoader,
     isModalVisible,
   } = useSelector((state) => state.fillMyProfile);
-
-  const dispatch = useDispatch();
-
-  const clearState = {
-    firstName: '', lastName: '', selectedRole: '', selectedField: '',
-    position: '', education: '', experience: '', about: '', plans: '',
-    skills: [],
-  }
-
-  useEffect(() => {
-    if (!getLocalStorage('accessToken')) navigate('/login');
-    return () => dispatch(setProfileState(clearState));
-  }, []);
 
   const [form] = Form.useForm();
 
