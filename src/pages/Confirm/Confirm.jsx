@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Input, Button } from 'antd';
+import { Form, Button, message } from 'antd';
 
 import MainHeader from '../../components/Header/MainHeader'
 import styles from './Confirm.module.less';
 import axiosInstance from '../../helpers/axiosInstance';
-import { MainModal } from '../../components/Modal/MainModal';
+import { MainInput } from '../../elements/MainInput';
+import { CheckCircleFilled } from '@ant-design/icons/lib/icons';
 
 export default function Confirm() {
   const [errorMessage, setErrorMessage] = useState('');
   const [confirmLoader, setConfirmLoader] = useState(false);
-  const [isModalVisible, setIsModalVisible] =useState(false);
 
   const navigate = useNavigate();
 
@@ -21,7 +21,11 @@ export default function Confirm() {
       setErrorMessage('');
 
       if (response.status === 200) {
-        setIsModalVisible(true);
+        message.success({ content: 'You have successfully registered',
+          style: { marginTop: '90vh' },
+          icon: <CheckCircleFilled style={{ color: '#026670' }} />,
+        });
+        navigate('/login');
       }
     } catch ({ response }) {
       setErrorMessage(response.data.errors[0]);
@@ -31,24 +35,10 @@ export default function Confirm() {
 
   const validateRequiredFields = (message) => ({required: true, message});
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-    navigate('/login');
-  };
-
   return (
     <>
     <MainHeader inPublicPages={true} />
       <div className={styles.formContainer}>
-      <MainModal
-        title='You have successfully registered'
-        visible={isModalVisible}
-        onOk={handleOk}
-        cancelButtonProps={{ style: { display: 'none' } }}
-        message={'success'}
-        >
-          <p>Click on Ok button below to Log in</p>
-      </MainModal>
       <Form name='basic' initialValues={{ remember: true }}
         onFinish={onFinish}
         autoComplete='off'
@@ -69,7 +59,7 @@ export default function Confirm() {
           labelCol={{ span: 24 }}
           rules={[ validateRequiredFields('Please input messaged code!') ]}
         >
-          <Input className={styles.input} />
+          <MainInput className={styles.input} />
         </Form.Item>
 
         <Form.Item className={styles.confirmFormItem} wrapperCol={{ offset: 0, span: 24 }} hidden={!errorMessage} >

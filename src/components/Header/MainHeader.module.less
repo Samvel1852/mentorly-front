@@ -1,3 +1,5 @@
+@import '../../index.css';
+
 .head {
     position: sticky;
     top: 0;
@@ -5,7 +7,7 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
-    background-color: #026670 !important;
+    background-color: var(--app-main-color) !important;
   }
   
   .logoContainer {
@@ -13,13 +15,10 @@
     width: 120px;
     height: 31px;
     margin: 16px 24px 16px 0;
-    color: #1890FF;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 20px;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    font-style: italic;
     > .logo {
         height: 64px;
         cursor: pointer;
@@ -28,11 +27,11 @@
 
   .menu {
       width: 500px;
-      background-color: #026670 !important;
+      background-color: var(--app-main-color) !important;
   }
 
   .unverifiedMenu {
-    background-color: #026670 !important;
+    background-color: var(--app-main-color) !important;
     }
 
   @media screen and (max-width: 390px) {

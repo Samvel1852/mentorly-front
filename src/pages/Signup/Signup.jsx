@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Form, Input } from 'antd';
+import { Form } from 'antd';
 
 import MainHeader from '../../components/Header/MainHeader'
 import styles from './Signup.module.less';
@@ -8,6 +8,7 @@ import './Signup.less'
 import axiosInstance from '../../helpers/axiosInstance';
 import { MainButton } from '../../elements/MainButton';
 import { MainInput } from '../../elements/MainInput';
+import { PasswordInput } from '../../elements/PasswordInput';
 
 export default function Signup() {
   const [errorMessage, setErrorMessage] = useState('');
@@ -63,7 +64,7 @@ export default function Signup() {
           wrapperCol={{ span: 24 }}
           rules={[ validateRequiredFields('Please input your password!')]}
         >
-          <Input.Password className={styles.passwordInput} />
+          <PasswordInput />
         </Form.Item>
 
         <Form.Item className={styles.signUpFormItem}
@@ -73,7 +74,7 @@ export default function Signup() {
           wrapperCol={{ span: 24 }}
           rules={[ validateRequiredFields('Confirm password must be the same as password!') ]}
         >
-          <Input.Password className={styles.passwordInput} />
+          <PasswordInput />
         </Form.Item>
 
         <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 0, span: 15 }} hidden={!errorMessage} >

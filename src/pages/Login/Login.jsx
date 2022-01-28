@@ -6,6 +6,7 @@ import axiosInstance from '../../helpers/axiosInstance';
 import { setLocalStorage, getLocalStorage } from '../../helpers/localStorage';
 import styles from './Login.module.less';
 import MainHeader from '../../components/Header/MainHeader';
+import { MainInput } from '../../elements/MainInput';
 
 export default function Login() {
   const [errorMessage, setErrorMessage] = useState('');
@@ -63,7 +64,7 @@ export default function Login() {
           wrapperCol={{ span: 24 }}
           rules={[ validateRequiredFields('Please input your e-mail!') ]}
         >
-          <Input className={styles.input} />
+          <MainInput />
         </Form.Item>
 
         <Form.Item

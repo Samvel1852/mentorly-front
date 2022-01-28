@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Layout, Form, Button, Select } from 'antd';
+import { Layout, Form, Button, Select, message } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import styles from './FillMyProfile.module.less';
@@ -23,7 +23,6 @@ import {
 import { MainTextarea } from '../../elements/MainTextArea';
 import { MainSelect } from '../../elements/MainSelect';
 import { MainButton } from '../../elements/MainButton';
-import { MainModal } from '../../components/Modal/MainModal';
 import MainFooter from '../../components/Footer/MainFooter';
 
 const { Content } = Layout;
@@ -71,7 +70,6 @@ export default function FillMyProfile() {
     skillName,
     skills,
     submitLoader,
-    isModalVisible,
   } = useSelector((state) => state.fillMyProfile);
 
   const [form] = Form.useForm();
@@ -108,9 +106,11 @@ export default function FillMyProfile() {
       if (result.payload && !result.error && !result.errors) {
         await setLocalStorage('verified', 'verified');
         navigate(`/${id}`);
+      } else {
+        message.error('Refused! Please check Your connection and try again');
       }
     } catch ({ response }) {
-      console.log('errResponse', { response });
+      message.error('This is a message of error');
     }
   };
 
@@ -133,10 +133,6 @@ export default function FillMyProfile() {
     const filteredSkills = skills.filter((skill) => skill.id !== id);
     dispatch(setProfileState({skills: filteredSkills}));
   }
-
-  const handleOk = () => {
-    dispatch(setProfileState({ isModalVisible: false }))
-  };
 
   function getRequiredMessage (message) {
     return {required: true, message}
@@ -174,21 +170,8 @@ export default function FillMyProfile() {
   }
 
   return (
-    
-    
-         
     <Layout>
       <MainHeader />
-      <MainModal
-        title='Something went wrong'
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleOk}
-        cancelButtonProps={{ style: { display: 'none' } }}
-        message={'error'}
-      >
-        <p>Please check your connection and try again!</p>
-      </MainModal>
       <Content className={styles.site_layout} >
         <div className={styles.content}>
           <Form

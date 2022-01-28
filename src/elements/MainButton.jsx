@@ -1,8 +1,9 @@
 import { Button } from 'antd';
 import styled from 'styled-components';
+import { COLORS } from '../constants/style';
 
 export const MainButton = styled(Button)`
-    background-color: #026670 !important;
+    background-color: ${COLORS.APP_MAIN_COLOR} !important;
     border: none !important;
     margin: ${props => props.margin ? props.margin : ""};
     min-width: ${props => props.minWidth ? props.minWidth : ""};
