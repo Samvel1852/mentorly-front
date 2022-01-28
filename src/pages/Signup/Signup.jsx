@@ -7,6 +7,7 @@ import styles from './Signup.module.less';
 import './Signup.less'
 import axiosInstance from '../../helpers/axiosInstance';
 import { MainButton } from '../../elements/MainButton';
+import { MainInput } from '../../elements/MainInput';
 
 export default function Signup() {
   const [errorMessage, setErrorMessage] = useState('');
@@ -52,7 +53,7 @@ export default function Signup() {
           wrapperCol={{ span: 24 }}
           rules={[ validateRequiredFields('Please input your username!') ]}
         >
-          <Input className={styles.input} />
+          <MainInput />
         </Form.Item>
 
         <Form.Item className={styles.signUpFormItem}

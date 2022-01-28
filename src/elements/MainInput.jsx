@@ -7,7 +7,7 @@ export const MainInput = styled(Input)`
         outline: 0 !important;
         -webkit-box-shadow: 0 0 0 2px rgb(74,145,183, .2) !important;
         box-shadow: 0 0 0 2px rgb(74,145,183, .2) !important;
-        opacity: 50%;
+        color: black;
     }
 
     :hover {

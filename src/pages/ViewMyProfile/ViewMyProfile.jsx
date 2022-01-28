@@ -49,7 +49,7 @@ export default function ViewMyProfile() {
       <Content className={styles.site_layout} >
           <Row className={styles.mainRow} >
             <Col flex='300px' className={styles.personalInfoContainer}>
-              <Title level={3}>Personal Info </Title>
+              <Title className={styles.title} level={3}>Personal Info </Title>
                 <Title level={4} className={styles.mentorBeige}  hidden={userData?.selectedRole !== 'Mentor'}> 
                  Mentor </Title>
                 <Typography><b>First Name:</b> {userData?.firstName}</Typography>
@@ -60,7 +60,7 @@ export default function ViewMyProfile() {
                 <Typography><b>Role:</b> {userData?.selectedRole}</Typography>
                 <Typography><b>Position:</b> {userData?.position}</Typography>
                 <Typography><b>Field:</b> {userData?.selectedField}</Typography>
-              <Title level={3}>Skills</Title>
+              <Title className={styles.title} level={3}>Skills</Title>
               <div className={styles.skillsContainer}>
               {
                 userData?.skills.map((skill) => <Skill name={skill.name} key={skill._id}></Skill>)
@@ -78,16 +78,16 @@ export default function ViewMyProfile() {
                 }
             </Col>
             <Col xs={5} sm={6} md={10} lg={10} xl={15} className={styles.generalInfoContainer}>
-              <Title level={3}>Education</Title>
+              <Title className={styles.title} level={3}>Education</Title>
               <Typography className={styles.genInfoContainers} >{  
                   userData?.education}</Typography>
-              <Title level={3}>Experience</Title>
+              <Title className={styles.title} level={3}>Experience</Title>
               <Typography className={styles.genInfoContainers}>{  
                   userData?.experience}</Typography>
-              <Title level={3}>About</Title>
+              <Title className={styles.title} level={3}>About</Title>
               <Typography className={styles.genInfoContainers}>{ 
                   userData?.about}</Typography>
-              <Title level={3}> { userData?.selectedRole === 'Mentor' ? 'Who can request mentorship'
+              <Title className={styles.title} level={3}> { userData?.selectedRole === 'Mentor' ? 'Who can request mentorship'
                   : 'My plans' }</Title>
               <Typography className={styles.genInfoContainers}>{  
                   userData?.plans}</Typography>
