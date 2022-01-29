@@ -29,33 +29,6 @@ const { Content } = Layout;
 const { Option } = Select;
 
 export default function FillMyProfile() {  
-  const navigate = useNavigate();
-  const params = useParams();
-
-  const dispatch = useDispatch();
-
-  const clearState = {
-    firstName: '', lastName: '', selectedRole: '', selectedField: '',
-    position: '', education: '', experience: '', about: '', plans: '',
-    skills: [],
-  }
-
-  const userId = getLocalStorage('currentUserId');
-
-  useEffect(() => {
-    if (!getLocalStorage('accessToken')) navigate('/login');
-    
-    return () => dispatch(setProfileState(clearState));
-  }, []);
-
-  useEffect(async () => {
-    const {payload} = await dispatch(getUserData(userId));
-
-    console.log('payload', payload);
-
-    dispatch(setProfileState(payload));
-  }, []);
-
   const {
     firstName,
     lastName,
@@ -80,6 +53,35 @@ export default function FillMyProfile() {
     position, education,
     experience, about,
     plans, skills }
+
+  const navigate = useNavigate();
+  const params = useParams();
+
+  const dispatch = useDispatch();
+
+  const clearState = {
+    firstName: '', lastName: '', selectedRole: '', selectedField: '',
+    position: '', education: '', experience: '', about: '', plans: '',
+    skills: [],
+  }
+
+  const userId = getLocalStorage('currentUserId');
+
+  useEffect(() => {
+    if (!getLocalStorage('accessToken')) navigate('/login');
+
+    // dispatch(getUserData(userId));
+    
+    return () => dispatch(setProfileState(clearState));
+  }, []);
+
+  useEffect(async () => {
+    const {payload} = await dispatch(getUserData(userId));
+
+    dispatch(setProfileState(payload));
+
+    form.setFieldsValue(initialValues);
+  }, [firstName]);
 
   const onFinish = async () => {
 
@@ -357,7 +359,7 @@ export default function FillMyProfile() {
               labelCol={{ span: 24 }}
               rules={[getRequiredMessage('Please provide Your Skills!'),
                     validateMaxTen(skills)]} >
-              <Layout className={styles.skillsContainer} >
+              <Layout>
                 <div className={styles.skillsContainer}>
                   {skills.map((skill) => (
                     <Skill
