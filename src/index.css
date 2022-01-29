@@ -1,6 +1,7 @@
 :root {
   --app-main-color: #026670;
   --app-background-color: #fff;
+  --err-font-size: 12px;
 }
 
 body {

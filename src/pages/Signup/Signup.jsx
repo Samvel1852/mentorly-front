@@ -77,7 +77,7 @@ export default function Signup() {
           <PasswordInput />
         </Form.Item>
 
-        <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 0, span: 15 }} hidden={!errorMessage} >
+        <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 0, span: 24 }} hidden={!errorMessage} >
           <div className={styles.errMessage} >
             {errorMessage}
           </div>
