@@ -41,4 +41,8 @@ export const MainTable = styled(Table)`
             color: lightgray !important;
         }
     }
+
+    .ant-spin-dot-item {
+        background-color: var(--app-main-color);
+    }
 `;
