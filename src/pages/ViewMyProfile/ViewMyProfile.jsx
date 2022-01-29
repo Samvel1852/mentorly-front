@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Col, Layout, Row, Spin, Typography } from 'antd';
+import { Col, Layout, Row, Typography } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import 'antd/dist/antd.css';
 
@@ -15,6 +15,7 @@ import { getUserData } from '../../features/profile/profileSlice';
 import MainFooter from '../../components/Footer/MainFooter';
 import styles from './ViewMyProfile.module.less';
 import { MainButton } from '../../elements/MainButton';
+import { MainSpin } from '../../elements/MainSpin';
 
 const { Content } = Layout;
 
@@ -94,7 +95,7 @@ export default function ViewMyProfile() {
             </Col>
           </Row>
       </Content>
-      : <div className={styles.pageLoaderContainer}><Spin tip='Loading...' /></div>
+      : <div className={styles.pageLoaderContainer}><MainSpin tip='Loading...' /></div>
       }
       <MainFooter > Simply Technologies ©2022 Created with Pleasure </MainFooter>
     </Layout>
