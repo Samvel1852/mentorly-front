@@ -20,12 +20,14 @@ export default function MainHeader ({ inPublicPages }) {
         navigate('/login');
     }
 
-    const currentUserId = `/${getLocalStorage('currentUserId')}`;
+    const userId = getLocalStorage('currentUserId')
+    const currentUserIdLink = `/${userId}`;
     const verified = getLocalStorage('verified');
 
     return(
       <Header className={styles.head} >
-      <div className={styles.logoContainer}><Link to={currentUserId}>
+      <div className={styles.logoContainer}><Link to={verified === 'confirmed' ? `/users${currentUserIdLink}`
+          : `/${userId || 'login'}`} >
           <img className={styles.logo} src={Logo} height={40} alt="Logo not loaded" />
         </Link>
       </div>
@@ -34,15 +36,15 @@ export default function MainHeader ({ inPublicPages }) {
         <Menu theme='dark' mode='horizontal' defaultSelectedKeys={`${pathname}`} className={styles.menu}>
           <Menu.Item key='/dashboard' ><Link to='/dashboard'>Dashboard</Link></Menu.Item>
           <Menu.Item key='/requests' ><Link to='/requests'>Message Requests</Link></Menu.Item>
-          <Menu.Item key={currentUserId} >
-            <Link to={currentUserId}>My Profile</Link>
+          <Menu.Item key={currentUserIdLink} >
+            <Link to={currentUserIdLink}>My Profile</Link>
           </Menu.Item>
           <Menu.Item key='4' onClick={handleLogOut}>
             Log Out
           </Menu.Item>
         </Menu> : (!inPublicPages) ?
         <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['1']} className={styles.unverifiedMenu}>
-          <Menu.Item key='1'><Link to={`/users/${currentUserId}`}>My Profile</Link></Menu.Item>
+          <Menu.Item key='1'><Link to={`/users${currentUserIdLink}`}>My Profile</Link></Menu.Item>
           <Menu.Item key='2' onClick={handleLogOut}>
             Log Out
           </Menu.Item>

@@ -13,6 +13,9 @@ import { PasswordInput } from '../../elements/PasswordInput';
 export default function Signup() {
   const [errorMessage, setErrorMessage] = useState('');
   const [signUpLoader, setSignUpLoader] = useState(false);
+  // const [emailErrMessage, setEmailErrMessage] = useState('');
+  // const [passwordErrMessage, setPasswordErrMessage] = useState('');
+  // const [confirmPasswordErrMessage, setConfirmPasswordErrMessage] = useState('');
 
   const navigate = useNavigate();
 
