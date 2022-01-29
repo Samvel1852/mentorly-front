@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Form, Layout, Row, Table } from 'antd';
+import { Col, Form, Layout, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUsers } from '../../features/Dashboard/dashboardSlice';
 import { Option } from 'antd/es/mentions';
@@ -9,6 +9,7 @@ import { MainInput } from '../../elements/MainInput';
 import { MainSelect } from '../../elements/MainSelect';
 import { MainButton } from '../../elements/MainButton';
 import { COLORS } from '../../constants/style';
+import { MainTable } from '../../elements/MainTable';
 
 function Dashboard() {
     const dispatch = useDispatch();
@@ -146,7 +147,7 @@ function Dashboard() {
                     </Row>
                 </Form>
 
-                <Table
+                <MainTable
                     dataSource={ dataSource }
                     columns={ columns }
                     onRow={(record) => {
