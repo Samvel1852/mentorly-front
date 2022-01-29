@@ -60,6 +60,12 @@ export default function Signup() {
           <MainInput />
         </Form.Item>
 
+        {/* <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 0, span: 24 }} hidden={!errorMessage} >
+          <div className={styles.errMessage} >
+            {errorMessage}
+          </div>
+        </Form.Item> */}
+
         <Form.Item className={styles.signUpFormItem}
           label='Password'
           name='password'
@@ -69,6 +75,12 @@ export default function Signup() {
         >
           <PasswordInput />
         </Form.Item>
+
+        {/* <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 0, span: 24 }} hidden={!errorMessage} >
+          <div className={styles.errMessage} >
+            {errorMessage}
+          </div>
+        </Form.Item> */}
 
         <Form.Item className={styles.signUpFormItem}
           label='Confirm Password'
