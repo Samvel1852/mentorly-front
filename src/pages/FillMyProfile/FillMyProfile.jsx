@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Layout, Form, Button, Select, message } from 'antd';
+import { Layout, Form, Button, message, Select } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import styles from './FillMyProfile.module.less';
+import './FillMyProfile.less';
 import 'antd/dist/antd.css';
 import Skill from '../../components/Skill/Skill';
 import MainHeader from '../../components/Header/MainHeader';
@@ -50,7 +51,8 @@ export default function FillMyProfile() {
 
   const initialValues = { 
     firstName, lastName,
-    selectedRole, selectedField,
+    selectedRole: selectedRole.length ? selectedRole : null, 
+    selectedField: selectedField.length ? selectedField : null,
     position, education,
     experience, about,
     plans, skills }
@@ -225,7 +227,6 @@ export default function FillMyProfile() {
                 rules={[getRequiredMessage('Please select Your Role!')]}
               >
                 <MainSelect
-                  initialvalue='--Select Role'
                   onChange={(value) => handleChange(value, 'selectedRole')}
                   placeholder='--Select Role'
                 >
