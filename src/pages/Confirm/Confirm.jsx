@@ -22,7 +22,7 @@ export default function Confirm() {
 
       if (response.status === 200) {
         message.success({ content: 'You have successfully registered',
-          style: { marginTop: '90vh' },
+          style: { marginTop: '80vh' },
           icon: <CheckCircleFilled style={{ color: '#026670' }} />,
         });
         navigate('/login');

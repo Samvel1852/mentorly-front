@@ -43,6 +43,7 @@ export default function FillMyProfile() {
     skillName,
     skills,
     submitLoader,
+    updatedAt,
   } = useSelector((state) => state.fillMyProfile);
 
   const [form] = Form.useForm();
@@ -81,7 +82,7 @@ export default function FillMyProfile() {
     dispatch(setProfileState(payload));
 
     form.setFieldsValue(initialValues);
-  }, [firstName]);
+  }, [updatedAt]);
 
   const onFinish = async () => {
 
