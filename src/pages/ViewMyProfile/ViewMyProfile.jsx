@@ -16,6 +16,7 @@ import MainFooter from '../../components/Footer/MainFooter';
 import styles from './ViewMyProfile.module.less';
 import { MainButton } from '../../elements/MainButton';
 import { MainSpin } from '../../elements/MainSpin';
+import Exception from 'ant-design-pro/lib/Exception';
 
 const { Content } = Layout;
 
@@ -45,7 +46,10 @@ export default function ViewMyProfile() {
     <Layout>
       <MainHeader verified={true} requestsQuantity={200} />
       { userData?.status !== 'verified' && !editLoader ? 
-      <div className={styles.pageLoaderContainer}>The User not exists</div> :
+      <div className={styles.pageLoaderContainer}>
+        <Exception type='404' redirect={`/${currentUserId}`} title={'404 This Page Isn`t Available'} 
+        desc={'The link may be broken, or the page may have been removed. Check to see if the link you`re trying to open is correct.'} />
+        </div> :
        !editLoader  ? 
       <Content className={styles.site_layout} >
           <Row className={styles.mainRow} >
