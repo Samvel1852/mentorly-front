@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/compatible": "^1.1.0",
     "@ant-design/icons": "^4.7.0",
     "@craco/craco": "^6.4.3",
     "@reduxjs/toolkit": "^1.7.1",
@@ -10,6 +11,7 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "@types/react-redux": "^7.1.22",
+    "ant-design-pro": "^2.3.2",
     "antd": "^4.18.3",
     "axios": "^0.24.0",
     "bcryptjs": "^2.4.3",

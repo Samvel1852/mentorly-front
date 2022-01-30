@@ -43,7 +43,7 @@ export default function ViewMyProfile() {
 
   return (
     <Layout>
-      <MainHeader verified={true} />
+      <MainHeader verified={true} requestsQuantity={200} />
       { userData?.status !== 'verified' && !editLoader ? 
       <div className={styles.pageLoaderContainer}>The User not exists</div> :
        !editLoader  ? 

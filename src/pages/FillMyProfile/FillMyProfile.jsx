@@ -176,7 +176,7 @@ export default function FillMyProfile() {
 
   return (
     <Layout>
-      <MainHeader />
+      <MainHeader requestsQuantity={200} />
       <Content className={styles.site_layout} >
         <div className={styles.content}>
           <Form
