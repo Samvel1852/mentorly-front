@@ -8,11 +8,19 @@ import { getLocalStorage, removeFromLocalStorage } from '../../helpers/localStor
 import styles from './MainHeader.module.less';
 import './MainHeader.less';
 import Logo from '../../assets/images/MentorlyLogo.png'
+import { useEffect, useState } from 'react';
 
-export default function MainHeader ({ inPublicPages, requestsQuantity }) {
+export default function MainHeader ({ inPublicPages }) {
+    const [requestsQuantity, setRequestsQuantity] = useState(0);
+
     const { pathname } = useLocation()
 
     const navigate = useNavigate();
+
+    useEffect(async () => {
+      // const reqCount = await axiosInstance('requests/pending');
+      await setRequestsQuantity(200)
+    }, []);
 
     async function handleLogOut() {
         await removeFromLocalStorage('accessToken');

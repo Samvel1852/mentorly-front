@@ -44,7 +44,7 @@ export default function ViewMyProfile() {
 
   return (
     <Layout>
-      <MainHeader verified={true} requestsQuantity={200} />
+      <MainHeader verified={true} />
       { userData?.status !== 'verified' && !editLoader ? 
       <div className={styles.pageLoaderContainer}>
         <Exception type='404' redirect={`/${currentUserId}`} title={'404 This Page Isn`t Available'} 

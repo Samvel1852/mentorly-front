@@ -71,7 +71,7 @@ function Dashboard() {
     };
     return (
         <Layout style={{ height: '100vh', backgroundColor: COLORS.APP_BACKGROUND_COLOR }}>
-            <MainHeader verified={true}/>
+            <MainHeader verified={true} />
             <div style={ { 'margin': '30px'} }>
                 <Form
                     onSubmit={ handleSubmit }
