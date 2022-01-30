@@ -10,4 +10,8 @@ export const MainException = styled(Exception)`
     .ant-btn-primary:hover {
         opacity: 70%;
     }
+
+    .antd-pro-exception-desc {
+        width: 400px;
+    }
 `;

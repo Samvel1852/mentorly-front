@@ -1,8 +1,8 @@
-import { Menu } from 'antd';
+import { Badge, Menu } from 'antd';
 import { Header } from 'antd/lib/layout/layout';
 import PropTypes from 'prop-types';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import NoticeIcon from 'ant-design-pro/lib/NoticeIcon';
+// import NoticeIcon from 'ant-design-pro/lib/NoticeIcon';
 
 import { getLocalStorage, removeFromLocalStorage } from '../../helpers/localStorage';
 import styles from './MainHeader.module.less';
@@ -18,7 +18,7 @@ export default function MainHeader ({ inPublicPages }) {
     const navigate = useNavigate();
 
     useEffect(async () => {
-      // const reqCount = await axiosInstance('requests/pending');
+      // const reqCount = await axiosInstance.get('requests/pending');
       await setRequestsQuantity(200)
     }, []);
 
@@ -45,7 +45,8 @@ export default function MainHeader ({ inPublicPages }) {
         <Menu theme='dark' mode='horizontal' defaultSelectedKeys={`${pathname}`} className={styles.menu}>
           <Menu.Item key='/dashboard' ><Link to='/dashboard'>Dashboard</Link></Menu.Item>
           <Menu.Item key='/requests' ><Link to='/requests'> Message Requests </Link> 
-            <NoticeIcon count={requestsQuantity} />
+            {/* <NoticeIcon count={requestsQuantity} /> */}
+            <Badge count={requestsQuantity} size='small' ></Badge>
           </Menu.Item>
           <Menu.Item key={currentUserIdLink} >
             <Link to={currentUserIdLink}>My Profile</Link>
