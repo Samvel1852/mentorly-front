@@ -29,7 +29,7 @@ export default function Confirm() {
         navigate('/login');
       }
     } catch ({ response }) {
-      setErrorMessage(response.data.errors[0]);
+      setErrorMessage(response.data.errors.verificationCode[0]);
       setConfirmLoader(false);
     }
   };

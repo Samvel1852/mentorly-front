@@ -34,7 +34,7 @@ export default function Login() {
       }
 
     } catch (error) {
-      setErrorMessage(error.response.data.errors[0]);
+      setErrorMessage(error.response.data.errors);
       setLoginLoader(false);
     }
   };
