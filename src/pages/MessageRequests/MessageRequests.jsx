@@ -36,7 +36,6 @@ export default function MessageRequests() {
   };
 
   const declineRequest = (id) => {
-    console.log(id);
     const param = {connect: 'rejected'};
     dispatch(changeRequestStatus({id, param}));
   };

@@ -41,7 +41,6 @@ export const changeRequestStatus = createAsyncThunk('connections/:id', async ({i
     try {
         const updated =  await axiosInstance.put(`connections/${id}`, param);
         const ID = updated.data.data._id;
-        console.log(ID, updated);
         return param.connect === 'rejected' ? {ID, connect: 'rejected'} : {ID};
     } catch (err) {
         return rejectWithValue(err);
@@ -78,7 +77,6 @@ const connectionSlice = createSlice({
             state.loading = true;
         },
         [confirmedConnections.fulfilled]: (state, {payload}) => {
-            console.log(payload);
             state.confirmations = payload;
             state.loading = false;
         },
@@ -92,7 +90,6 @@ const connectionSlice = createSlice({
         [changeRequestStatus.fulfilled]: (state, {payload}) => {
             if(!payload.connect) {
                 const { from } = current(state.pendings).find(item => item._id === payload.ID);
-                console.log(from);
                 state.confirmations=[from,...current(state.confirmations)];
             }
             state.pendings = current(state.pendings).filter(item => item._id !== payload.ID);
