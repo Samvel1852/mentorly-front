@@ -4,6 +4,11 @@ import styled from 'styled-components'
 import { COLORS } from '../constants/style';
 
 export const MainInput = styled(Input)`
+    .ant-form-item-explain-error {
+        color: red !important;
+        background-color: yellow !important;
+    }
+
     :focus {
         border-color: ${COLORS.APP_MAIN_COLOR} !important;
         outline: 0 !important;

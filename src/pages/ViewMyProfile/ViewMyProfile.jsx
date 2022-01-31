@@ -74,11 +74,11 @@ export default function ViewMyProfile() {
               {
                  id === currentUserId ? <MainButton
                  margin={'40px 0 0 0 '}
-                 width={'100px'} type='primary' 
+                 width={'200px'} height={'50px'} type='primary' 
                  className={styles.editBtn}
                  onClick={handleEditProfileClick}
                  loading={editLoader}>Edit</MainButton>
-                 : <MainButton width={'150px'} margin={'40px 0 0 0 '} type='primary' 
+                 : <MainButton width={'200px'} height={'50px'} margin={'40px 0 0 0 '} type='primary' 
                  className={styles.connectBtn}>Connect</MainButton>
                 }
             </Col>

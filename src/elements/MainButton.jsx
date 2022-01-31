@@ -7,7 +7,7 @@ export const MainButton = styled(Button)`
     border: none !important;
     margin: ${props => props.margin ? props.margin : ""};
     min-width: ${props => props.minWidth ? props.minWidth : ""};
-    width: ${props => props.Width ? props.Width : ""};
+    width: ${props => props.width ? props.width : ""} !important;
     height: ${props => props.height ? props.height : ""};
     &:hover {
         opacity: 70%;

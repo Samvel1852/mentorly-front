@@ -13,28 +13,19 @@ import { PasswordInput } from '../../elements/PasswordInput';
 export default function Signup() {
   const [errorMessage, setErrorMessage] = useState('');
   const [signUpLoader, setSignUpLoader] = useState(false);
-  // const [emailValue, setEmailValue] = useState('');
-  // const [passwordValue, setPasswordValue] = useState('');
-  // const [confirmPasswordValue, setConfirmPasswordValue] = useState('');
-
-  // useEffect(() => {
-  //   if(errorMessage) form.validateFields({ email: errorMessage.email, password: errorMessage.password, confirmPassword: errorMessage.confirmPassword });
-  // },[errorMessage]);
 
   const navigate = useNavigate();
 
   const [form] = Form.useForm();
 
   const onChange = (name) => {
-    console.log('name',name);
-    console.log('errMsg',errorMessage);
-    console.log('The check', typeof errorMessage !== 'string');
-    // eslint-disable-next-line no-extra-boolean-cast
+    
     if(typeof errorMessage !== 'string') {
+      console.log('name',name);
+      console.log('errMsg',errorMessage);
+      console.log('The check', typeof errorMessage !== 'string');
       setErrorMessage('');
     }
-    // if (errorMessage[name]) setErrorMessage({...errorMessage, [name]: ''});
-    // setEmailValue(e.target.value);
   };
 
   console.log('rendered');
@@ -129,7 +120,6 @@ export default function Signup() {
           label='Email'
           name='email'
           labelCol={{ span: 24 }}
-          wrapperCol={{ span: 24 }}
           rules={[ validateRequiredFields('Please input your email.'), validateEmailError() ]}
         >
           <MainInput onChange={() => onChange('email')} />
