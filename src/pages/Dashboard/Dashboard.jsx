@@ -7,11 +7,12 @@ import MainHeader from '../../components/Header/MainHeader';
 import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
+    const [page, setPage] = useState(1);
     const dispatch = useDispatch();
     const { users, pageTotal, loading } = useSelector(state => state.users);
+    const {pendingsCount} = useSelector((state) => state.connections);
     const navigate = useNavigate()
     const [params, setParams] = useState({
-        page: 1,
         limit: 5,
     });
 
@@ -66,7 +67,7 @@ function Dashboard() {
     };
     return (
         <Layout style={{ height: '100vh'}}>
-            <MainHeader verified={true}/>
+            <MainHeader verified={true} pendingsCount={pendingsCount}/>
             <div style={ { 'margin': '30px'} }>
                 <Form
                     onSubmit={ handleSubmit }
@@ -108,7 +109,7 @@ function Dashboard() {
                                     mode={ 'multiple' }
                                     allowClear
                                     style={ { width: '100%' } }
-                                    placeholder="Filed"
+                                    placeholder="Field"
                                     onChange={ (value) => setParams({ ...params, selectedField: value }) }
                                 >
                                     <Option value="it">IT</Option>
@@ -154,10 +155,10 @@ function Dashboard() {
                     loading={ loading }
                     pagination={ {
                         total: pageTotal,
-                        current: params.page,
+                        page: page,
                         pageSize: params.limit,
                         onChange: async (page, limit) => {
-                            setParams({ ...params, page: page, limit: limit });
+                            setPage(page)
                             await getData({ ...params, page: page, limit: limit });
                         },
                     } }

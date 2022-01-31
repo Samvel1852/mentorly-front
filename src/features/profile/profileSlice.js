@@ -10,7 +10,8 @@ const initialState = {
 export const getUserData = createAsyncThunk('users/getUser', async (id, {rejectWithValue}) => {
     try {
         let userData =  await axiosInstance.get(`users/${id}`);
-        return userData.data.data;
+        console.log('userData', userData.data.data[0])
+        return userData.data.data[0];
     } catch (err) {
         return rejectWithValue(err)
     }
@@ -29,7 +30,7 @@ const profileSlice = createSlice({
         },
         [getUserData.rejected]: (state) => {
             state.editLoader = false
-        }
+        },
     }
 });
 

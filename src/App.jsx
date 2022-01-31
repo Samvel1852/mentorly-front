@@ -10,6 +10,7 @@ import ViewMyProfile from './pages/ViewMyProfile/ViewMyProfile';
 import { getLocalStorage } from './helpers/localStorage';
 import Dashboard from './pages/Dashboard/Dashboard';
 import { PrivateRoute, PublicRoute, SemiPrivateRoute } from './components/ConfigureRoutes/ConfigureRoutes';
+import MessageRequests from './pages/MessageRequests/MessageRequests';
 
 function App() {
   const [currentUserId, setCurrentUserId] = useState(getLocalStorage('currentUserId'));
@@ -33,6 +34,7 @@ function App() {
           <Route element={<PrivateRoute />} >
             <Route path='/dashboard' element={ <Dashboard/> } />
             <Route path='/:id' element={ <ViewMyProfile /> } />
+            <Route path='/requests' element={ <MessageRequests /> } /> 
           </Route>
           <Route path="*" element={<Navigate to={'/'} />} />
         </Routes>

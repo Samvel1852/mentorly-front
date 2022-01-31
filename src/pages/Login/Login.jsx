@@ -17,7 +17,7 @@ export default function Login() {
     setLoginLoader(true);
 
     try {
-      const response = await axiosInstance.post(`login`, values);
+      const response = await axiosInstance.post(`auth/login`, values);
       const userDetails = response.data.data;
 
       if (response.status === 200) {
