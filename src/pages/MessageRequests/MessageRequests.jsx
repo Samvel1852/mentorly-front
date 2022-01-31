@@ -18,7 +18,7 @@ const { Title } = Typography;
 
 
 export default function MessageRequests() {
-  const { confirmations, pendings, pendingsCount } = useSelector((state) => state.connections);
+  const { confirmations, pendings } = useSelector((state) => state.connections);
 
   const dispatch = useDispatch();
 
@@ -38,12 +38,12 @@ export default function MessageRequests() {
   const declineRequest = (id) => {
     console.log(id);
     const param = {connect: 'rejected'};
-    dispatch(changeRequestStatus({id, param}))
+    dispatch(changeRequestStatus({id, param}));
   };
   
   return (
     <Layout style={{backgroundColor: '#fff'}}>
-      <MainHeader verified={true} pendingsCount={pendingsCount}/>
+      <MainHeader verified={true}/>
       <Row style={{ marginTop: '30px'}}>
         <Col span={11}>
           <Title level={4} className={styles.title}>My Mentors/Mentees</Title>
@@ -83,7 +83,7 @@ export default function MessageRequests() {
           />
         </Col>
       </Row>
-      <Footer className={styles.footer}>
+      <Footer className={styles.footer}> 
         Simply Technologies ©2022 Created with Pleasure
       </Footer>
     </Layout>

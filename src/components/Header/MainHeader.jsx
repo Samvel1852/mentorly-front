@@ -18,7 +18,7 @@ export default function MainHeader ({ verified }) {
     useEffect(async () => {
       const result =  await axiosInstance.get(`connections/pending`);
       setPendingsCount(result.data.data.length);
-    }, [])
+    }, []);
 
     async function handleLogOut() {
         await removeFromLocalStorage('accessToken');
@@ -63,5 +63,4 @@ export default function MainHeader ({ verified }) {
 MainHeader.propTypes = {
     handleLogOut: PropTypes.func,
     verified: PropTypes.bool,
-    pendingsCount: PropTypes.number
 };

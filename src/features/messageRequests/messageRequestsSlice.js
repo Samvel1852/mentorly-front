@@ -56,11 +56,11 @@ const connectionSlice = createSlice({
             state.loading = true;
         },
         [connect.fulfilled]: (state) => {
-            state.requestSent = 'Request Sent'
+            state.requestSent = 'Request Sent';
             state.loading = false;
         },
         [connect.rejected]: (state, {payload}) => {
-            state.loading = false
+            state.loading = false;
             state.errors = payload;
         },
         [pendingConnections.pending]: (state) => {
@@ -95,7 +95,7 @@ const connectionSlice = createSlice({
                 console.log(from);
                 state.confirmations=[from,...current(state.confirmations)];
             }
-            state.pendings = current(state.pendings).filter(item => item._id !== payload.ID)
+            state.pendings = current(state.pendings).filter(item => item._id !== payload.ID);
             state.loading = false;
         },
         [changeRequestStatus.rejected]: (state, {payload}) => {
