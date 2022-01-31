@@ -18,7 +18,9 @@ export default function MainHeader ({ inPublicPages }) {
     const navigate = useNavigate();
 
     useEffect(async () => {
-      // const reqCount = await axiosInstance.get('requests/pending');
+      // const requests = await axiosInstance.get('requests/pending');
+      // const reqCount = requests.lenght;
+      // await setRequestsQuantity(reqCount);
       await setRequestsQuantity(200)
     }, []);
 

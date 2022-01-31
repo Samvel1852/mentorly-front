@@ -13,9 +13,9 @@ import { PasswordInput } from '../../elements/PasswordInput';
 export default function Signup() {
   const [errorMessage, setErrorMessage] = useState('');
   const [signUpLoader, setSignUpLoader] = useState(false);
-  // const [emailErrMessage, setEmailErrMessage] = useState('');
-  // const [passwordErrMessage, setPasswordErrMessage] = useState('');
-  // const [confirmPasswordErrMessage, setConfirmPasswordErrMessage] = useState('');
+  const [emailErrMessage, setEmailErrMessage] = useState('');
+  const [passwordErrMessage, setPasswordErrMessage] = useState('');
+  const [confirmPasswordErrMessage, setConfirmPasswordErrMessage] = useState('');
 
   const navigate = useNavigate();
 
@@ -24,13 +24,29 @@ export default function Signup() {
 
     try {
       setErrorMessage('');
+      setEmailErrMessage('');
+      setPasswordErrMessage('');
+      setConfirmPasswordErrMessage('');
+      // const response = await axiosInstance.post('auth/register', values);
       const response = await axiosInstance.post('signup', values);
 
       if (response.status === 201) {
         navigate('/confirm');
       }
     } catch ({ response }) {
-      setErrorMessage(response.data.errors[0]);
+      console.log('response', response);
+      if (response.data.errors.email){
+        setEmailErrMessage(response.data.errors.email[0]);
+      }
+
+      if (response.data.errors.password){
+        setPasswordErrMessage(response.data.errors.password[0]);
+      }
+
+      if (response.data.errors.confirmPassword){
+        setConfirmPasswordErrMessage(response.data.errors.confirmPassword[0]);
+      }
+      setErrorMessage(response.data.errors);
       setSignUpLoader(false);
     }
   };
@@ -60,11 +76,11 @@ export default function Signup() {
           <MainInput />
         </Form.Item>
 
-        {/* <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 0, span: 24 }} hidden={!errorMessage} >
+        <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 0, span: 24 }} hidden={!emailErrMessage} >
           <div className={styles.errMessage} >
-            {errorMessage}
+            {emailErrMessage}
           </div>
-        </Form.Item> */}
+        </Form.Item>
 
         <Form.Item className={styles.signUpFormItem}
           label='Password'
@@ -76,11 +92,11 @@ export default function Signup() {
           <PasswordInput />
         </Form.Item>
 
-        {/* <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 0, span: 24 }} hidden={!errorMessage} >
+        <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 0, span: 24 }} hidden={!passwordErrMessage} >
           <div className={styles.errMessage} >
-            {errorMessage}
+            {passwordErrMessage}
           </div>
-        </Form.Item> */}
+        </Form.Item>
 
         <Form.Item className={styles.signUpFormItem}
           label='Confirm Password'
@@ -92,9 +108,9 @@ export default function Signup() {
           <PasswordInput />
         </Form.Item>
 
-        <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 0, span: 24 }} hidden={!errorMessage} >
+        <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 0, span: 24 }} hidden={!confirmPasswordErrMessage && !errorMessage} >
           <div className={styles.errMessage} >
-            {errorMessage}
+            {confirmPasswordErrMessage || errorMessage}
           </div>
         </Form.Item>
 

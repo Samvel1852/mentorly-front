@@ -47,7 +47,7 @@ export default function ViewMyProfile() {
       <MainHeader verified={true} />
       { userData?.status !== 'verified' && !editLoader ? 
       <div className={styles.pageLoaderContainer}>
-        <MainException type='404' redirect={`/${currentUserId}`} title={'404 This Page Isn`t Available'} 
+        <MainException type='404' redirect={`/${currentUserId}`} title={'This Page Isn`t Available'} 
         desc={'The link may be broken, or the page may have been removed. Check to see if the link you`re trying to open is correct.'} />
         </div> :
        !editLoader  ? 

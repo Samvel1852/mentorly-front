@@ -12,6 +12,16 @@ export const MainException = styled(Exception)`
     }
 
     .antd-pro-exception-desc {
-        width: 400px;
+        width: 350px;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .antd-pro-exception-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
     }
 `;
