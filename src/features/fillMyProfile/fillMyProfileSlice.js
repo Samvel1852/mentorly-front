@@ -58,7 +58,7 @@ export const verifyUser = createAsyncThunk(
 export const getUserData = createAsyncThunk('users/getUser', async (id, {rejectWithValue}) => {
   try {
       let userData =  await axiosInstance.get(`users/${id}`);
-      return userData.data.data;
+      return userData.data.data[0];
   } catch (err) {
       return rejectWithValue(err)
   }

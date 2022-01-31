@@ -1,14 +1,14 @@
+import { useEffect, useState } from 'react';
 import { Badge, Menu } from 'antd';
 import { Header } from 'antd/lib/layout/layout';
 import PropTypes from 'prop-types';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-// import NoticeIcon from 'ant-design-pro/lib/NoticeIcon';
+import { MessageOutlined } from '@ant-design/icons';
 
 import { getLocalStorage, removeFromLocalStorage } from '../../helpers/localStorage';
 import styles from './MainHeader.module.less';
 import './MainHeader.less';
 import Logo from '../../assets/images/MentorlyLogo.png'
-import { useEffect, useState } from 'react';
 
 export default function MainHeader ({ inPublicPages }) {
     const [requestsQuantity, setRequestsQuantity] = useState(0);
@@ -21,7 +21,7 @@ export default function MainHeader ({ inPublicPages }) {
       // const requests = await axiosInstance.get('requests/pending');
       // const reqCount = requests.lenght;
       // await setRequestsQuantity(reqCount);
-      await setRequestsQuantity(200)
+      await setRequestsQuantity(20);
     }, []);
 
     async function handleLogOut() {
@@ -47,8 +47,9 @@ export default function MainHeader ({ inPublicPages }) {
         <Menu theme='dark' mode='horizontal' defaultSelectedKeys={`${pathname}`} className={styles.menu}>
           <Menu.Item key='/dashboard' ><Link to='/dashboard'>Dashboard</Link></Menu.Item>
           <Menu.Item key='/requests' ><Link to='/requests'> Message Requests </Link> 
-            {/* <NoticeIcon count={requestsQuantity} /> */}
-            <Badge count={requestsQuantity} size='small' ></Badge>
+            <Badge count={requestsQuantity} size='small' offset={[0, 0]} className={styles.badge}> 
+              <MessageOutlined className={styles.icon} />
+            </Badge>
           </Menu.Item>
           <Menu.Item key={currentUserIdLink} >
             <Link to={currentUserIdLink}>My Profile</Link>

@@ -13,45 +13,102 @@ import { PasswordInput } from '../../elements/PasswordInput';
 export default function Signup() {
   const [errorMessage, setErrorMessage] = useState('');
   const [signUpLoader, setSignUpLoader] = useState(false);
-  const [emailErrMessage, setEmailErrMessage] = useState('');
-  const [passwordErrMessage, setPasswordErrMessage] = useState('');
-  const [confirmPasswordErrMessage, setConfirmPasswordErrMessage] = useState('');
+  // const [emailValue, setEmailValue] = useState('');
+  // const [passwordValue, setPasswordValue] = useState('');
+  // const [confirmPasswordValue, setConfirmPasswordValue] = useState('');
+
+  // useEffect(() => {
+  //   if(errorMessage) form.validateFields({ email: errorMessage.email, password: errorMessage.password, confirmPassword: errorMessage.confirmPassword });
+  // },[errorMessage]);
 
   const navigate = useNavigate();
 
+  const [form] = Form.useForm();
+
+  const onChange = (name) => {
+    console.log('name',name);
+    console.log('errMsg',errorMessage);
+    console.log('The check', typeof errorMessage !== 'string');
+    // eslint-disable-next-line no-extra-boolean-cast
+    if(typeof errorMessage !== 'string') {
+      setErrorMessage('');
+    }
+    // if (errorMessage[name]) setErrorMessage({...errorMessage, [name]: ''});
+    // setEmailValue(e.target.value);
+  };
+
+  console.log('rendered');
+
   const onFinish = async (values) => {
+    console.log('finished');
       setSignUpLoader(true);
 
     try {
-      setErrorMessage('');
-      setEmailErrMessage('');
-      setPasswordErrMessage('');
-      setConfirmPasswordErrMessage('');
-      // const response = await axiosInstance.post('auth/register', values);
-      const response = await axiosInstance.post('signup', values);
+      const response = await axiosInstance.post('auth/register', values);
 
       if (response.status === 201) {
         navigate('/confirm');
       }
     } catch ({ response }) {
       console.log('response', response);
-      if (response.data.errors.email){
-        setEmailErrMessage(response.data.errors.email[0]);
-      }
 
-      if (response.data.errors.password){
-        setPasswordErrMessage(response.data.errors.password[0]);
+      if (typeof response.data.errors === 'string') {
+        setErrorMessage({errors: [response.data.errors]});
+        setSignUpLoader(false);
+      } else {
+        setErrorMessage(response.data.errors);
+        setSignUpLoader(false);
       }
-
-      if (response.data.errors.confirmPassword){
-        setConfirmPasswordErrMessage(response.data.errors.confirmPassword[0]);
-      }
-      setErrorMessage(response.data.errors);
-      setSignUpLoader(false);
+      form.validateFields();
     }
   };
 
-  const validateRequiredFields = (message) => ({required: true, message})
+  const validateRequiredFields = (message) => ({required: true, message});
+
+  function validateEmailError () {
+    console.log('emailValue', errorMessage);
+    return ({
+      validator() {
+        if (!(errorMessage.email && errorMessage.email.length)) {
+          console.log('resovled');
+          return Promise.resolve();
+        } else {
+          console.log('rejected');
+          return Promise.reject(
+            new Error(errorMessage.email[0]),
+          );
+        }
+      },
+    })
+  }
+
+  function validatePasswordError () {
+    return ({
+      validator() {
+        if (!errorMessage.password) {
+          return Promise.resolve();
+        } else {
+          return Promise.reject(
+            new Error(errorMessage.password[0]),
+          );
+        }
+      },
+    })
+  }
+
+  function validateConfirmPasswordError () {
+    return ({
+      validator() {
+        if (!errorMessage.confirmPassword) {
+          return Promise.resolve();
+        } else {
+          return Promise.reject(
+            new Error(errorMessage.confirmPassword[0]),
+          );
+        }
+      },
+    })
+  }
 
   return (
     <>
@@ -61,6 +118,8 @@ export default function Signup() {
         name='basic'
         onFinish={onFinish}
         autoComplete='off'
+        form={form}
+        validateTrigger='onSubmit'
         requiredMark={false}
       >
         <Form.Item className={styles.signUpFormTitle} wrapperCol={{ offset: 8, span: 16 }} >
@@ -71,15 +130,9 @@ export default function Signup() {
           name='email'
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
-          rules={[ validateRequiredFields('Please input your username!') ]}
+          rules={[ validateRequiredFields('Please input your email.'), validateEmailError() ]}
         >
-          <MainInput />
-        </Form.Item>
-
-        <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 0, span: 24 }} hidden={!emailErrMessage} >
-          <div className={styles.errMessage} >
-            {emailErrMessage}
-          </div>
+          <MainInput onChange={() => onChange('email')} />
         </Form.Item>
 
         <Form.Item className={styles.signUpFormItem}
@@ -87,15 +140,9 @@ export default function Signup() {
           name='password'
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
-          rules={[ validateRequiredFields('Please input your password!')]}
+          rules={[ validateRequiredFields('Please input your password!'), validatePasswordError()]}
         >
-          <PasswordInput />
-        </Form.Item>
-
-        <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 0, span: 24 }} hidden={!passwordErrMessage} >
-          <div className={styles.errMessage} >
-            {passwordErrMessage}
-          </div>
+          <PasswordInput onChange={() => onChange()} />
         </Form.Item>
 
         <Form.Item className={styles.signUpFormItem}
@@ -103,14 +150,15 @@ export default function Signup() {
           name='confirmPassword'
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
-          rules={[ validateRequiredFields('Confirm password must be the same as password!') ]}
-        >
-          <PasswordInput />
+          rules={[ validateRequiredFields('Confirm password must be the same as password!'), 
+                  validateConfirmPasswordError() ]} >
+          <PasswordInput onChange={() => onChange()} />
         </Form.Item>
 
-        <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 0, span: 24 }} hidden={!confirmPasswordErrMessage && !errorMessage} >
+        <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 0, span: 24 }} 
+                  hidden={!errorMessage.errors} >
           <div className={styles.errMessage} >
-            {confirmPasswordErrMessage || errorMessage}
+            {errorMessage.errors}
           </div>
         </Form.Item>
 
