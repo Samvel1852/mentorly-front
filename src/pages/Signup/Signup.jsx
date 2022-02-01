@@ -18,12 +18,8 @@ export default function Signup() {
 
   const [form] = Form.useForm();
 
-  const onChange = (name) => {
-    
+  const onChange = () => {
     if(typeof errorMessage !== 'string') {
-      console.log('name',name);
-      console.log('errMsg',errorMessage);
-      console.log('The check', typeof errorMessage !== 'string');
       setErrorMessage('');
     }
   };
@@ -144,8 +140,7 @@ export default function Signup() {
           label='Password'
           name='password'
           labelCol={{ span: 24 }}
-          wrapperCol={{ span: 24 }}
-          rules={[ validateRequiredFields('Please input your password!'), validatePasswordError()]}
+          rules={[ validateRequiredFields('Please input your password.'), validatePasswordError()]}
         >
           <PasswordInput onChange={() => onChange()} />
         </Form.Item>
@@ -154,8 +149,7 @@ export default function Signup() {
           label='Confirm Password'
           name='confirmPassword'
           labelCol={{ span: 24 }}
-          wrapperCol={{ span: 24 }}
-          rules={[ validateRequiredFields('Confirm password must be the same as password!'), 
+          rules={[ validateRequiredFields('Confirm password must be the same as password.'), 
                   validateConfirmPasswordError() ]} >
           <PasswordInput onChange={() => onChange()} />
         </Form.Item>

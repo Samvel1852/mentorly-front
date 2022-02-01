@@ -9,16 +9,23 @@ import { MainInput } from '../../elements/MainInput';
 import { CheckCircleFilled } from '@ant-design/icons/lib/icons';
 
 export default function Confirm() {
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState(null);
   const [confirmLoader, setConfirmLoader] = useState(false);
 
   const navigate = useNavigate();
+
+  const [form] = Form.useForm();
+
+  const onChange = () => {
+    if(errorMessage !== null) {
+      setErrorMessage(null);
+    }
+  };
 
   const onFinish = async (values) => {
     setConfirmLoader(true);
     try {
       const response = await axiosInstance.post('auth/verify', values);
-      setErrorMessage('');
 
       if (response.status === 200) {
         message.success({ content: 'You have successfully registered',
@@ -28,20 +35,38 @@ export default function Confirm() {
         navigate('/login');
       }
     } catch ({ response }) {
-      setErrorMessage(response.data.errors.verificationCode[0]);
       setConfirmLoader(false);
+      console.log('response', response);
+      setErrorMessage('Invalid Verification Code.');
+      form.validateFields();
     }
   };
 
   const validateRequiredFields = (message) => ({required: true, message});
+
+  function validateInvalidCodeError () {
+    return ({
+      validator() {
+        if (!errorMessage) {
+          return Promise.resolve();
+        } else {
+          return Promise.reject(
+            new Error(errorMessage),
+          );
+        }
+      },
+    })
+  }
 
   return (
     <>
     <MainHeader inPublicPages={true} />
       <div className={styles.formContainer}>
       <Form name='basic' initialValues={{ remember: true }}
+        form={form}
         onFinish={onFinish}
         autoComplete='off'
+        validateTrigger='onSubmit'
         requiredMark={false}
       >
         <Form.Item className={styles.confirmFormItem, styles.title} wrapperCol={{ span: 16, offset: 8 }} >
@@ -57,15 +82,9 @@ export default function Confirm() {
           label='Code'
           name='verificationCode'
           labelCol={{ span: 24 }}
-          rules={[ validateRequiredFields('Please input messaged code!') ]}
+          rules={[ validateRequiredFields('Please input messaged code.'), validateInvalidCodeError() ]}
         >
-          <MainInput className={styles.input} />
-        </Form.Item>
-
-        <Form.Item className={styles.confirmFormItem} wrapperCol={{ offset: 0, span: 24 }} hidden={!errorMessage} >
-          <div className={styles.errorMessage} >
-            {errorMessage}
-          </div>
+          <MainInput onChange={onChange} className={styles.input} />
         </Form.Item>
 
         <Form.Item className={styles.confirmFormItem} wrapperCol={{ offset: 9, span: 16 }} >
