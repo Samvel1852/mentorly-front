@@ -73,6 +73,20 @@ export default function Signup() {
     })
   }
 
+  function validateUserExistError () {
+    return ({
+      validator() {
+        if (!errorMessage.errors) {
+          return Promise.resolve();
+        } else {
+          return Promise.reject(
+            new Error(errorMessage.errors[0]),
+          );
+        }
+      },
+    })
+  }
+
   function validatePasswordError () {
     return ({
       validator() {
@@ -120,7 +134,8 @@ export default function Signup() {
           label='Email'
           name='email'
           labelCol={{ span: 24 }}
-          rules={[ validateRequiredFields('Please input your email.'), validateEmailError() ]}
+          rules={[ validateRequiredFields('Please input your email.'), validateEmailError(),
+                validateUserExistError() ]}
         >
           <MainInput onChange={() => onChange('email')} />
         </Form.Item>
@@ -143,13 +158,6 @@ export default function Signup() {
           rules={[ validateRequiredFields('Confirm password must be the same as password!'), 
                   validateConfirmPasswordError() ]} >
           <PasswordInput onChange={() => onChange()} />
-        </Form.Item>
-
-        <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 0, span: 24 }} 
-                  hidden={!errorMessage.errors} >
-          <div className={styles.errMessage} >
-            {errorMessage.errors}
-          </div>
         </Form.Item>
 
         <Form.Item className={styles.signUpFormItem} wrapperCol={{ offset: 9, span: 16 }} >
