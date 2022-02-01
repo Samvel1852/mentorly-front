@@ -3,10 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Layout, Form, Button, message, Select } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
+import 'antd/dist/antd.css';
 
 import styles from './FillMyProfile.module.less';
-import './FillMyProfile.less';
-import 'antd/dist/antd.css';
 import Skill from '../../components/Skill/Skill';
 import MainHeader from '../../components/Header/MainHeader';
 import { MainInput } from '../../elements/MainInput';

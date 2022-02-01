@@ -7,7 +7,6 @@ import { MessageOutlined } from '@ant-design/icons';
 
 import { getLocalStorage, removeFromLocalStorage } from '../../helpers/localStorage';
 import styles from './MainHeader.module.less';
-import './MainHeader.less';
 import Logo from '../../assets/images/MentorlyLogo.png'
 
 export default function MainHeader ({ inPublicPages }) {

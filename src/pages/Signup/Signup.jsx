@@ -4,7 +4,6 @@ import { Form } from 'antd';
 
 import MainHeader from '../../components/Header/MainHeader'
 import styles from './Signup.module.less';
-import './Signup.less'
 import axiosInstance from '../../helpers/axiosInstance';
 import { MainButton } from '../../elements/MainButton';
 import { MainInput } from '../../elements/MainInput';

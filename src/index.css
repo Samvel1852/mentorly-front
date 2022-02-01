@@ -17,3 +17,73 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Header styles */
+.ant-menu.ant-menu-dark .ant-menu-item-selected {
+  background: var(--app-main-color) !important;
+}
+
+.ant-menu-item-selected {
+  background: var(--app-main-color) !important;
+}
+
+.ant-menu-item-active {
+  background-color: var(--app-main-color) !important;
+}
+
+.ant-menu-sub {
+  background-color: var(--app-main-color) !important;
+}
+
+.antd-pro-notice-icon-noticeButton {
+  margin-left: 15px;
+}
+
+/* FillMyProfile styles */
+
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  color: rgba(0, 0, 0, 0.85) !important;
+  font-weight: 600 !important;
+  background-color: #32c1ce !important;
+}
+
+.ant-form-item-explain-error:not(:first-child) {
+  display: none !important;
+}
+
+/* Login styles */
+
+.ant-input-affix-wrapper-focused {
+  border-color: var(--app-main-color) !important;
+  outline: 0 !important;
+  -webkit-box-shadow: 0 0 0 2px rgb(74,145,183, .2) !important;
+  box-shadow: 0 0 0 2px rgb(74,145,183, .2) !important;
+  opacity: 50%;
+}
+
+.ant-input-affix-wrapper:hover {
+  border: 1px solid var(--app-main-color) !important;
+}
+
+/* SignUp styles */
+
+
+.ant-input-affix-wrapper-focused {
+  border: 1px solid var(--app-main-color) !important;
+  outline: 0 !important;
+  -webkit-box-shadow: 0 0 0 2px rgb(74 145 183 / 20%) !important;
+  box-shadow: 0 0 0 2px rgb(74 145 183 / 20%) !important;
+  opacity: 1 !important;
+}
+
+.ant-input-affix-wrapper:hover {
+  border: 1px solid var(--app-main-color) !important;
+}
+
+.ant-form-item-control-input-content > a {
+  text-decoration: underline;
+}
+
+.ant-form-item-explain-error {
+  font-size: var(--err-font-size);
+}
