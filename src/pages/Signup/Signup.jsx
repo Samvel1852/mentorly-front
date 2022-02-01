@@ -115,6 +115,7 @@ export default function Signup() {
     <>
     <MainHeader inPublicPages={true} />
     <div className={styles.formContainer}>
+      <div className={styles.formPart}>
       <Form
         name='basic'
         onFinish={onFinish}
@@ -164,6 +165,7 @@ export default function Signup() {
           Already have an account? <Link to='/login'>Log in</Link>
         </Form.Item>
       </Form>
+      </div>
     </div>
     </>
   );

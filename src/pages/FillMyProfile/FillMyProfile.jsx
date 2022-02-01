@@ -228,9 +228,9 @@ export default function FillMyProfile() {
               >
                 <MainSelect
                   onChange={(value) => handleChange(value, 'selectedRole')}
-                  placeholder='--Select Role'
+                  placeholder='Select Role'
                 >
-                  <Option value='--Select Role' disabled>
+                  <Option value='Select Role' disabled>
                     --Select Role
                   </Option>
                   <Option value='Mentor'>Mentor</Option>
@@ -245,11 +245,11 @@ export default function FillMyProfile() {
                 rules={[getRequiredMessage('Please select Your Field.'),]}
               >
                 <MainSelect
-                  initialvalue='--Select Field'
+                  initialvalue='Select Field'
                   onChange={(value) => handleChange(value, 'selectedField')}
                   placeholder='Select Field'
                 >
-                  <Option value='--Select Field' disabled>
+                  <Option value='Select Field' disabled>
                     --Select Field
                   </Option>
                   <Option value='IT'>IT</Option>
