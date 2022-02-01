@@ -10,10 +10,9 @@ function Dashboard() {
     const dispatch = useDispatch();
     const { users, pageTotal, loading } = useSelector(state => state.users);
     const navigate = useNavigate();
-    const [page, setPage] = useState(1)
-    const [params, setParams] = useState({
-        limit: 5,
-    });
+    const [page, setPage] = useState(1);
+    const limit = 5;
+    const [params, setParams] = useState({});
 
     useEffect(async () => {
        await getData(params)
@@ -155,7 +154,7 @@ function Dashboard() {
                     pagination={ {
                         total: pageTotal,
                         current: page,
-                        pageSize: params.limit,
+                        pageSize: limit,
                         onChange: async (page, limit) => {
                             setPage(page)
                             await getData({ ...params, page, limit });
