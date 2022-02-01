@@ -71,16 +71,7 @@ export default function ViewMyProfile() {
                 userData?.skills.map((skill) => <Skill name={skill.name} key={skill._id}></Skill>)
               }
               </div>
-              {
-                 id === currentUserId ? <MainButton
-                 margin={'40px 0 0 0 '}
-                 width={'200px'} height={'50px'} type='primary' 
-                 className={styles.editBtn}
-                 onClick={handleEditProfileClick}
-                 loading={editLoader}>Edit</MainButton>
-                 : <MainButton width={'200px'} height={'50px'} margin={'40px 0 0 0 '} type='primary' 
-                 className={styles.connectBtn}>Connect</MainButton>
-                }
+              
             </Col>
             <Col xs={5} sm={6} md={10} lg={10} xl={15} className={styles.generalInfoContainer}>
               <Title className={styles.title} level={3}>Education</Title>
@@ -97,6 +88,18 @@ export default function ViewMyProfile() {
               <Typography className={styles.genInfoContainers}>{  
                   userData?.plans}</Typography>
             </Col>
+              <div className={styles.btnContainer}>
+                {
+                 id === currentUserId ? <MainButton
+                 margin={'40px 0 0 0 '}
+                 width={'150px'} height={'40px'} type='primary' 
+                 className={styles.editBtn}
+                 onClick={handleEditProfileClick}
+                 loading={editLoader}>Edit</MainButton>
+                 : <MainButton width={'200px'} height={'50px'} margin={'40px 0 0 0 '} type='primary' 
+                 className={styles.connectBtn}>Connect</MainButton>
+                }
+                </div>
           </Row>
       </Content>
       : <div className={styles.pageLoaderContainer}><MainSpin tip='Loading...' /></div>
