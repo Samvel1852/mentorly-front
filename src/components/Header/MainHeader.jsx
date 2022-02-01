@@ -1,5 +1,4 @@
-// import { useEffect, useState } from 'react';
-import { Menu, Badge } from 'antd';
+import { Badge, Menu } from 'antd';
 import { Header } from 'antd/lib/layout/layout';
 import { MessageOutlined } from '@ant-design/icons';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -8,11 +7,11 @@ import PropTypes from 'prop-types';
 
 import { getLocalStorage, removeFromLocalStorage } from '../../helpers/localStorage';
 import styles from './MainHeader.module.less';
+import Logo from '../../assets/images/MentorlyLogo.png'
 
+export default function MainHeader ({ inPublicPages }) {
 
-export default function MainHeader ({ verified }) {
-    
-    const { pathname } = useLocation();
+    const { pathname } = useLocation()
 
     const { pendingsCount } = useSelector((state) => state.connections);
 
@@ -25,35 +24,40 @@ export default function MainHeader ({ verified }) {
         navigate('/login');
     }
 
-    const currentUserId = `/${getLocalStorage('currentUserId')}`;
+    const userId = getLocalStorage('currentUserId')
+    const currentUserIdLink = `/${userId}`;
+    const verified = getLocalStorage('verified');
 
     return(
       <Header className={styles.head} >
-      <div className={styles.logo}><Link to={currentUserId}>Mentorly</Link></div>
+      <div className={styles.logoContainer}><Link to={verified === 'confirmed' ? `/users${currentUserIdLink}`
+          : `/${userId || 'login'}`} >
+          <img className={styles.logo} src={Logo} height={40} alt="Logo not loaded" />
+        </Link>
+      </div>
       {
-        verified ?
-        <Menu theme='dark' mode='horizontal' defaultSelectedKeys={`${pathname}`} className={styles.menu}
-           >
+        verified === 'verified' ?
+        <Menu theme='dark' mode='horizontal' defaultSelectedKeys={`${pathname}`} className={styles.menu}>
           <Menu.Item key='/dashboard' ><Link to='/dashboard'>Dashboard</Link></Menu.Item>
-          <Menu.Item key='/requests' ><Link to='/requests'>
-          Message Requests
-          <Badge count={pendingsCount} offset={[0, 0]}  size='small' style={{ fontSize: '12px'}} >
-            <MessageOutlined  className={styles.messageIcon} />
-          </Badge>  <br />
-          </Link></Menu.Item>
-          <Menu.Item key={currentUserId} >
-            <Link to={currentUserId}>My Profile</Link>
+          <Menu.Item key='/requests' ><Link to='/requests'> Message Requests </Link> 
+            <Badge count={pendingsCount} size='small' offset={[0, 0]} className={styles.badge}> 
+              <MessageOutlined className={styles.icon} />
+            </Badge>
+          </Menu.Item>
+          <Menu.Item key={currentUserIdLink} >
+            <Link to={currentUserIdLink}>My Profile</Link>
           </Menu.Item>
           <Menu.Item key='4' onClick={handleLogOut}>
             Log Out
           </Menu.Item>
-        </Menu> : 
+        </Menu> : (!inPublicPages) ?
         <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['1']} className={styles.unverifiedMenu}>
-          <Menu.Item key='1'><Link to={`/users/${currentUserId}`}>My Profile</Link></Menu.Item>
+          <Menu.Item key='1'><Link to={`/users${currentUserIdLink}`}>My Profile</Link></Menu.Item>
           <Menu.Item key='2' onClick={handleLogOut}>
             Log Out
           </Menu.Item>
-        </Menu>
+        </Menu> : 
+        <Menu theme='dark' mode='horizontal'></Menu>
       }
     </Header>)
 }
@@ -61,5 +65,6 @@ export default function MainHeader ({ verified }) {
 MainHeader.propTypes = {
     handleLogOut: PropTypes.func,
     verified: PropTypes.bool,
+    inPublicPages: PropTypes.bool,
     pendingsCount: PropTypes.number,
 };

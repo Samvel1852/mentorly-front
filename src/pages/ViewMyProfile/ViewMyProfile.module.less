@@ -1,30 +1,33 @@
+@import '../../index.css';
+
 .site_layout {
   width: 100%;
   min-height: 80vh;
-  background-color: #E6EFFC;
+  background-color: var(--app-background-color);
   margin-top: 0 !important;
   padding: 20px;
 }
 
 .mentorBeige {
-  color: #1890FF !important;
-  background-color: #001529;
+  color: lightgrey !important;
+  background-color: var(--app-main-color);
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100px;
-  border-radius: 20px;
+  border-radius: 5px;
   font-family: cursive;
   font-style: italic;
 }
 
 .personalInfoContainer {
   margin-right: 90px;
+  margin-left: 25px;
 }
 
 .skillsContainer {
   display: flex;
-  justify-content: space-between;
+  gap: 5px;
   width: 200px;
   flex-wrap: wrap;
 }
@@ -32,6 +35,11 @@
 .generalInfoContainer {
   min-width: 150px !important;
   margin-bottom: 20px;
+}
+
+.title {
+  color: var(--app-main-color) !important;
+  font-size: 15px !important;
 }
 
 .foot {
@@ -49,17 +57,13 @@
   align-items: center;
 }
 
-.editBtn {
-  margin-top: 15px;
-  display: block;
-}
-
-.connectBtn {
-  margin-top: 15px;
-  display: block;
-}
-
 .genInfoContainers {
   min-width: 100px;
   max-width: 900px;
+}
+
+.btnContainer{
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
 }

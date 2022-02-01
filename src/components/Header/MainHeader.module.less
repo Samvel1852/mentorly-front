@@ -1,10 +1,4 @@
-.ant-menu-item-selected {
-    background-color: #3479b9 !important;
-}
-
-.ant-menu-item:hover {
-    background-color: #3479b9 !important;
-}
+@import '../../index.css';
 
 .head {
     position: sticky;
@@ -13,26 +7,41 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+    background-color: var(--app-main-color) !important;
   }
   
-  .logo {
+  .logoContainer {
     min-width: 120px;
     width: 120px;
     height: 31px;
     margin: 16px 24px 16px 0;
-    background: rgba(199, 198, 198, 0.2);
-    color: #1890FF;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 20px;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    font-style: italic;
-    border-radius: 50%;
+    > .logo {
+        height: 64px;
+        cursor: pointer;
+    }
   }
 
   .menu {
       width: 500px;
+      background-color: var(--app-main-color) !important;
+  }
+
+  .unverifiedMenu {
+    background-color: var(--app-main-color) !important;
+  }
+
+  .badge {
+    font-size: 12px;
+  }
+
+  .icon {
+    padding-left: 5px;
+    font-size: 18px !important;
+    color: lightgray !important;
   }
 
   .messageIcon {

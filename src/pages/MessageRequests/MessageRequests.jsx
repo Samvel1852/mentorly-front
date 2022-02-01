@@ -6,6 +6,9 @@ import { Link } from 'react-router-dom';
 import 'antd/dist/antd.less';
 import styles from './MessageRequests.module.less';
 import MainHeader from '../../components/Header/MainHeader';
+import MainFooter from '../../components/Footer/MainFooter';
+import { MainButton } from '../../elements/MainButton';
+
 
 import { 
   confirmedConnections, 
@@ -13,7 +16,6 @@ import {
   changeRequestStatus 
 } from '../../features/messageRequests/messageRequestsSlice';
 
-const { Footer } = Layout;
 const { Title } = Typography;
 
 
@@ -66,16 +68,14 @@ export default function MessageRequests() {
                 title={<Link to={`/${item.from._id}`}>{`${item.from.firstName} ${item.from.lastName}`}</Link>}
                 description={item.from.position}
               />
-              <Button className={styles.accept} onClick={() => requestAnswer(item._id, {connect: 'confirmed'})}>Accept</Button>
+              <MainButton className={styles.accept} onClick={() => requestAnswer(item._id, {connect: 'confirmed'})}>Accept</MainButton>
               <Button className={styles.decline} onClick={() => requestAnswer(item._id, {connect: 'rejected'})}>Ignore</Button>
             </List.Item>
             </div>}
           />
         </Col>
       </Row>
-      <Footer className={styles.footer}> 
-        Simply Technologies ©2022 Created with Pleasure
-      </Footer>
+      <MainFooter > Simply Technologies ©2022 Created with Pleasure </MainFooter>
     </Layout>
   );
 }

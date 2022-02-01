@@ -22,7 +22,7 @@ function App() {
   return (
     <div className='App'>
         <Routes>
-          <Route path='/' element={<Navigate to={`/${currentUserId}`} />} />
+          <Route path='/' element={<Navigate to={`/${currentUserId || 'login'}`} />} />
           <Route element={ <PublicRoute /> }>
             <Route path='/signup' element={ <Signup /> } />
             <Route path='/confirm' element={ <Confirm /> } />
