@@ -47,7 +47,9 @@ export default function Login() {
   };
 
   function onChange () {
-    setEmailFormatError(null);
+    if (emailFormatError) {
+      setEmailFormatError(null);
+    }
   }
 
   function validateEmailFormatError () {
