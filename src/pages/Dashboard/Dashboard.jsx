@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Form, Input, Layout, Row, Select, Table } from 'antd';
+import { Col, Form, Layout, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUsers } from '../../features/Dashboard/dashboardSlice';
 import { Option } from 'antd/es/mentions';
+
+import { getUsers } from '../../features/Dashboard/dashboardSlice';
 import MainHeader from '../../components/Header/MainHeader';
 import { useNavigate } from 'react-router-dom';
+import { MainInput } from '../../elements/MainInput';
+import { MainSelect } from '../../elements/MainSelect';
+import { MainButton } from '../../elements/MainButton';
+import { MainTable } from '../../elements/MainTable';
+import styles from './Dashboard.module.less';
 
 function Dashboard() {
     const dispatch = useDispatch();
@@ -64,8 +70,8 @@ function Dashboard() {
         await getData(params);
     };
     return (
-        <Layout style={{ height: '100vh'}}>
-            <MainHeader verified={true}/>
+        <Layout className={styles.layout} >
+            <MainHeader verified={true} />
             <div style={ { 'margin': '30px'} }>
                 <Form
                     onSubmit={ handleSubmit }
@@ -76,7 +82,7 @@ function Dashboard() {
                     <Row justify="space-between">
                         <Col span={ 4 } >
                             <Form.Item>
-                                <Input
+                                <MainInput
                                     placeholder="First Name"
                                     value={ params.firstName }
                                     onChange={ (e) => setParams({ ...params, firstName: e.target.value })
@@ -85,7 +91,7 @@ function Dashboard() {
                         </Col>
                         <Col span={ 4 }>
                             <Form.Item>
-                                <Input
+                                <MainInput
                                     placeholder="Last Name"
                                     value={ params.lastName }
                                     onChange={ (e) => setParams({ ...params, lastName: e.target.value }) }
@@ -94,7 +100,7 @@ function Dashboard() {
                         </Col>
                         <Col span={ 4 }>
                             <Form.Item>
-                                <Input
+                                <MainInput
                                     placeholder="Position"
                                     value={ params.position }
                                     onChange={ (e) => setParams({ ...params, position: e.target.value }) }
@@ -103,11 +109,11 @@ function Dashboard() {
                         </Col>
                         <Col span={ 4 }>
                             <Form.Item>
-                                <Select
+                                <MainSelect
                                     mode={ 'multiple' }
                                     allowClear
                                     style={ { width: '100%' } }
-                                    placeholder="Filed"
+                                    placeholder="Field"
                                     onChange={ (value) => setParams({ ...params, selectedField: value }) }
                                 >
                                     <Option value="it">IT</Option>
@@ -116,32 +122,32 @@ function Dashboard() {
                                     <Option value="law">Law</Option>
                                     <Option value="tourism">Tourism</Option>
                                     <Option value="business">Business</Option>
-                                </Select>
+                                </MainSelect>
                             </Form.Item>
                         </Col>
                         <Col span={ 4 }>
                             <Form.Item>
-                                <Select
+                                <MainSelect
                                     placeholder="Role"
                                     onChange={ (value) => setParams({ ...params, selectedRole: value }) }
                                     allowClear
                                 >
                                     <Option value="mentor">Mentor</Option>
                                     <Option value="mentee">Mentee</Option>
-                                </Select>
+                                </MainSelect>
                             </Form.Item>
                         </Col>
                         <Col>
                             <Form.Item>
-                                <Button type="primary" htmlType={ 'submit' }>
+                                <MainButton type="primary" htmlType={ 'submit' }>
                                     Search
-                                </Button>
+                                </MainButton>
                             </Form.Item>
                         </Col>
                     </Row>
                 </Form>
 
-                <Table
+                <MainTable
                     dataSource={ dataSource }
                     columns={ columns }
                     onRow={(record) => {

@@ -1,36 +1,34 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Layout, Form, Input, Button, Select, Modal } from 'antd';
+import { Layout, Form, Button, message, Select } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
+import 'antd/dist/antd.css';
 
 import styles from './FillMyProfile.module.less';
-import 'antd/dist/antd.css';
 import Skill from '../../components/Skill/Skill';
 import MainHeader from '../../components/Header/MainHeader';
+import { MainInput } from '../../elements/MainInput';
 
 import {
   verifyUser,
   setProfileState,
+  getUserData,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
 
 import {
   getLocalStorage,
   setLocalStorage,
 } from '../../helpers/localStorage';
+import { MainTextarea } from '../../elements/MainTextArea';
+import { MainSelect } from '../../elements/MainSelect';
+import { MainButton } from '../../elements/MainButton';
+import MainFooter from '../../components/Footer/MainFooter';
 
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 const { Option } = Select;
-const { TextArea } = Input;
 
 export default function FillMyProfile() {  
-  const navigate = useNavigate();
-  const params = useParams();
-
-  useEffect(() => {
-    if (!getLocalStorage('accessToken')) navigate('/login');
-  }, []);
-
   const {
     firstName,
     lastName,
@@ -45,19 +43,45 @@ export default function FillMyProfile() {
     skillName,
     skills,
     submitLoader,
-    isModalVisible,
+    updatedAt,
   } = useSelector((state) => state.fillMyProfile);
-
-  const dispatch = useDispatch();
 
   const [form] = Form.useForm();
 
   const initialValues = { 
     firstName, lastName,
-    selectedRole, selectedField,
+    selectedRole: selectedRole.length ? selectedRole : null, 
+    selectedField: selectedField.length ? selectedField : null,
     position, education,
     experience, about,
     plans, skills }
+
+  const navigate = useNavigate();
+  const params = useParams();
+
+  const dispatch = useDispatch();
+
+  const clearState = {
+    firstName: '', lastName: '', selectedRole: '', selectedField: '',
+    position: '', education: '', experience: '', about: '', plans: '',
+    skills: [],
+  }
+
+  const userId = getLocalStorage('currentUserId');
+
+  useEffect(() => {
+    if (!getLocalStorage('accessToken')) navigate('/login');
+    
+    return () => dispatch(setProfileState(clearState));
+  }, []);
+
+  useEffect(async () => {
+    const {payload} = await dispatch(getUserData(userId));
+
+    dispatch(setProfileState(payload));
+
+    form.setFieldsValue(initialValues);
+  }, [updatedAt]);
 
   const onFinish = async () => {
 
@@ -84,9 +108,11 @@ export default function FillMyProfile() {
       if (result.payload && !result.error && !result.errors) {
         await setLocalStorage('verified', 'verified');
         navigate(`/${id}`);
+      } else {
+        message.error('Refused! Please check Your connection and try again');
       }
     } catch ({ response }) {
-      console.log('errResponse', { response });
+      message.error('This is a message of error');
     }
   };
 
@@ -109,10 +135,6 @@ export default function FillMyProfile() {
     const filteredSkills = skills.filter((skill) => skill.id !== id);
     dispatch(setProfileState({skills: filteredSkills}));
   }
-
-  const handleOk = () => {
-    dispatch(setProfileState({ isModalVisible: false }))
-  };
 
   function getRequiredMessage (message) {
     return {required: true, message}
@@ -150,20 +172,8 @@ export default function FillMyProfile() {
   }
 
   return (
-    
-    
-         
     <Layout>
       <MainHeader />
-      <Modal
-        title='Something went wrong'
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleOk}
-      >
-        <p>Please check whether all the fields are filled right!</p>
-        <p>and Please try Again</p>
-      </Modal>
       <Content className={styles.site_layout} >
         <div className={styles.content}>
           <Form
@@ -176,68 +186,67 @@ export default function FillMyProfile() {
             initialValues={initialValues}
           >
             <div className={styles.namesContainer}>
-              <Form.Item
+              <Form.Item 
+                className={styles.fillMyProfileFormItem, styles.firstName}
                 name='firstName'
                 label='First Name'
                 labelCol={{ span: 24 }}
-                className={styles.firstName}
                 rules={[
-                  getRequiredMessage('Please input your First Name!'),
+                  getRequiredMessage('Please input your First Name.'),
                   validateMinTwoCharacters(),
                   validateNamesOnlyLetters(),
                 ]}
               >
-                <Input name='firstName' value={firstName} onChange={({target}) => 
+                <MainInput name='firstName' value={firstName} onChange={({target}) => 
                         handleChange(target.value, target.name)} />
               </Form.Item>
-              <Form.Item
+              <Form.Item 
+                className={styles.fillMyProfileFormItem, styles.lastName}
                 name='lastName'
                 label='Last Name'
                 labelCol={{ span: 24 }}
-                className={styles.lastName}
                 rules={[
-                  getRequiredMessage('Please input your Last Name!'),
+                  getRequiredMessage('Please input your Last Name.'),
                   validateMinTwoCharacters(),
                   validateNamesOnlyLetters(),
                 ]}
               >
-                <Input name='lastName' value={lastName} onChange={({target}) => 
+                <MainInput name='lastName' value={lastName} onChange={({target}) => 
                         handleChange(target.value, target.name)} />
               </Form.Item>
             </div>
             <div className={styles.selectsContainer}>
-              <Form.Item
+              <Form.Item 
+                className={styles.fillMyProfileFormItem, styles.role}
                 name='selectedRole'
                 label='Choose Role'
                 labelCol={{ span: 24 }}
-                rules={[getRequiredMessage('Please select Your Role!')]}
-                className={styles.role}
+                rules={[getRequiredMessage('Please select Your Role.')]}
               >
-                <Select
-                  initialvalue='--Select Role'
+                <MainSelect
                   onChange={(value) => handleChange(value, 'selectedRole')}
-                  placeholder='--Select Role'
+                  placeholder='Select Role'
                 >
-                  <Option value='--Select Role' disabled>
+                  <Option value='Select Role' disabled>
                     --Select Role
                   </Option>
                   <Option value='Mentor'>Mentor</Option>
                   <Option value='Mentee'>Mentee</Option>
-                </Select>
+                </MainSelect>
               </Form.Item>
-              <Form.Item
+              <Form.Item 
+                className={styles.fillMyProfileFormItem, styles.field}
                 name='selectedField'
                 label='Choose Field'
                 labelCol={{ span: 24 }}
-                rules={[getRequiredMessage('Please select Your Field!'),]}
-                className={styles.field}
+                rules={[getRequiredMessage('Please select Your Field.'),]}
               >
-                <Select
-                  initialvalue='--Select Field'
+                <MainSelect
+                  initialvalue='Select Field'
                   onChange={(value) => handleChange(value, 'selectedField')}
                   placeholder='Select Field'
                 >
-                  <Option value='--Select Field' disabled>
+                  <Option value='Select Field' disabled>
                     --Select Field
                   </Option>
                   <Option value='IT'>IT</Option>
@@ -246,16 +255,17 @@ export default function FillMyProfile() {
                   <Option value='Law'>Law</Option>
                   <Option value='Tourism'>Tourism</Option>
                   <Option value='Business'>Business</Option>
-                </Select>
+                </MainSelect>
               </Form.Item>
             </div>
-            <Form.Item
+            <Form.Item 
+              className={styles.fillMyProfileFormItem}
               name='position'
               label='Position'
               labelCol={{ span: 24 }}
-              rules={[getRequiredMessage('Please input your Position!')]}
+              rules={[getRequiredMessage('Please input your Position.')]}
             >
-              <Input
+              <MainInput
                 name='position'
                 maxLength={50}
                 onChange={({target}) => 
@@ -263,14 +273,15 @@ export default function FillMyProfile() {
                 value={position}
               />
             </Form.Item>
-            <Form.Item
+            <Form.Item 
+              className={styles.fillMyProfileFormItem}
               name='education'
               label='Education'
               labelCol={{ span: 24 }}
-              rules={[getRequiredMessage('Please input your Education!'),
-              {min: 10, message: 'The Education field must contain at least 10 characters'}]}
+              rules={[getRequiredMessage('Please input your Education.'),
+              {min: 10, message: 'The Education field must contain at least 10 characters.'}]}
             >
-              <TextArea
+              <MainTextarea
                 name='education'
                 value={education}
                 onChange={({target}) => 
@@ -280,14 +291,15 @@ export default function FillMyProfile() {
                 maxLength={255}
               />
             </Form.Item>
-            <Form.Item
+            <Form.Item 
+              className={styles.fillMyProfileFormItem}
               name='experience'
               label='Experience'
               labelCol={{ span: 24 }}
-              rules={[getRequiredMessage('Please input your Experience!'),
-              {min: 10, message: 'The Experience field must contain at least 10 characters'}]}
+              rules={[getRequiredMessage('Please input your Experience.'),
+              {min: 10, message: 'The Experience field must contain at least 10 characters.'}]}
             >
-              <TextArea
+              <MainTextarea
                 name='experience'
                 value={experience}
                 onChange={({target}) => 
@@ -297,14 +309,15 @@ export default function FillMyProfile() {
                 maxLength={255}
               />
             </Form.Item>
-            <Form.Item
+            <Form.Item 
+              className={styles.fillMyProfileFormItem}
               name='about'
               label='About'
               labelCol={{ span: 24 }}
-              rules={[getRequiredMessage('Please input something About You!'), 
-              {min: 10, message: 'The About field must contain at least 10 characters'}]}
+              rules={[getRequiredMessage('Please input something About You.'), 
+              {min: 10, message: 'The About field must contain at least 10 characters.'}]}
             >
-              <TextArea
+              <MainTextarea
                 name='about'
                 value={about}
                 onChange={({target}) => 
@@ -314,7 +327,8 @@ export default function FillMyProfile() {
                 maxLength={255}
               />
             </Form.Item>
-            <Form.Item
+            <Form.Item 
+              className={styles.fillMyProfileFormItem}
               name='plans'
               label={
                 selectedRole === 'Mentor'
@@ -324,10 +338,10 @@ export default function FillMyProfile() {
                   : 'Who can request mentorship (for mentor) / My plans (for mentee)'
               }
               labelCol={{ span: 24 }}
-              rules={[getRequiredMessage('Please input your Your Plans!'),
-              {min: 10, message: 'This field must contain at least 10 characters'}]}
+              rules={[getRequiredMessage('Please input your Your Plans.'),
+              {min: 10, message: 'This field must contain at least 10 characters.'}]}
             >
-              <TextArea 
+              <MainTextarea 
                 name='plans'
                 value={plans}
                 onChange={({target}) => 
@@ -337,13 +351,14 @@ export default function FillMyProfile() {
                 maxLength={150}
               />
             </Form.Item>
-            <Form.Item
+            <Form.Item 
+              className={styles.fillMyProfileFormItem}
               name='skills'
               label='Skills'
               labelCol={{ span: 24 }}
-              rules={[getRequiredMessage('Please provide Your Skills!'),
+              rules={[getRequiredMessage('Please provide Your Skills.'),
                     validateMaxTen(skills)]} >
-              <Layout className={styles.skillsContainer} >
+              <Layout>
                 <div className={styles.skillsContainer}>
                   {skills.map((skill) => (
                     <Skill
@@ -355,7 +370,7 @@ export default function FillMyProfile() {
                     />
                   ))}
                   {addingSkill ? (
-                    <Input
+                    <MainInput
                       name='skillName'
                       value={skillName}
                       onPressEnter={handleAddingSkillChange}
@@ -375,15 +390,14 @@ export default function FillMyProfile() {
               </Layout>
             </Form.Item>
             <br />
-            <Button type='primary' htmlType='submit' loading={submitLoader}>
+            <MainButton width={'100px'} height={"40px"} margin={'0 0 20px 0'} type='primary' htmlType='submit' 
+            loading={submitLoader}>
               Submit
-            </Button>
+            </MainButton>
           </Form>
         </div>
       </Content>
-      <Footer className={styles.foot}>
-        Simply Technologies ©2022 Created with Pleasure
-      </Footer>
+      <MainFooter> Simply Technologies ©2022 Created with Pleasure </MainFooter>
     </Layout> 
     
   );

@@ -1,13 +1,31 @@
+@import '../../index.css';
+
 .formContainer {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100vh;
+  height: 88.5vh;
+  background-color: var(--app-background-color);
+  > .formPart{
+    width: 320px;
+  }
 }
 
 .errMessage {
   color: red;
-  font-size: 8px;
-  font-weight: bold;
+  font-size: var(--err-font-size);
+  width: 310px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.signUpFormTitle {
+  margin-bottom: 7px !important;
+}
+
+.signUpFormItem {
+  > div {
+    padding: 0 !important;
+  }
 }

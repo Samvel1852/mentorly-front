@@ -1,6 +1,4 @@
-.ant-layout-content {
-  background-color: #88BDBc;
-}
+@import '../../index.css';
 
 .ant-form-item {
   margin-bottom: 10px !important;
@@ -8,10 +6,11 @@
 
 .form {
   max-width: 600px;
+  margin-top: 30px;
 }
 
 .site_layout {
-  background: #e6effc !important;
+  background: var(--app-background-color) !important;
   margin-top: 64px;
   padding: 0 50px;
   margin-top: 0 !important;
@@ -33,6 +32,7 @@
   flex-wrap: wrap;
   > div {
     width: 265px;
+    height: 60px;
   }
   > .firstName {
     margin-right: 70px;
@@ -44,9 +44,11 @@
   width: 100%;
   justify-content: space-between;
   flex-wrap: wrap;
+  margin-top: 11px;
   > .role {
     width: 265px;
     margin-right: 70px;
+    height: 60px;
   }
   > .field {
     width: 265px;
@@ -59,22 +61,32 @@
   display: flex;
   flex-wrap: wrap;
   background-color: #fff;
+  border: 1px solid #dbd8d8;
+  border-radius: 3px;
   > .addSkillInput {
     width: 15%;
     min-width: 100px;
     height: 30px;
+    border-radius: 5px;
+    margin: 2px 3px 2px 3px;
   }
   > .newSkillBtn {
     width: 15%;
     min-width: 100px;
+    height: 30px;
+    margin: 2px 3px 2px 3px;
+    border-radius: 5px;
+    &:hover {
+      color: var(--app-main-color);
+      border: 1px solid var(--app-main-color);
+    }
   }
 }
 
-.foot {
-  text-align: center;
-  background-color: #001529 !important;
-  color: #E6EFFC !important;
-  margin-top: 3px !important;
+.fillMyProfileFormItem, .lastName, .firstName, .role, .field {
+  > div {
+    padding: 0 !important;
+  }
 }
 
 @media screen and (max-width: 720px) {
