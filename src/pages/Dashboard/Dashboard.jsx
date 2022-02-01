@@ -7,14 +7,12 @@ import MainHeader from '../../components/Header/MainHeader';
 import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
-    const [page, setPage] = useState(1);
     const dispatch = useDispatch();
     const { users, pageTotal, loading } = useSelector(state => state.users);
-    const {pendingsCount} = useSelector((state) => state.connections);
-    const navigate = useNavigate()
-    const [params, setParams] = useState({
-        limit: 5,
-    });
+    const navigate = useNavigate();
+    const [page, setPage] = useState(1);
+    const limit = 5;
+    const [params, setParams] = useState({});
 
     useEffect(async () => {
        await getData(params)
@@ -67,7 +65,7 @@ function Dashboard() {
     };
     return (
         <Layout style={{ height: '100vh'}}>
-            <MainHeader verified={true} pendingsCount={pendingsCount}/>
+            <MainHeader verified={true}/>
             <div style={ { 'margin': '30px'} }>
                 <Form
                     onSubmit={ handleSubmit }
@@ -155,11 +153,11 @@ function Dashboard() {
                     loading={ loading }
                     pagination={ {
                         total: pageTotal,
-                        page: page,
-                        pageSize: params.limit,
+                        current: page,
+                        pageSize: limit,
                         onChange: async (page, limit) => {
                             setPage(page)
-                            await getData({ ...params, page: page, limit: limit });
+                            await getData({ ...params, page, limit });
                         },
                     } }
                 />
