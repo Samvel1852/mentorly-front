@@ -48,56 +48,14 @@ export default function Signup() {
 
   const validateRequiredFields = (message) => ({required: true, message});
 
-  function validateEmailError () {
+  function validateErrors (name) {
     return ({
       validator() {
-        if (!(errorMessage.email && errorMessage.email.length)) {
+        if (!(errorMessage[name] && errorMessage[name].length)) {
           return Promise.resolve();
         } else {
           return Promise.reject(
-            new Error(errorMessage.email[0]),
-          );
-        }
-      },
-    })
-  }
-
-  function validateUserExistError () {
-    return ({
-      validator() {
-        if (!errorMessage.errors) {
-          return Promise.resolve();
-        } else {
-          return Promise.reject(
-            new Error(errorMessage.errors[0]),
-          );
-        }
-      },
-    })
-  }
-
-  function validatePasswordError () {
-    return ({
-      validator() {
-        if (!errorMessage.password) {
-          return Promise.resolve();
-        } else {
-          return Promise.reject(
-            new Error(errorMessage.password[0]),
-          );
-        }
-      },
-    })
-  }
-
-  function validateConfirmPasswordError () {
-    return ({
-      validator() {
-        if (!errorMessage.confirmPassword) {
-          return Promise.resolve();
-        } else {
-          return Promise.reject(
-            new Error(errorMessage.confirmPassword[0]),
+            new Error(errorMessage[name][0]),
           );
         }
       },
@@ -124,8 +82,8 @@ export default function Signup() {
           label='Email'
           name='email'
           labelCol={{ span: 24 }}
-          rules={[ validateRequiredFields('Please input your email.'), validateEmailError(),
-                validateUserExistError() ]}
+          rules={[ validateRequiredFields('Please input your email.'), validateErrors('email'),
+                validateErrors('errors') ]}
         >
           <MainInput onChange={() => onChange('email')} />
         </Form.Item>
@@ -134,7 +92,7 @@ export default function Signup() {
           label='Password'
           name='password'
           labelCol={{ span: 24 }}
-          rules={[ validateRequiredFields('Please input your password.'), validatePasswordError()]}
+          rules={[ validateRequiredFields('Please input your password.'), validateErrors('password')]}
         >
           <PasswordInput onChange={() => onChange()} />
         </Form.Item>
@@ -144,7 +102,7 @@ export default function Signup() {
           name='confirmPassword'
           labelCol={{ span: 24 }}
           rules={[ validateRequiredFields('Confirm password must be the same as password.'), 
-                  validateConfirmPasswordError() ]} >
+                  validateErrors('confirmPassword') ]} >
           <PasswordInput onChange={() => onChange()} />
         </Form.Item>
 
