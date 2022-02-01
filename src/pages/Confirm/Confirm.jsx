@@ -36,7 +36,6 @@ export default function Confirm() {
       }
     } catch ({ response }) {
       setConfirmLoader(false);
-      console.log('response', response);
       setErrorMessage('Invalid Verification Code.');
       form.validateFields();
     }

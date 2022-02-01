@@ -72,8 +72,6 @@ export default function FillMyProfile() {
 
   useEffect(() => {
     if (!getLocalStorage('accessToken')) navigate('/login');
-
-    // dispatch(getUserData(userId));
     
     return () => dispatch(setProfileState(clearState));
   }, []);

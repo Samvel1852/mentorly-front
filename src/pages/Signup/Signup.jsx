@@ -24,10 +24,7 @@ export default function Signup() {
     }
   };
 
-  console.log('rendered');
-
   const onFinish = async (values) => {
-    console.log('finished');
       setSignUpLoader(true);
 
     try {
@@ -37,7 +34,6 @@ export default function Signup() {
         navigate('/confirm');
       }
     } catch ({ response }) {
-      console.log('response', response);
 
       if (typeof response.data.errors === 'string') {
         setErrorMessage({errors: [response.data.errors]});
@@ -53,14 +49,11 @@ export default function Signup() {
   const validateRequiredFields = (message) => ({required: true, message});
 
   function validateEmailError () {
-    console.log('emailValue', errorMessage);
     return ({
       validator() {
         if (!(errorMessage.email && errorMessage.email.length)) {
-          console.log('resovled');
           return Promise.resolve();
         } else {
-          console.log('rejected');
           return Promise.reject(
             new Error(errorMessage.email[0]),
           );

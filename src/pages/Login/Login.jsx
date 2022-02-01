@@ -36,7 +36,6 @@ export default function Login() {
       }
 
     } catch (error) {
-      console.log('loginError', error.response);
       if (typeof error.response.data.errors === 'string') {
         setErrorMessage(error.response.data.errors);
       } else {
