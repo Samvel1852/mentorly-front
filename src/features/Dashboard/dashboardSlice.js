@@ -4,7 +4,6 @@ import axiosInstance from '../../helpers/axiosInstance';
 export const getUsers = createAsyncThunk(
     'users/getUsers',
     async function ( params ,{rejectWithValue}) {
-        console.log('params ', params);
         try {
             let result =  await axiosInstance.get(`users`, { params }, );
             return result.data.data;

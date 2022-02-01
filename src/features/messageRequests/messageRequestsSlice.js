@@ -8,6 +8,7 @@ const initialState = {
     errors: null,
     loading: false,
     requestSent: '',
+    pendingsCount: 0
 };
 
 export const connect = createAsyncThunk('connections/connect', async (id, {rejectWithValue}) => {
@@ -40,8 +41,8 @@ export const pendingConnections = createAsyncThunk('connections/pending', async 
 export const changeRequestStatus = createAsyncThunk('connections/:id', async ({id, param }, {rejectWithValue}) => {
     try {
         const updated =  await axiosInstance.put(`connections/${id}`, param);
-        const ID = updated.data.data._id;
-        return param.connect === 'rejected' ? {ID, connect: 'rejected'} : {ID};
+        const userId = updated.data.data._id;
+        return param.connect === 'rejected' ? {userId, connect: 'rejected'} : {userId};
     } catch (err) {
         return rejectWithValue(err);
     }
@@ -67,6 +68,7 @@ const connectionSlice = createSlice({
         },
         [pendingConnections.fulfilled]: (state, {payload}) => {
             state.pendings = payload;
+            state.pendingsCount = payload.length;
             state.loading = false;
         },
         [pendingConnections.rejected]: (state, {payload}) => {
@@ -89,10 +91,11 @@ const connectionSlice = createSlice({
         },
         [changeRequestStatus.fulfilled]: (state, {payload}) => {
             if(!payload.connect) {
-                const { from } = current(state.pendings).find(item => item._id === payload.ID);
+                const { from } = current(state.pendings).find(item => item._id === payload.userId);
                 state.confirmations=[from,...current(state.confirmations)];
             }
-            state.pendings = current(state.pendings).filter(item => item._id !== payload.ID);
+            state.pendings = current(state.pendings).filter(item => item._id !== payload.userId);
+            state.pendingsCount = state.pendings.length;
             state.loading = false;
         },
         [changeRequestStatus.rejected]: (state, {payload}) => {

@@ -24,26 +24,17 @@ export default function MessageRequests() {
 
   useEffect( () => {
     dispatch(pendingConnections());
-  }, []);
-
-  useEffect( () => {
     dispatch(confirmedConnections());
   }, []);
 
-  const acceptRequest = (id) => {
-    const param = {connect: 'confirmed'};
-    dispatch(changeRequestStatus({id, param}));
-  };
-
-  const declineRequest = (id) => {
-    const param = {connect: 'rejected'};
+  const requestAnswer = (id, param) => {
     dispatch(changeRequestStatus({id, param}));
   };
   
   return (
-    <Layout style={{backgroundColor: '#fff'}}>
+    <Layout className={styles.layout}>
       <MainHeader verified={true}/>
-      <Row style={{ marginTop: '30px'}}>
+      <Row className={styles.requestContainer}>
         <Col span={11}>
           <Title level={4} className={styles.title}>My Mentors/Mentees</Title>
           <List
@@ -62,9 +53,9 @@ export default function MessageRequests() {
           />
         </Col>
         <Col span={1}>
-          <Divider type='vertical' style={{ borderWidth: 2, height: '100%',marginTop:'6px' }} />
+          <Divider type='vertical' className={styles.divider} />
         </Col>
-        <Col span={11} style={{ height: '100vh'}}>
+        <Col span={11}>
           <List
             size='large'
             dataSource={pendings}
@@ -75,8 +66,8 @@ export default function MessageRequests() {
                 title={<Link to={`/${item.from._id}`}>{`${item.from.firstName} ${item.from.lastName}`}</Link>}
                 description={item.from.position}
               />
-              <Button className={styles.accept} onClick={() => acceptRequest(item._id)}>Accept</Button>
-              <Button className={styles.decline} onClick={() => declineRequest(item._id)}>Ignore</Button>
+              <Button className={styles.accept} onClick={() => requestAnswer(item._id, {connect: 'confirmed'})}>Accept</Button>
+              <Button className={styles.decline} onClick={() => requestAnswer(item._id, {connect: 'rejected'})}>Ignore</Button>
             </List.Item>
             </div>}
           />

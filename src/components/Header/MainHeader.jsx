@@ -1,25 +1,23 @@
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import { Menu, Badge } from 'antd';
 import { Header } from 'antd/lib/layout/layout';
 import { MessageOutlined } from '@ant-design/icons';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { getLocalStorage, removeFromLocalStorage } from '../../helpers/localStorage';
-import styles from './MainHeader.module.less'
-import axiosInstance from '../../helpers/axiosInstance';
+import styles from './MainHeader.module.less';
+
 
 export default function MainHeader ({ verified }) {
-    const [pendingsCount, setPendingsCount] = useState(0);
+    
     const { pathname } = useLocation();
 
+    const { pendingsCount } = useSelector((state) => state.connections);
+
     const navigate = useNavigate();
-
-    useEffect(async () => {
-      const result =  await axiosInstance.get(`connections/pending`);
-      setPendingsCount(result.data.data.length);
-    }, []);
-
+  
     async function handleLogOut() {
         await removeFromLocalStorage('accessToken');
         await removeFromLocalStorage('currentUserId');
@@ -63,4 +61,5 @@ export default function MainHeader ({ verified }) {
 MainHeader.propTypes = {
     handleLogOut: PropTypes.func,
     verified: PropTypes.bool,
+    pendingsCount: PropTypes.number,
 };

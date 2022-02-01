@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Col, Layout, Row, Spin, Typography } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -14,14 +13,21 @@ import {
 } from '../../features/fillMyProfile/fillMyProfileSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserData } from '../../features/profile/profileSlice';
-import { connect } from '../../features/messageRequests/messageRequestsSlice';
+import { connect, pendingConnections } from '../../features/messageRequests/messageRequestsSlice';
 
 const { Content, Footer } = Layout;
 
 const { Title } = Typography;
 export default function ViewMyProfile() {
+  const [initialPendingsCount, setinitialPendingsCount] = useState(0);
   const {userData, editLoader} = useSelector((state) => state.profile);
-  const {requestSent} = useSelector((state) => state.connections);
+  const {requestSent, pendingsCount} = useSelector((state) => state.connections);
+
+  useEffect(async () => {
+    const result = await dispatch(pendingConnections());
+    setinitialPendingsCount(result?.payload.length);
+  }, []);
+
 
   const navigate = useNavigate();
 
@@ -30,15 +36,23 @@ export default function ViewMyProfile() {
   const { id } = useParams();
   const currentUserId = getLocalStorage('currentUserId');
 
-  const useStatus = () => {
-    return userData?.isConnected[0]?.status === 'pending' || 
-    userData?.isConnected[0]?.status === 'confirmed' ||
-    userData?.isConnected[0]?.status === 'rejected'
-  };
-
   useEffect(async () => {
     await dispatch(getUserData(id));
   }, [id]);
+
+  const useStatus = () => {
+    const status =  userData?.isConnected[0]?.status;
+    return status === 'pending' || status === 'confirmed' || status === 'rejected';
+  };
+
+  const useStatusValue = () => {
+    const status = userData?.isConnected[0]?.status;
+    return (
+      (status === 'pending') ? 'Request Sent' : (status === 'confirmed') ? 'Connected' :
+      (status === 'rejected') ? 'Request Rejected' :
+      (requestSent === 'Request Sent') ? requestSent  : 'Connect'
+    );
+  };
 
   const handleEditProfileClick = async () => {
     await dispatch(setProfileState(userData));
@@ -51,7 +65,7 @@ export default function ViewMyProfile() {
 
   return (
     <Layout> 
-      <MainHeader verified={true} />
+      <MainHeader verified={true} pendingsCount={pendingsCount ? pendingsCount : initialPendingsCount}/>
       { userData?.status !== 'verified' && !editLoader ? 
       <div className={styles.pageLoaderContainer}>The User not exists</div> :
        !editLoader  ? 
@@ -64,11 +78,7 @@ export default function ViewMyProfile() {
                 <Typography>First Name: {userData?.firstName}</Typography>
                 <Typography>Last Name: {userData?.lastName}</Typography>
                 {
-                  id === currentUserId  &&
-                  <Typography>Email: {userData?.email}</Typography>
-                }
-                {
-                  userData?.isConnected[0]?.status === 'confirmed'  &&
+                  (id === currentUserId || userData?.isConnected[0]?.status === 'confirmed') &&
                   <Typography>Email: {userData?.email}</Typography>
                 }
                 <Typography>Role: {userData?.selectedRole}</Typography>
@@ -88,10 +98,7 @@ export default function ViewMyProfile() {
                 :<Button type='primary'
                 className={styles.connectBtn} onClick={handleConnectUser} 
                 disabled={useStatus() || requestSent.length}> 
-                  {userData?.isConnected[0]?.status === 'pending' ? 'Request Sent': 
-                  userData?.isConnected[0]?.status === 'confirmed' ? 'Connected' :
-                  userData?.isConnected[0]?.status === 'rejected' ? 'Request Rejected' :
-                  requestSent === 'Request Sent' ? requestSent  : 'Connect'}
+                {useStatusValue()}
                 </Button>
               }
             </Col>
