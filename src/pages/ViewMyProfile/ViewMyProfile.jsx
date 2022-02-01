@@ -96,7 +96,7 @@ export default function ViewMyProfile() {
                  className={styles.editBtn}
                  onClick={handleEditProfileClick}
                  loading={editLoader}>Edit</MainButton>
-                 : <MainButton width={'200px'} height={'50px'} margin={'40px 0 0 0 '} type='primary' 
+                 : <MainButton width={'150px'} height={'40px'} margin={'40px 0 0 0 '} type='primary' 
                  className={styles.connectBtn}>Connect</MainButton>
                 }
                 </div>
