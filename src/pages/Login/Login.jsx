@@ -11,8 +11,11 @@ import { MainInput } from '../../elements/MainInput';
 export default function Login() {
   const [errorMessage, setErrorMessage] = useState('');
   const [loginLoader, setLoginLoader] = useState(false);
+  const [emailFormatError, setEmailFormatError] = useState(null);
 
   const navigate = useNavigate();
+
+  const [form] = Form.useForm();
 
   const onFinish = async (values) => {
     setLoginLoader(true);
@@ -33,10 +36,34 @@ export default function Login() {
       }
 
     } catch (error) {
-      setErrorMessage(error.response.data.errors);
+      console.log('loginError', error.response);
+      if (typeof error.response.data.errors === 'string') {
+        setErrorMessage(error.response.data.errors);
+      } else {
+        setEmailFormatError(error.response.data.errors.email[0]);
+      }
       setLoginLoader(false);
+      form.validateFields();
     }
   };
+
+  function onChange () {
+    setEmailFormatError(null);
+  }
+
+  function validateEmailFormatError () {
+    return ({
+      validator() {
+        if (!emailFormatError) {
+          return Promise.resolve();
+        } else {
+          return Promise.reject(
+            new Error(emailFormatError),
+          );
+        }
+      },
+    })
+  }
 
   const validateRequiredFields = (message) => ({required: true, message})
 
@@ -50,6 +77,8 @@ export default function Login() {
         initialValues={{ remember: true }}
         onFinish={onFinish}
         autoComplete='off'
+        form={form}
+        validateTrigger='onSubmit'
         requiredMark={false}
       >
         <Form.Item className={styles.loginFormTitle} wrapperCol={{ offset: 8, span: 16 }} >
@@ -62,9 +91,9 @@ export default function Login() {
           name='email'
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
-          rules={[ validateRequiredFields('Please input your e-mail!') ]}
+          rules={[ validateRequiredFields('Please input your e-mail!'), validateEmailFormatError() ]}
         >
-          <MainInput />
+          <MainInput onChange={onChange}/>
         </Form.Item>
 
         <Form.Item
