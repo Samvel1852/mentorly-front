@@ -195,7 +195,7 @@ export default function FillMyProfile() {
                 label='First Name'
                 labelCol={{ span: 24 }}
                 rules={[
-                  getRequiredMessage('Please input your First Name!'),
+                  getRequiredMessage('Please input your First Name.'),
                   validateMinTwoCharacters(),
                   validateNamesOnlyLetters(),
                 ]}
@@ -209,7 +209,7 @@ export default function FillMyProfile() {
                 label='Last Name'
                 labelCol={{ span: 24 }}
                 rules={[
-                  getRequiredMessage('Please input your Last Name!'),
+                  getRequiredMessage('Please input your Last Name.'),
                   validateMinTwoCharacters(),
                   validateNamesOnlyLetters(),
                 ]}
@@ -224,7 +224,7 @@ export default function FillMyProfile() {
                 name='selectedRole'
                 label='Choose Role'
                 labelCol={{ span: 24 }}
-                rules={[getRequiredMessage('Please select Your Role!')]}
+                rules={[getRequiredMessage('Please select Your Role.')]}
               >
                 <MainSelect
                   onChange={(value) => handleChange(value, 'selectedRole')}
@@ -242,7 +242,7 @@ export default function FillMyProfile() {
                 name='selectedField'
                 label='Choose Field'
                 labelCol={{ span: 24 }}
-                rules={[getRequiredMessage('Please select Your Field!'),]}
+                rules={[getRequiredMessage('Please select Your Field.'),]}
               >
                 <MainSelect
                   initialvalue='--Select Field'
@@ -266,7 +266,7 @@ export default function FillMyProfile() {
               name='position'
               label='Position'
               labelCol={{ span: 24 }}
-              rules={[getRequiredMessage('Please input your Position!')]}
+              rules={[getRequiredMessage('Please input your Position.')]}
             >
               <MainInput
                 name='position'
@@ -281,8 +281,8 @@ export default function FillMyProfile() {
               name='education'
               label='Education'
               labelCol={{ span: 24 }}
-              rules={[getRequiredMessage('Please input your Education!'),
-              {min: 10, message: 'The Education field must contain at least 10 characters'}]}
+              rules={[getRequiredMessage('Please input your Education.'),
+              {min: 10, message: 'The Education field must contain at least 10 characters.'}]}
             >
               <MainTextarea
                 name='education'
@@ -299,8 +299,8 @@ export default function FillMyProfile() {
               name='experience'
               label='Experience'
               labelCol={{ span: 24 }}
-              rules={[getRequiredMessage('Please input your Experience!'),
-              {min: 10, message: 'The Experience field must contain at least 10 characters'}]}
+              rules={[getRequiredMessage('Please input your Experience.'),
+              {min: 10, message: 'The Experience field must contain at least 10 characters.'}]}
             >
               <MainTextarea
                 name='experience'
@@ -317,8 +317,8 @@ export default function FillMyProfile() {
               name='about'
               label='About'
               labelCol={{ span: 24 }}
-              rules={[getRequiredMessage('Please input something About You!'), 
-              {min: 10, message: 'The About field must contain at least 10 characters'}]}
+              rules={[getRequiredMessage('Please input something About You.'), 
+              {min: 10, message: 'The About field must contain at least 10 characters.'}]}
             >
               <MainTextarea
                 name='about'
@@ -341,8 +341,8 @@ export default function FillMyProfile() {
                   : 'Who can request mentorship (for mentor) / My plans (for mentee)'
               }
               labelCol={{ span: 24 }}
-              rules={[getRequiredMessage('Please input your Your Plans!'),
-              {min: 10, message: 'This field must contain at least 10 characters'}]}
+              rules={[getRequiredMessage('Please input your Your Plans.'),
+              {min: 10, message: 'This field must contain at least 10 characters.'}]}
             >
               <MainTextarea 
                 name='plans'
@@ -359,7 +359,7 @@ export default function FillMyProfile() {
               name='skills'
               label='Skills'
               labelCol={{ span: 24 }}
-              rules={[getRequiredMessage('Please provide Your Skills!'),
+              rules={[getRequiredMessage('Please provide Your Skills.'),
                     validateMaxTen(skills)]} >
               <Layout>
                 <div className={styles.skillsContainer}>
@@ -393,7 +393,7 @@ export default function FillMyProfile() {
               </Layout>
             </Form.Item>
             <br />
-            <MainButton width={'100px'} height={"40px"} type='primary' htmlType='submit' 
+            <MainButton width={'100px'} height={"40px"} margin={'0 0 20px 0'} type='primary' htmlType='submit' 
             loading={submitLoader}>
               Submit
             </MainButton>
