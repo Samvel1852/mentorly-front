@@ -15,11 +15,10 @@ import styles from './Dashboard.module.less';
 function Dashboard() {
     const dispatch = useDispatch();
     const { users, pageTotal, loading } = useSelector(state => state.users);
-    const navigate = useNavigate()
-    const [params, setParams] = useState({
-        page: 1,
-        limit: 5,
-    });
+    const navigate = useNavigate();
+    const [page, setPage] = useState(1);
+    const limit = 5;
+    const [params, setParams] = useState({});
 
     useEffect(async () => {
        await getData(params)
@@ -160,11 +159,11 @@ function Dashboard() {
                     loading={ loading }
                     pagination={ {
                         total: pageTotal,
-                        current: params.page,
-                        pageSize: params.limit,
+                        current: page,
+                        pageSize: limit,
                         onChange: async (page, limit) => {
-                            setParams({ ...params, page: page, limit: limit });
-                            await getData({ ...params, page: page, limit: limit });
+                            setPage(page)
+                            await getData({ ...params, page, limit });
                         },
                     } }
                 />
