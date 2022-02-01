@@ -11,8 +11,12 @@ import MainHeader from '../../components/Header/MainHeader';
 import {
   setProfileState,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
-import { getUserData } from '../../features/profile/profileSlice';
-import { connect, pendingConnections } from '../../features/messageRequests/messageRequestsSlice';
+import { getUserData, clearProfileState } from '../../features/profile/profileSlice';
+import { 
+  connect, 
+  pendingConnections, 
+  clearRequestSent 
+} from '../../features/messageRequests/messageRequestsSlice';
 
 import MainFooter from '../../components/Footer/MainFooter';
 import styles from './ViewMyProfile.module.less';
@@ -33,7 +37,6 @@ export default function ViewMyProfile() {
     setinitialPendingsCount(result?.payload.length);
   }, []);
 
-
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -45,6 +48,13 @@ export default function ViewMyProfile() {
     await dispatch(getUserData(id));
   }, [id]);
 
+  useEffect(() => {
+    return () => {
+      dispatch(clearProfileState());
+      dispatch(clearRequestSent());
+    };
+  }, []);
+
   const useStatus = () => {
     const status =  userData?.isConnected[0]?.status;
     return status === 'pending' || status === 'confirmed' || status === 'rejected';
@@ -53,7 +63,8 @@ export default function ViewMyProfile() {
   const useStatusValue = () => {
     const status = userData?.isConnected[0]?.status;
     return (
-      (status === 'pending') ? 'Request Sent' : (status === 'confirmed') ? 'Connected' :
+      (status === 'pending') ? 'Request Sent' : 
+      (status === 'confirmed') ? 'Connected' :
       (status === 'rejected') ? 'Request Rejected' :
       (requestSent === 'Request Sent') ? requestSent  : 'Connect'
     );
@@ -88,7 +99,7 @@ export default function ViewMyProfile() {
                 <Typography><b>Last Name:</b> {userData?.lastName}</Typography>
                 {
                   (id === currentUserId || userData?.isConnected[0]?.status === 'confirmed') &&
-                  <Typography>Email: {userData?.email}</Typography>
+                  <Typography><b>Email: {userData?.email}</b></Typography>
                 }
                 <Typography><b>Role:</b> {userData?.selectedRole}</Typography>
                 <Typography><b>Position:</b> {userData?.position}</Typography>

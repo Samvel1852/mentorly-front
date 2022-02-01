@@ -2,13 +2,9 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Layout, Row, Col, List, Typography, Divider, Button } from 'antd';
 import { Link } from 'react-router-dom';
-
-import 'antd/dist/antd.less';
 import styles from './MessageRequests.module.less';
 import MainHeader from '../../components/Header/MainHeader';
 import MainFooter from '../../components/Footer/MainFooter';
-import { MainButton } from '../../elements/MainButton';
-
 
 import { 
   confirmedConnections, 
@@ -47,8 +43,8 @@ export default function MessageRequests() {
             <List.Item key={item._id}>
                 <List.Item.Meta
                   title=
-                  {<Link to={`/${item._id}`}>
-                    {`${++index}. ${item.firstName} ${item.lastName}(${item.position})`}
+                  {<Link className={styles.text} to={`/${item._id}`}>
+                    {`${++index}. ${item.firstName} ${item.lastName}(${item.position}).`}
                   </Link>}
                 />
             </List.Item>}
@@ -65,10 +61,13 @@ export default function MessageRequests() {
             <div className={styles.approvals}>
             <List.Item>
               <List.Item.Meta
-                title={<Link to={`/${item.from._id}`}>{`${item.from.firstName} ${item.from.lastName}`}</Link>}
+                title=
+                {<Link className={styles.text} to={`/${item.from._id}`}>
+                  {`${item.from.firstName} ${item.from.lastName}`}
+                </Link>}
                 description={item.from.position}
               />
-              <MainButton className={styles.accept} onClick={() => requestAnswer(item._id, {connect: 'confirmed'})}>Accept</MainButton>
+              <Button className={styles.accept} onClick={() => requestAnswer(item._id, {connect: 'confirmed'})}>Accept</Button>
               <Button className={styles.decline} onClick={() => requestAnswer(item._id, {connect: 'rejected'})}>Ignore</Button>
             </List.Item>
             </div>}

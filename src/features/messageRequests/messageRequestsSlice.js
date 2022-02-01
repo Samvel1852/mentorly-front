@@ -51,6 +51,11 @@ export const changeRequestStatus = createAsyncThunk('connections/:id', async ({i
 const connectionSlice = createSlice({
     name: 'connections',
     initialState,
+    reducers: {
+        clearRequestSent: (state) => {
+            state.requestSent = '';
+        }
+    },
     extraReducers: {
         [connect.pending]: (state) => {
             state.loading = true;
@@ -104,5 +109,9 @@ const connectionSlice = createSlice({
         },
     }
 });
+
+export const {
+    clearRequestSent,
+} = connectionSlice.actions;
 
 export default connectionSlice.reducer;
