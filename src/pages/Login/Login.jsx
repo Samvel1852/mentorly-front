@@ -18,7 +18,8 @@ export default function Login() {
   const [form] = Form.useForm();
 
   const onFinish = async (values) => {
-    setLoginLoader(true);
+      setErrorMessage('');
+      setLoginLoader(true);
 
     try {
       const response = await axiosInstance.post(`auth/login`, values);
