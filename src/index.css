@@ -19,11 +19,7 @@ code {
 }
 
 /* Header styles */
-.ant-menu.ant-menu-dark .ant-menu-item-selected {
-  background: var(--app-main-color) !important;
-}
-
-.ant-menu-item-selected {
+.ant-menu.ant-menu-dark, .ant-menu-item-selected {
   background: var(--app-main-color) !important;
 }
 
@@ -51,21 +47,7 @@ code {
   display: none !important;
 }
 
-/* Login styles */
-
-.ant-input-affix-wrapper-focused {
-  border-color: var(--app-main-color) !important;
-  outline: 0 !important;
-  -webkit-box-shadow: 0 0 0 2px rgb(74,145,183, .2) !important;
-  box-shadow: 0 0 0 2px rgb(74,145,183, .2) !important;
-  opacity: 50%;
-}
-
-.ant-input-affix-wrapper:hover {
-  border: 1px solid var(--app-main-color) !important;
-}
-
-/* SignUp styles */
+/* SignUp/Login styles */
 
 
 .ant-input-affix-wrapper-focused {
