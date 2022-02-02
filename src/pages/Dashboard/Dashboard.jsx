@@ -19,7 +19,7 @@ function Dashboard() {
     const [page, setPage] = useState(1);
     const limit = 5;
     const [params, setParams] = useState({
-        sortBy: 'asc'
+        sortBy: 'ascend'
     });
 
     useEffect(async () => {
@@ -61,12 +61,12 @@ function Dashboard() {
             dataIndex: 'date',
             key: 'date',
             sorter: true,
-            sortDirections: ['descend'],
+            sortOrder: params.sortBy
         }
     ];
     const handleTableChange = async () => {
-        params.sortBy= params.sortBy === 'asc' ? 'desc' : 'asc';
-       await getData(params)
+        setParams({ ...params, sortBy: params.sortBy === 'ascend' ? 'descend' : 'ascend' });
+        await getData(params)
     }
     const dataSource = users.map((item) => (
         {
