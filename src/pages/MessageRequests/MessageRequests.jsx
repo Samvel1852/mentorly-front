@@ -29,8 +29,6 @@ export default function MessageRequests() {
   const requestAnswer = (id, param) => {
     dispatch(changeRequestStatus({id, param}));
   };
-
-  console.log('pendings', pendings);
   
   return (
     <Layout className={styles.layout}>
@@ -59,11 +57,13 @@ export default function MessageRequests() {
           <Divider type='vertical' className={styles.divider} />
         </Col>
         <Col span={11}>
+        {pendings[0] &&
           <List
             size='large'
             dataSource={pendings}
             renderItem={item => 
             <div className={styles.approvals}>
+              {item?.from?._id &&
             <List.Item>
               <List.Item.Meta
                 title=
@@ -75,8 +75,10 @@ export default function MessageRequests() {
               <Button className={styles.accept} onClick={() => requestAnswer(item._id, {connect: 'confirmed'})}>Accept</Button>
               <Button className={styles.decline} onClick={() => requestAnswer(item._id, {connect: 'rejected'})}>Ignore</Button>
             </List.Item>
+            }
             </div>}
           />
+            }
         </Col>
       </Row>
       <MainFooter > Simply Technologies ©2022 Created with Pleasure </MainFooter>
