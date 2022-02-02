@@ -1,39 +1,48 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Layout, Row, Col, List, Typography, Divider, Button } from 'antd';
+import { Layout, Row, Col, List, Typography, Divider, Button, message } from 'antd';
 import { Link } from 'react-router-dom';
+
 import styles from './MessageRequests.module.less';
 import MainHeader from '../../components/Header/MainHeader';
 import MainFooter from '../../components/Footer/MainFooter';
+import { MainSpin } from '../../elements/MainSpin';
 
 import { 
   confirmedConnections, 
   pendingConnections, 
-  changeRequestStatus 
+  changeRequestStatus,
 } from '../../features/messageRequests/messageRequestsSlice';
 
 const { Title } = Typography;
 
 
 export default function MessageRequests() {
-  const { confirmations, pendings } = useSelector((state) => state.connections);
+  const [status, setStatus] = useState('');
+  const { confirmations, pendings, errors, loading } = useSelector((state) => state.connections);
+  
 
   const dispatch = useDispatch();
 
-  useEffect( () => {
+  useEffect(() => {
+    if(errors) {
+      return message.error(errors);
+    }
     dispatch(pendingConnections());
     dispatch(confirmedConnections());
-  }, []);
+  }, [status]);
 
-  const requestAnswer = (id, param) => {
-    dispatch(changeRequestStatus({id, param}));
+  const requestAnswer = async (id, param) => {
+    const resp = await dispatch(changeRequestStatus({id, param}));
+    setStatus(resp);
   };
   
   return (
     <Layout className={styles.layout}>
       <MainHeader verified={true}/>
+      {loading ? <div className={styles.pageLoaderContainer}><MainSpin tip='Loading...' /></div> :
       <Row className={styles.requestContainer}>
-        <Col span={11}>
+        <Col span={11} className= {styles.column}>
           <Title level={4} className={styles.title}>My Mentors/Mentees</Title>
           <List
             size='large'
@@ -50,10 +59,10 @@ export default function MessageRequests() {
             </List.Item>}
           />
         </Col>
-        <Col span={1}>
+        <Col span={1} >
           <Divider type='vertical' className={styles.divider} />
         </Col>
-        <Col span={11}>
+        <Col span={11} className= {styles.column}>
           <List
             size='large'
             dataSource={pendings}
@@ -73,7 +82,8 @@ export default function MessageRequests() {
             </div>}
           />
         </Col>
-      </Row>
+      </Row> 
+      }
       <MainFooter > Simply Technologies ©2022 Created with Pleasure </MainFooter>
     </Layout>
   );

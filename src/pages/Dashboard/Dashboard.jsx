@@ -10,6 +10,7 @@ import { MainInput } from '../../elements/MainInput';
 import { MainSelect } from '../../elements/MainSelect';
 import { MainButton } from '../../elements/MainButton';
 import { MainTable } from '../../elements/MainTable';
+import MainFooter from '../../components/Footer/MainFooter';
 import styles from './Dashboard.module.less';
 
 function Dashboard() {
@@ -110,6 +111,7 @@ function Dashboard() {
                         <Col span={ 4 }>
                             <Form.Item>
                                 <MainSelect
+                                    showArrow={true}
                                     mode={ 'multiple' }
                                     allowClear
                                     style={ { width: '100%' } }
@@ -168,6 +170,7 @@ function Dashboard() {
                     } }
                 />
             </div>
+            <MainFooter > </MainFooter>
         </Layout>
     );
 }

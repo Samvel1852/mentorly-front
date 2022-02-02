@@ -1,4 +1,4 @@
-import {createSlice, createAsyncThunk, current} from '@reduxjs/toolkit';
+import {createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axiosInstance from '../../helpers/axiosInstance';
 
 
@@ -8,7 +8,7 @@ const initialState = {
     errors: null,
     loading: false,
     requestSent: '',
-    pendingsCount: 0
+    pendingsCount: 0,
 };
 
 export const connect = createAsyncThunk('connections/connect', async (id, {rejectWithValue}) => {
@@ -40,11 +40,10 @@ export const pendingConnections = createAsyncThunk('connections/pending', async 
 
 export const changeRequestStatus = createAsyncThunk('connections/:id', async ({id, param }, {rejectWithValue}) => {
     try {
-        const updated =  await axiosInstance.put(`connections/${id}`, param);
-        const userId = updated.data.data._id;
-        return param.connect === 'rejected' ? {userId, connect: 'rejected'} : {userId};
+        const updated = await axiosInstance.put(`connections/${id}`, param);
+        return updated;
     } catch (err) {
-        return rejectWithValue(err);
+        return rejectWithValue(err.response.data.errors);
     }
 });
 
@@ -54,7 +53,7 @@ const connectionSlice = createSlice({
     reducers: {
         clearRequestSent: (state) => {
             state.requestSent = '';
-        }
+        },
     },
     extraReducers: {
         [connect.pending]: (state) => {
@@ -72,40 +71,27 @@ const connectionSlice = createSlice({
            state.loading = true;
         },
         [pendingConnections.fulfilled]: (state, {payload}) => {
-            state.pendings = payload;
-            state.pendingsCount = payload.length;
-            state.loading = false;
+           state.pendings = payload;
+           state.pendingsCount = payload.length;
+           state.loading = false;
         },
         [pendingConnections.rejected]: (state, {payload}) => {
-            state.errors = payload;
-            state.loading = false;
+           state.errors = payload;
+           state.loading = false;
         },
         [confirmedConnections.pending]: (state) => {
-            state.loading = true;
+           state.loading = true;
         },
         [confirmedConnections.fulfilled]: (state, {payload}) => {
-            state.confirmations = payload;
-            state.loading = false;
+           state.confirmations = payload;
+           state.loading = false;
         },
         [confirmedConnections.rejected]: (state, {payload}) => {
-            state.errors = payload;
-            state.loading = false;
-        },
-        [changeRequestStatus.pending]: (state) => {
-            state.loading = true;
-        },
-        [changeRequestStatus.fulfilled]: (state, {payload}) => {
-            if(!payload.connect) {
-                const { from } = current(state.pendings).find(item => item._id === payload.userId);
-                state.confirmations=[from,...current(state.confirmations)];
-            }
-            state.pendings = current(state.pendings).filter(item => item._id !== payload.userId);
-            state.pendingsCount = state.pendings.length;
-            state.loading = false;
+           state.errors = payload;
+           state.loading = false;
         },
         [changeRequestStatus.rejected]: (state, {payload}) => {
-            state.errors = payload;
-            state.loading = false;
+           state.errors = payload;
         },
     }
 });

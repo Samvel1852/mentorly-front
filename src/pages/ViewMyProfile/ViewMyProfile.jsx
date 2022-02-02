@@ -144,7 +144,7 @@ export default function ViewMyProfile() {
       </Content>
       : <div className={styles.pageLoaderContainer}><MainSpin tip='Loading...' /></div>
       }
-      <MainFooter > Simply Technologies ©2022 Created with Pleasure </MainFooter>
+      <MainFooter >Simply Technologies ©2022 Created with Pleasure </MainFooter>
     </Layout>
   );
 }
