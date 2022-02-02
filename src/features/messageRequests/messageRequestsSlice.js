@@ -52,7 +52,7 @@ const connectionSlice = createSlice({
     name: 'connections',
     initialState,
     reducers: {
-        clearRequestSent(state) {
+        clearRequestSent: (state) => {
             state.requestSent = '';
         }
     },

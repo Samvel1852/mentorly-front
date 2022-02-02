@@ -87,6 +87,7 @@ export default function FillMyProfile() {
 
     try {
       const { id } = params;
+
       const result = await dispatch(
         verifyUser({
           firstName,
@@ -104,6 +105,8 @@ export default function FillMyProfile() {
           id,
         }),
       );
+
+      console.log('result', result);
 
       if (result.payload && !result.error && !result.errors) {
         await setLocalStorage('verified', 'verified');

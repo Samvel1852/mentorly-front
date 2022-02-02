@@ -15,6 +15,13 @@
     color: var(--app-main-color) !important;
 }
 
+.text {
+    &:hover {
+        opacity: 90%;
+        color:  var(--app-main-color) !important;
+    }
+}
+
 .requestContainer {
     margin-top: 30px;
     height: 100vh;
@@ -22,19 +29,28 @@
 
 .divider {
     height: 100%;
-    // margin-top: 6px;
     border-width: 2px;
 }
 
 .accept {
+    background-color: var(--app-main-color);
     color: white;
-    background-color: #1DA57A;
     margin-right: 10px;
+    &:hover {
+        background-color: white !important;
+        border-color:  var(--app-main-color);
+        color:  var(--app-main-color);
+    }
 }
 
 .decline {
     color: white;
     background-color: #ff4d4f;
+    &:hover {
+        background-color: white !important;
+        border-color: #ff4d4f;
+        color: #ff4d4f;
+    }
 }
 
 .ant-col-1 {
