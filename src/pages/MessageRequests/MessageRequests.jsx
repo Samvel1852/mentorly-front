@@ -29,6 +29,8 @@ export default function MessageRequests() {
   const requestAnswer = (id, param) => {
     dispatch(changeRequestStatus({id, param}));
   };
+
+  console.log('pendings', pendings);
   
   return (
     <Layout className={styles.layout}>
@@ -36,6 +38,7 @@ export default function MessageRequests() {
       <Row className={styles.requestContainer}>
         <Col span={11}>
           <Title level={4} className={styles.title}>My Mentors/Mentees</Title>
+          {confirmations[0] &&
           <List
             size='large'
             dataSource={confirmations} 
@@ -50,6 +53,7 @@ export default function MessageRequests() {
                 />
             </List.Item>}
           />
+            }
         </Col>
         <Col span={1}>
           <Divider type='vertical' className={styles.divider} />
@@ -63,8 +67,8 @@ export default function MessageRequests() {
             <List.Item>
               <List.Item.Meta
                 title=
-                {<Link className={styles.text} to={`/${item.from._id}`}>
-                  {`${item.from.firstName} ${item.from.lastName}`}
+                {<Link className={styles.text} to={`/${item?.from._id}`}>
+                  {`${item?.from?.firstName} ${item?.from?.lastName}`}
                 </Link>}
                 description={item.from.position}
               />
