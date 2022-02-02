@@ -47,7 +47,7 @@ export default function MessageRequests() {
       <MainHeader verified={true}/>
       {loading ? <div className={styles.pageLoaderContainer}><MainSpin tip='Loading...' /></div> :
       <Row className={styles.requestContainer}>
-        <Col span={11} className= {styles.column}>
+        <Col span={11}>
           <Title level={4} className={styles.title}>Connections</Title>
           <List
             size='large'
@@ -67,12 +67,12 @@ export default function MessageRequests() {
         <Col span={1} >
           <Divider type='vertical' className={styles.divider} />
         </Col>
-        <Col span={11} className= {styles.column}>
+        <Col span={11}>
           <List
             size='large'
             dataSource={pendings}
             renderItem={item => 
-            <div className={styles.approvals}>
+            <div className={styles.pendings}>
             <List.Item>
               <List.Item.Meta
                 title=
@@ -89,9 +89,7 @@ export default function MessageRequests() {
         </Col>
       </Row> 
       }
-      <MainFooter > Simply Technologies ©2022 Created with Pleasure </MainFooter>
+      <MainFooter />
     </Layout>
   );
 }
-  
-  

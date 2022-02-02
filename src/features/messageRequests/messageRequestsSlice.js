@@ -41,7 +41,6 @@ export const pendingConnections = createAsyncThunk('connections/pending', async 
 export const changeRequestStatus = createAsyncThunk('connections/:id', async ({id, param }, {rejectWithValue}) => {
     try {
         const updated = await axiosInstance.put(`connections/${id}`, param);
-        console.log('updated', updated)
         return updated;
     } catch (err) {
         return rejectWithValue(err.response.data.errors);

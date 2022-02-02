@@ -33,10 +33,13 @@ export default function ViewMyProfile() {
   const {userData, editLoader} = useSelector((state) => state.profile);
   const {requestSent, pendingsCount, errors} = useSelector((state) => state.connections);
 
-  useEffect(async () => {
-    const result = await dispatch(pendingConnections());
-    setinitialPendingsCount(result?.payload.length);
+  useEffect(() => {
+    dispatch(pendingConnections());
   }, []);
+
+  useEffect(() => {
+    setinitialPendingsCount(pendingsCount);
+  }, [pendingsCount]);
 
   const navigate = useNavigate();
 
@@ -47,28 +50,25 @@ export default function ViewMyProfile() {
 
   useEffect(() => {
     if (errors) {
-      message.error(errors)
+      message.error(errors);
     }
-    return () => dispatch(clearErrorsInMessages())
+    return () => dispatch(clearErrorsInMessages());
   }, [errors]);
 
-  useEffect(async () => {
-    await dispatch(getUserData(id));
-  }, [id]);
-
   useEffect(() => {
+    dispatch(getUserData(id));
     return () => {
       dispatch(clearProfileState());
       dispatch(clearRequestSent());
     };
-  }, []);
+  }, [id]);
 
-  const useStatus = () => {
+  const findStatus = () => {
     const status =  userData?.isConnected[0]?.status;
     return status === 'pending' || status === 'confirmed' || status === 'rejected';
   };
 
-  const useStatusValue = () => {
+  const requestStatus = () => {
     const status = userData?.isConnected[0]?.status;
     return (
       (status === 'pending') ? 'Request Sent' : 
@@ -145,14 +145,14 @@ export default function ViewMyProfile() {
                  loading={editLoader}>Edit</MainButton>
                  : <MainButton width={'150px'} height={'40px'} margin={'40px 0 0 0 '} type='primary' 
                  className={styles.connectBtn} onClick={handleConnectUser} 
-                 disabled={useStatus() || requestSent.length}>{useStatusValue()}</MainButton>
+                 disabled={findStatus() || requestSent.length}>{requestStatus()}</MainButton>
                 }
                 </div>
           </Row>
       </Content>
       : <div className={styles.pageLoaderContainer}><MainSpin tip='Loading...' /></div>
       }
-      <MainFooter >Simply Technologies ©2022 Created with Pleasure </MainFooter>
+      <MainFooter />
     </Layout>
   );
 }

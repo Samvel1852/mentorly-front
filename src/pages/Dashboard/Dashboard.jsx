@@ -170,7 +170,7 @@ function Dashboard() {
                     } }
                 />
             </div>
-            <MainFooter > </MainFooter>
+            <MainFooter />
         </Layout>
     );
 }
