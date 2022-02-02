@@ -11,8 +11,8 @@ import MainHeader from '../../components/Header/MainHeader';
 import {
   setProfileState,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
-import { getUserData } from '../../features/profile/profileSlice';
-import { connect, pendingConnections } from '../../features/messageRequests/messageRequestsSlice';
+import { clearProfileState, getUserData } from '../../features/profile/profileSlice';
+import { clearRequestSent, connect, pendingConnections } from '../../features/messageRequests/messageRequestsSlice';
 
 import MainFooter from '../../components/Footer/MainFooter';
 import styles from './ViewMyProfile.module.less';
@@ -31,8 +31,17 @@ export default function ViewMyProfile() {
   useEffect(async () => {
     const result = await dispatch(pendingConnections());
     setinitialPendingsCount(result?.payload.length);
+
   }, []);
 
+  useEffect(() => {
+    return () => {
+      dispatch(clearProfileState());
+      dispatch(clearRequestSent());
+    } 
+  }, []);
+
+  console.log('userData', userData);
 
   const navigate = useNavigate();
 
@@ -47,6 +56,7 @@ export default function ViewMyProfile() {
 
   const useStatus = () => {
     const status =  userData?.isConnected[0]?.status;
+    console.log('status', status);
     return status === 'pending' || status === 'confirmed' || status === 'rejected';
   };
 

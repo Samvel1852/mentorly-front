@@ -19,6 +19,11 @@ export const getUserData = createAsyncThunk('users/getUser', async (id, {rejectW
 const profileSlice = createSlice({
     name: 'profile',
     initialState,
+    reducers: {
+        clearProfileState: (state) => {
+            state.userData = null;
+        }
+    },
     extraReducers: {
         [getUserData.pending]: (state) => {
            state.editLoader = true
@@ -32,5 +37,9 @@ const profileSlice = createSlice({
         },
     }
 });
+
+export const {
+    clearProfileState,
+} = profileSlice.actions;
 
 export default profileSlice.reducer

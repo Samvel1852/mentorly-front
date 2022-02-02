@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Layout, Row, Col, List, Typography, Divider, Button } from 'antd';
 import { Link } from 'react-router-dom';
 
-import 'antd/dist/antd.less';
 import styles from './MessageRequests.module.less';
 import MainHeader from '../../components/Header/MainHeader';
 import MainFooter from '../../components/Footer/MainFooter';
