@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react';
 import PropTypes from 'prop-types';
-import { Col, Layout, Row, Typography } from 'antd';
+import { Col, Layout, Row, Typography, message } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import 'antd/dist/antd.css';
@@ -15,7 +15,8 @@ import { getUserData, clearProfileState } from '../../features/profile/profileSl
 import { 
   connect, 
   pendingConnections, 
-  clearRequestSent 
+  clearRequestSent, 
+  clearErrorsInMessages
 } from '../../features/messageRequests/messageRequestsSlice';
 
 import MainFooter from '../../components/Footer/MainFooter';
@@ -30,7 +31,7 @@ const { Title } = Typography;
 export default function ViewMyProfile() {
   const [initialPendingsCount, setinitialPendingsCount] = useState(0);
   const {userData, editLoader} = useSelector((state) => state.profile);
-  const {requestSent, pendingsCount} = useSelector((state) => state.connections);
+  const {requestSent, pendingsCount, errors} = useSelector((state) => state.connections);
 
   useEffect(async () => {
     const result = await dispatch(pendingConnections());
@@ -43,6 +44,13 @@ export default function ViewMyProfile() {
 
   const { id } = useParams();
   const currentUserId = getLocalStorage('currentUserId');
+
+  useEffect(() => {
+    if (errors) {
+      message.error(errors)
+    }
+    return () => dispatch(clearErrorsInMessages())
+  }, [errors]);
 
   useEffect(async () => {
     await dispatch(getUserData(id));

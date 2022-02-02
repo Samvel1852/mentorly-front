@@ -12,6 +12,7 @@ import {
   confirmedConnections, 
   pendingConnections, 
   changeRequestStatus,
+  clearErrorsInMessages,
 } from '../../features/messageRequests/messageRequestsSlice';
 
 const { Title } = Typography;
@@ -20,21 +21,25 @@ const { Title } = Typography;
 export default function MessageRequests() {
   const [status, setStatus] = useState('');
   const { confirmations, pendings, errors, loading } = useSelector((state) => state.connections);
-  
-
   const dispatch = useDispatch();
 
   useEffect(() => {
     if(errors) {
-      return message.error(errors);
+      message.error(errors);
     }
+    return () => dispatch(clearErrorsInMessages());
+  },[errors])
+
+  useEffect(() => {
     dispatch(pendingConnections());
     dispatch(confirmedConnections());
   }, [status]);
 
   const requestAnswer = async (id, param) => {
     const resp = await dispatch(changeRequestStatus({id, param}));
-    setStatus(resp);
+    if (typeof resp?.payload !== 'string') {
+      setStatus(resp);
+    }
   };
   
   return (
@@ -43,13 +48,13 @@ export default function MessageRequests() {
       {loading ? <div className={styles.pageLoaderContainer}><MainSpin tip='Loading...' /></div> :
       <Row className={styles.requestContainer}>
         <Col span={11} className= {styles.column}>
-          <Title level={4} className={styles.title}>My Mentors/Mentees</Title>
+          <Title level={4} className={styles.title}>Connections</Title>
           <List
             size='large'
             dataSource={confirmations} 
             renderItem=
             {(item, index) => 
-            <List.Item key={item._id}>
+            <List.Item key={item._id} className={styles.connectedItem}>
                 <List.Item.Meta
                   title=
                   {<Link className={styles.text} to={`/${item._id}`}>

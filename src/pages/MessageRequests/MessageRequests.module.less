@@ -1,12 +1,16 @@
 @import '../../index.css';
 .approvals {
-    background-color: #E6EFFC;
+    background-color: #e2e2e4;
     color:white;
     margin: 5px 0;
 }
 
 .ant-layout {
     background-color: #f0f2f5;
+}
+
+.connectedItem {
+    padding: 5px 24px !important;
 }
 
 .pageLoaderContainer {
@@ -55,12 +59,13 @@
 }
 
 .decline {
-    color: white;
-    background-color: #ff4d4f;
+    color: var(--app-main-color);
+    border-color: var(--app-main-color);
+    background-color: white;
     &:hover {
-        background-color: white !important;
-        border-color: #ff4d4f;
-        color: #ff4d4f;
+        background-color: var(--app-main-color);
+        border-color:var(--app-main-color);
+        color: white;
     }
 }
 

@@ -11,36 +11,37 @@ const initialState = {
     pendingsCount: 0,
 };
 
-export const connect = createAsyncThunk('connections/connect', async (id, {rejectWithValue}) => {
+export const connect = createAsyncThunk('connections/connect', async (id,{rejectWithValue}) => {
     try {
         const result =  await axiosInstance.post(`connections/${id}`);
         return result.data.data;
     } catch (err) {
-        return rejectWithValue(err);
+        return rejectWithValue(err.response.data.errors);
     }
 });
 
-export const confirmedConnections = createAsyncThunk('connections/confirmed', async () => {
+export const confirmedConnections = createAsyncThunk('connections/confirmed', async ( params, {rejectWithValue}) => {
     try {
         const result =  await axiosInstance.get(`connections/confirmed`);
         return result.data.data;
     } catch (err) {
-        return err;
+        return rejectWithValue(err.response.data.errors);
     }
 });
 
-export const pendingConnections = createAsyncThunk('connections/pending', async () => {
+export const pendingConnections = createAsyncThunk('connections/pending', async (params, {rejectWithValue}) => {
     try {
         const result =  await axiosInstance.get(`connections/pending`);
         return result.data.data;
     } catch (err) {
-        return err;
+        return rejectWithValue(err.response.data.errors);
     }
 });
 
 export const changeRequestStatus = createAsyncThunk('connections/:id', async ({id, param }, {rejectWithValue}) => {
     try {
         const updated = await axiosInstance.put(`connections/${id}`, param);
+        console.log('updated', updated)
         return updated;
     } catch (err) {
         return rejectWithValue(err.response.data.errors);
@@ -54,6 +55,9 @@ const connectionSlice = createSlice({
         clearRequestSent: (state) => {
             state.requestSent = '';
         },
+        clearErrorsInMessages: (state) => {
+            state.errors = null;
+        }
     },
     extraReducers: {
         [connect.pending]: (state) => {
@@ -98,6 +102,7 @@ const connectionSlice = createSlice({
 
 export const {
     clearRequestSent,
+    clearErrorsInMessages,
 } = connectionSlice.actions;
 
 export default connectionSlice.reducer;

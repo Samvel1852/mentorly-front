@@ -10,6 +10,6 @@ export const MainButton = styled(Button)`
     width: ${props => props.width ? props.width : ""} !important;
     height: ${props => props.height ? props.height : ""};
     &:hover {
-        opacity: 70%;
+        opacity: 70%;   
     }
 `;
