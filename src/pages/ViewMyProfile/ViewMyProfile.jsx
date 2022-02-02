@@ -58,7 +58,6 @@ export default function ViewMyProfile() {
 
   const useStatus = () => {
     const status =  userData?.isConnected[0]?.status;
-    console.log('status', status);
     return status === 'pending' || status === 'confirmed' || status === 'rejected';
   };
 
