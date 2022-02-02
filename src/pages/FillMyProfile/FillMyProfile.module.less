@@ -10,17 +10,21 @@
 }
 
 .site_layout {
+  height: 600px;
+  height: calc(100vh - 115px);
   background: var(--app-background-color) !important;
-  margin-top: 64px;
+  margin-top: 164px;
   padding: 0 50px;
   margin-top: 0 !important;
+  overflow-y: auto;
 }
+
 [data-theme='dark'] .site_layout .site-layout-background {
   background: #141414;
 }
 
 .content {
-  min-height: 600px;
+  // min-height: 600px;
   display: flex;
   justify-content: center;
 }
@@ -71,11 +75,13 @@
     margin: 2px 3px 2px 3px;
   }
   > .newSkillBtn {
+    display: flex;
     width: 15%;
     min-width: 100px;
     height: 30px;
     margin: 2px 3px 2px 3px;
     border-radius: 5px;
+    align-items: center;
     &:hover {
       color: var(--app-main-color);
       border: 1px solid var(--app-main-color);

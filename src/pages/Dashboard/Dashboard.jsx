@@ -149,8 +149,9 @@ function Dashboard() {
                         </Col>
                     </Row>
                 </Form>
-
+                <div className={styles.tableContainer}>               
                 <MainTable
+                    scroll={{ y: 200 }} 
                     dataSource={ dataSource }
                     columns={ columns }
                     onRow={(record) => {
@@ -170,10 +171,11 @@ function Dashboard() {
                         },
                     } }
                 />
+                </div> 
             </div>
-            <MainFooter />
+            
         </Layout>
-        
+        <MainFooter />        
         </>
     );
 }
