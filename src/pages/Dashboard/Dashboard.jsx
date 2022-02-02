@@ -11,6 +11,7 @@ import { MainSelect } from '../../elements/MainSelect';
 import { MainButton } from '../../elements/MainButton';
 import { MainTable } from '../../elements/MainTable';
 import styles from './Dashboard.module.less';
+import MainFooter from '../../components/Footer/MainFooter';
 
 function Dashboard() {
     const dispatch = useDispatch();
@@ -70,8 +71,9 @@ function Dashboard() {
         await getData(params);
     };
     return (
+        <>
+        <MainHeader verified={true} />
         <Layout className={styles.layout} >
-            <MainHeader verified={true} />
             <div style={ { 'margin': '30px'} }>
                 <Form
                     onSubmit={ handleSubmit }
@@ -112,6 +114,7 @@ function Dashboard() {
                                 <MainSelect
                                     mode={ 'multiple' }
                                     allowClear
+                                    showArrow={true}
                                     style={ { width: '100%' } }
                                     placeholder="Field"
                                     onChange={ (value) => setParams({ ...params, selectedField: value }) }
@@ -168,7 +171,10 @@ function Dashboard() {
                     } }
                 />
             </div>
+            <MainFooter />
         </Layout>
+        
+        </>
     );
 }
 

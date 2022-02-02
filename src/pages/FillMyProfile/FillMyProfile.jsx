@@ -106,16 +106,14 @@ export default function FillMyProfile() {
         }),
       );
 
-      console.log('result', result);
-
       if (result.payload && !result.error && !result.errors) {
         await setLocalStorage('verified', 'verified');
         navigate(`/${id}`);
       } else {
-        message.error('Refused! Please check Your connection and try again');
+        message.error('Refused! Please check Your connection and try again', 6);
       }
     } catch ({ response }) {
-      message.error('This is a message of error');
+      message.error('Refused to add', 6);
     }
   };
 
