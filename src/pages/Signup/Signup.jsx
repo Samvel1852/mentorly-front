@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { Form } from 'antd';
 
 import MainHeader from '../../components/Header/MainHeader'
@@ -8,6 +8,7 @@ import axiosInstance from '../../helpers/axiosInstance';
 import { MainButton } from '../../elements/MainButton';
 import { MainInput } from '../../elements/MainInput';
 import { PasswordInput } from '../../elements/PasswordInput';
+import { getLocalStorage } from '../../helpers/localStorage';
 
 export default function Signup() {
   const [errorMessage, setErrorMessage] = useState('');
@@ -64,6 +65,7 @@ export default function Signup() {
   return (
     <>
     <MainHeader inPublicPages={true} />
+    { getLocalStorage('accessToken') ? <Navigate to='/' /> :
     <div className={styles.formContainer}>
       <div className={styles.formPart}>
       <Form
@@ -117,6 +119,7 @@ export default function Signup() {
       </Form>
       </div>
     </div>
+}
     </>
   );
 }
