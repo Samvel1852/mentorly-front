@@ -37,8 +37,9 @@ export default function MessageRequests() {
 
   const requestAnswer = async (id, param) => {
     const resp = await dispatch(changeRequestStatus({id, param}));
-    if (typeof resp?.payload !== 'string') {
-      setStatus('Something went wrong');
+    console.log('resp', resp);
+    if (typeof resp?.payload !== 'string' || typeof resp?.payload === 'undefined') {
+      setStatus(resp);
     }
   };
   
