@@ -221,7 +221,7 @@ export default function FillMyProfile() {
                         handleChange(target.value, target.name)} />
               </Form.Item>
             </div>
-            <div className={styles.selectsContainer}>
+            <div className={styles.selectsContainer} id='selectsArea'>
               <Form.Item 
                 className={styles.fillMyProfileFormItem, styles.role}
                 name='selectedRole'
@@ -232,6 +232,7 @@ export default function FillMyProfile() {
                 <MainSelect
                   onChange={(value) => handleChange(value, 'selectedRole')}
                   placeholder='Select Role'
+                  getPopupContainer={() => document.getElementById('selectsArea')}
                 >
                   <Option value='Select Role' disabled>
                     --Select Role
@@ -251,6 +252,7 @@ export default function FillMyProfile() {
                   initialvalue='Select Field'
                   onChange={(value) => handleChange(value, 'selectedField')}
                   placeholder='Select Field'
+                  getPopupContainer={() => document.getElementById('selectsArea')}
                 >
                   <Option value='Select Field' disabled>
                     --Select Field
