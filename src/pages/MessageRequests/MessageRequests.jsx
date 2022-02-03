@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Layout, Row, Col, List, Typography, Divider, Button, message } from 'antd';
 import { Link } from 'react-router-dom';
@@ -19,8 +19,7 @@ const { Title } = Typography;
 
 
 export default function MessageRequests() {
-  const [status, setStatus] = useState('');
-  const { confirmations, pendings, errors, loading } = useSelector((state) => state.connections);
+  const { confirmations, pendings, errors, loading, reqStatus } = useSelector((state) => state.connections);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -33,14 +32,10 @@ export default function MessageRequests() {
   useEffect(() => {
     dispatch(pendingConnections());
     dispatch(confirmedConnections());
-  }, [status]);
+  }, [reqStatus]);
 
   const requestAnswer = async (id, param) => {
-    const resp = await dispatch(changeRequestStatus({id, param}));
-    console.log('resp', resp);
-    if (typeof resp?.payload !== 'string' || typeof resp?.payload === 'undefined') {
-      setStatus(resp);
-    }
+    await dispatch(changeRequestStatus({id, param}));
   };
   
   return (
