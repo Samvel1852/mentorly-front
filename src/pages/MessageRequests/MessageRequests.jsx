@@ -55,8 +55,8 @@ export default function MessageRequests() {
             <List.Item key={item._id} className={styles.connectedItem}>
                 <List.Item.Meta
                   title=
-                  {<Link className={styles.text} to={`/${item._id}`}>
-                    {`${++index}. ${item.firstName} ${item.lastName} (${item.position}, ${item.selectedRole})`}
+                  {<Link className={styles.text} to={`/${item?._id}`}>
+                    {`${++index}. ${item?.firstName} ${item?.lastName} (${item?.position}, ${item?.selectedRole})`}
                   </Link>}
                 />
             </List.Item>}
@@ -81,7 +81,7 @@ export default function MessageRequests() {
                 {<Link className={styles.text} to={`/${item?.from._id}`}>
                   {`${item?.from?.firstName} ${item?.from?.lastName}`}
                 </Link>}
-                description={<p className={styles.description}>{item.from.position}<br/><p className={styles.role}>{item.from.selectedRole}</p></p>}
+                description={<p className={styles.description}>{item?.from?.position}<br/><p className={styles.role}>{item?.from?.selectedRole}</p></p>}
               />
               <Button className={styles.accept} onClick={() => requestAnswer(item._id, {connect: 'confirmed'})}>Accept</Button>
               <Button className={styles.decline} onClick={() => requestAnswer(item._id, {connect: 'rejected'})}>Ignore</Button>
