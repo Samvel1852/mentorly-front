@@ -398,7 +398,7 @@ export default function FillMyProfile() {
           </Form>
         </div>
       </Content>
-      <MainFooter> Simply Technologies ©2022 Created with Pleasure </MainFooter>
+      <MainFooter />
     </Layout> 
     
   );

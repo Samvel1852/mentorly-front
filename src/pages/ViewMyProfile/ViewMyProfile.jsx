@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react';
 import PropTypes from 'prop-types';
-import { Col, Layout, Row, Typography } from 'antd';
+import { Col, Layout, Row, Typography, message } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import 'antd/dist/antd.css';
@@ -15,7 +15,8 @@ import { getUserData, clearProfileState } from '../../features/profile/profileSl
 import { 
   connect, 
   pendingConnections, 
-  clearRequestSent 
+  clearRequestSent, 
+  clearErrorsInMessages
 } from '../../features/messageRequests/messageRequestsSlice';
 
 import MainFooter from '../../components/Footer/MainFooter';
@@ -30,13 +31,15 @@ const { Title } = Typography;
 export default function ViewMyProfile() {
   const [initialPendingsCount, setinitialPendingsCount] = useState(0);
   const {userData, editLoader} = useSelector((state) => state.profile);
-  const {requestSent, pendingsCount} = useSelector((state) => state.connections);
+  const {requestSent, pendingsCount, errors} = useSelector((state) => state.connections);
 
-  useEffect(async () => {
-    let result = await dispatch(pendingConnections());
-    result = result.payload.filter((connection) => connection.from !== null);
-    setinitialPendingsCount(result?.payload.length);
+  useEffect(() => {
+    dispatch(pendingConnections());
   }, []);
+
+  useEffect(() => {
+    setinitialPendingsCount(pendingsCount);
+  }, [pendingsCount]);
 
   const navigate = useNavigate();
 
@@ -46,6 +49,13 @@ export default function ViewMyProfile() {
   const currentUserId = getLocalStorage('currentUserId');
 
   useEffect(() => {
+    if (errors) {
+      message.error(errors);
+    }
+    return () => dispatch(clearErrorsInMessages());
+  }, [errors]);
+
+  useEffect(() => {
     dispatch(getUserData(id));
     return () => {
       dispatch(clearProfileState());
@@ -53,12 +63,12 @@ export default function ViewMyProfile() {
     };
   }, [id]);
 
-  const useStatus = () => {
+  const findStatus = () => {
     const status =  userData?.isConnected[0]?.status;
     return status === 'pending' || status === 'confirmed' || status === 'rejected';
   };
 
-  const useStatusValue = () => {
+  const requestStatus = () => {
     const status = userData?.isConnected[0]?.status;
     return (
       (status === 'pending') ? 'Request Sent' : 
@@ -135,14 +145,14 @@ export default function ViewMyProfile() {
                  loading={editLoader}>Edit</MainButton>
                  : <MainButton width={'150px'} height={'40px'} margin={'40px 0 0 0 '} type='primary' 
                  className={styles.connectBtn} onClick={handleConnectUser} 
-                 disabled={useStatus() || requestSent.length}>{useStatusValue()}</MainButton>
+                 disabled={findStatus() || requestSent.length}>{requestStatus()}</MainButton>
                 }
                 </div>
           </Row>
       </Content>
       : <div className={styles.pageLoaderContainer}><MainSpin tip='Loading...' /></div>
       }
-      <MainFooter > Simply Technologies ©2022 Created with Pleasure </MainFooter>
+      <MainFooter />
     </Layout>
   );
 }

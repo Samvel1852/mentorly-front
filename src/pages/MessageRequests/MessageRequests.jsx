@@ -1,48 +1,60 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Layout, Row, Col, List, Typography, Divider, Button } from 'antd';
+import { Layout, Row, Col, List, Typography, Divider, Button, message } from 'antd';
 import { Link } from 'react-router-dom';
 
 import styles from './MessageRequests.module.less';
 import MainHeader from '../../components/Header/MainHeader';
 import MainFooter from '../../components/Footer/MainFooter';
+import { MainSpin } from '../../elements/MainSpin';
 
 import { 
   confirmedConnections, 
   pendingConnections, 
-  changeRequestStatus 
+  changeRequestStatus,
+  clearErrorsInMessages,
 } from '../../features/messageRequests/messageRequestsSlice';
 
 const { Title } = Typography;
 
 
 export default function MessageRequests() {
-  const { confirmations, pendings } = useSelector((state) => state.connections);
-
+  const [status, setStatus] = useState('');
+  const { confirmations, pendings, errors, loading } = useSelector((state) => state.connections);
   const dispatch = useDispatch();
 
-  useEffect( () => {
+  useEffect(() => {
+    if(errors) {
+      message.error(errors);
+    }
+    return () => dispatch(clearErrorsInMessages());
+  },[errors])
+
+  useEffect(() => {
     dispatch(pendingConnections());
     dispatch(confirmedConnections());
-  }, []);
+  }, [status]);
 
-  const requestAnswer = (id, param) => {
-    dispatch(changeRequestStatus({id, param}));
+  const requestAnswer = async (id, param) => {
+    const resp = await dispatch(changeRequestStatus({id, param}));
+    if (typeof resp?.payload !== 'string') {
+      setStatus(resp);
+    }
   };
   
   return (
     <Layout className={styles.layout}>
       <MainHeader verified={true}/>
+      {loading ? <div className={styles.pageLoaderContainer}><MainSpin tip='Loading...' /></div> :
       <Row className={styles.requestContainer}>
         <Col span={11}>
-          <Title level={4} className={styles.title}>My Mentors/Mentees</Title>
-          {confirmations[0] &&
+          <Title level={4} className={styles.title}>Connections</Title>
           <List
             size='large'
             dataSource={confirmations} 
             renderItem=
             {(item, index) => 
-            <List.Item key={item._id}>
+            <List.Item key={item._id} className={styles.connectedItem}>
                 <List.Item.Meta
                   title=
                   {<Link className={styles.text} to={`/${item._id}`}>
@@ -51,9 +63,9 @@ export default function MessageRequests() {
                 />
             </List.Item>}
           />
-            }
+            
         </Col>
-        <Col span={1}>
+        <Col span={1} >
           <Divider type='vertical' className={styles.divider} />
         </Col>
         <Col span={11}>
@@ -62,7 +74,7 @@ export default function MessageRequests() {
             size='large'
             dataSource={pendings}
             renderItem={item => 
-            <div className={styles.approvals}>
+            <div className={styles.pendings}>
               {item?.from?._id &&
             <List.Item>
               <List.Item.Meta
@@ -80,10 +92,9 @@ export default function MessageRequests() {
           />
             }
         </Col>
-      </Row>
-      <MainFooter > Simply Technologies ©2022 Created with Pleasure </MainFooter>
+      </Row> 
+      }
+      <MainFooter />
     </Layout>
   );
 }
-  
-  

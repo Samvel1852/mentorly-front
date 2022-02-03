@@ -10,8 +10,8 @@ import { MainInput } from '../../elements/MainInput';
 import { MainSelect } from '../../elements/MainSelect';
 import { MainButton } from '../../elements/MainButton';
 import { MainTable } from '../../elements/MainTable';
-import styles from './Dashboard.module.less';
 import MainFooter from '../../components/Footer/MainFooter';
+import styles from './Dashboard.module.less';
 
 function Dashboard() {
     const dispatch = useDispatch();
@@ -126,9 +126,9 @@ function Dashboard() {
                         <Col span={ 4 }>
                             <Form.Item>
                                 <MainSelect
+                                    showArrow={true}
                                     mode={ 'multiple' }
                                     allowClear
-                                    showArrow={true}
                                     style={ { width: '100%' } }
                                     placeholder="Field"
                                     onChange={ (value) => setParams({ ...params, selectedField: value }) }
@@ -188,7 +188,6 @@ function Dashboard() {
                 />
                 </div> 
             </div>
-            
         </Layout>
         <MainFooter />        
         </>
