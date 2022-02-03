@@ -66,9 +66,9 @@ const connectionSlice = createSlice({
             state.requestSent = 'Request Sent';
             state.loading = false;
         },
-        [connect.rejected]: (state, {payload}) => {
+        [connect.rejected]: (state) => {
             state.loading = false;
-            state.errors = payload;
+            state.errors = 'Something went wrong';
         },
         [pendingConnections.pending]: (state) => {
            state.loading = true;
