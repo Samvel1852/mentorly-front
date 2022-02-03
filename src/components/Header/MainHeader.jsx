@@ -2,16 +2,26 @@ import { Badge, Menu } from 'antd';
 import { Header } from 'antd/lib/layout/layout';
 import { MessageOutlined } from '@ant-design/icons';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { getLocalStorage, removeFromLocalStorage } from '../../helpers/localStorage';
 import styles from './MainHeader.module.less';
 import Logo from '../../assets/images/MentorlyLogo.png'
+import { useEffect } from 'react';
+import { pendingConnections } from '../../features/messageRequests/messageRequestsSlice';
 
 export default function MainHeader ({ inPublicPages }) {
+    const dispatch = useDispatch();
+  
+    useEffect(async () => {
+      let result = await dispatch(pendingConnections());
+      console.log('result', result);
+      // result = result.filter((connection) => connection);
+      
+    }, []);
 
-    const { pathname } = useLocation()
+    const { pathname } = useLocation();
 
     const { pendingsCount } = useSelector((state) => state.connections);
 

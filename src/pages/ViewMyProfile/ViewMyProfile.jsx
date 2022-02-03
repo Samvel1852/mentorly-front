@@ -33,9 +33,9 @@ export default function ViewMyProfile() {
   const {requestSent, pendingsCount} = useSelector((state) => state.connections);
 
   useEffect(async () => {
-    const result = await dispatch(pendingConnections());
+    let result = await dispatch(pendingConnections());
+    result = result.payload.filter((connection) => connection.from !== null);
     setinitialPendingsCount(result?.payload.length);
-
   }, []);
 
   const navigate = useNavigate();
@@ -45,16 +45,13 @@ export default function ViewMyProfile() {
   const { id } = useParams();
   const currentUserId = getLocalStorage('currentUserId');
 
-  useEffect(async () => {
-    await dispatch(getUserData(id));
-  }, [id]);
-
   useEffect(() => {
+    dispatch(getUserData(id));
     return () => {
       dispatch(clearProfileState());
       dispatch(clearRequestSent());
     };
-  }, []);
+  }, [id]);
 
   const useStatus = () => {
     const status =  userData?.isConnected[0]?.status;
