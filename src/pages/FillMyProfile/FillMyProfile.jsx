@@ -358,7 +358,7 @@ export default function FillMyProfile() {
               label='Skills'
               labelCol={{ span: 24 }}
               rules={[getRequiredMessage('Please provide Your Skills.'),
-                    validateMaxTen(skills)]} >
+                      validateMaxTen(skills)]} >
               <Layout>
                 <div className={styles.skillsContainer}>
                   {skills.map((skill) => (
