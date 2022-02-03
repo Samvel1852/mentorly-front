@@ -1,25 +1,22 @@
-import { useEffect, useState } from 'react';
 import { Badge, Menu } from 'antd';
 import { Header } from 'antd/lib/layout/layout';
-import PropTypes from 'prop-types';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { MessageOutlined } from '@ant-design/icons';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { getLocalStorage, removeFromLocalStorage } from '../../helpers/localStorage';
 import styles from './MainHeader.module.less';
 import Logo from '../../assets/images/MentorlyLogo.png'
 
 export default function MainHeader ({ inPublicPages }) {
-    const [requestsQuantity, setRequestsQuantity] = useState(0);
 
     const { pathname } = useLocation()
 
+    const { pendingsCount } = useSelector((state) => state.connections);
+
     const navigate = useNavigate();
-
-    useEffect(async () => {
-      await setRequestsQuantity(20);
-    }, []);
-
+  
     async function handleLogOut() {
         await removeFromLocalStorage('accessToken');
         await removeFromLocalStorage('currentUserId');
@@ -43,7 +40,7 @@ export default function MainHeader ({ inPublicPages }) {
         <Menu theme='dark' mode='horizontal' defaultSelectedKeys={`${pathname}`} className={styles.menu}>
           <Menu.Item key='/dashboard' ><Link to='/dashboard'>Dashboard</Link></Menu.Item>
           <Menu.Item key='/requests' ><Link to='/requests'> Message Requests </Link> 
-            <Badge count={requestsQuantity} size='small' offset={[0, 0]} className={styles.badge}> 
+            <Badge count={pendingsCount} size='small' offset={[0, 0]} className={styles.badge}> 
               <MessageOutlined className={styles.icon} />
             </Badge>
           </Menu.Item>
@@ -69,5 +66,5 @@ MainHeader.propTypes = {
     handleLogOut: PropTypes.func,
     verified: PropTypes.bool,
     inPublicPages: PropTypes.bool,
-    requestsQuantity: PropTypes.number,
+    pendingsCount: PropTypes.number,
 };

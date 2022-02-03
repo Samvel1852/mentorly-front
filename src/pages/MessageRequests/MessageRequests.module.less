@@ -1,0 +1,82 @@
+@import '../../index.css';
+.pendings {
+    background-color: #e2e2e4;
+    color:white;
+    margin: 6px 0;
+    border-radius: 5px;
+}
+
+.ant-layout {
+    background-color: #f0f2f5;
+}
+
+.connectedItem {
+    padding: 5px 24px !important;
+}
+
+.pendingItem {
+    border-radius: 5px !important;
+}
+
+.pageLoaderContainer {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    margin-left: 24px;
+    color: var(--app-main-color) !important;
+}
+
+.text {
+    &:hover {
+        opacity: 90%;
+        color:  var(--app-main-color) !important;
+    }
+}
+
+.requestContainer {
+    margin-top: 30px;
+    height: 75.1vh;
+    > div:first-child {
+        overflow-y: auto;
+        height: 100%;           
+    }
+    > div:last-child {
+        overflow-y: auto;
+        height: 100%;
+    }
+}
+
+.divider {
+    height: 100%;
+    max-height: 98.5%;
+    border-width: 2px;
+    margin-top: 6px;
+}
+
+.accept {
+    background-color: var(--app-main-color);
+    color: white;
+    margin-right: 10px;
+    &:hover {
+        background-color: white !important;
+        border-color:  var(--app-main-color);
+        color:  var(--app-main-color);
+    }
+}
+
+.decline {
+    color: var(--app-main-color);
+    border-color: var(--app-main-color);
+    background-color: white;
+    &:hover {
+        background-color: var(--app-main-color);
+        border-color:var(--app-main-color);
+        color: white;
+    }
+}
+

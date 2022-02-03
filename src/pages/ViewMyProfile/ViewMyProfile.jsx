@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect,useState } from 'react';
 import PropTypes from 'prop-types';
-import { Col, Layout, Row, Typography } from 'antd';
+import { Col, Layout, Row, Typography, message } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import 'antd/dist/antd.css';
 
 import { getLocalStorage } from '../../helpers/localStorage';
@@ -11,7 +11,14 @@ import MainHeader from '../../components/Header/MainHeader';
 import {
   setProfileState,
 } from '../../features/fillMyProfile/fillMyProfileSlice';
-import { getUserData } from '../../features/profile/profileSlice';
+import { getUserData, clearProfileState } from '../../features/profile/profileSlice';
+import { 
+  connect, 
+  pendingConnections, 
+  clearRequestSent, 
+  clearErrorsInMessages
+} from '../../features/messageRequests/messageRequestsSlice';
+
 import MainFooter from '../../components/Footer/MainFooter';
 import styles from './ViewMyProfile.module.less';
 import { MainButton } from '../../elements/MainButton';
@@ -21,30 +28,68 @@ import { MainException } from '../../elements/MainException';
 const { Content } = Layout;
 
 const { Title } = Typography;
-
 export default function ViewMyProfile() {
+  const [initialPendingsCount, setinitialPendingsCount] = useState(0);
   const {userData, editLoader} = useSelector((state) => state.profile);
+  const {requestSent, pendingsCount, errors} = useSelector((state) => state.connections);
+
+  useEffect(() => {
+    dispatch(pendingConnections());
+  }, []);
+
+  useEffect(() => {
+    setinitialPendingsCount(pendingsCount);
+  }, [pendingsCount]);
 
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
   const { id } = useParams();
-
   const currentUserId = getLocalStorage('currentUserId');
 
-  useEffect(async () => {
-    await dispatch(getUserData(id));
+  useEffect(() => {
+    if (errors) {
+      message.error(errors);
+    }
+    return () => dispatch(clearErrorsInMessages());
+  }, [errors]);
+
+  useEffect(() => {
+    dispatch(getUserData(id));
+    return () => {
+      dispatch(clearProfileState());
+      dispatch(clearRequestSent());
+    };
   }, [id]);
 
-  async function handleEditProfileClick () {
+  const findStatus = () => {
+    const status =  userData?.isConnected[0]?.status;
+    return status === 'pending' || status === 'confirmed' || status === 'rejected';
+  };
+
+  const requestStatus = () => {
+    const status = userData?.isConnected[0]?.status;
+    return (
+      (status === 'pending') ? 'Request Sent' : 
+      (status === 'confirmed') ? 'Connected' :
+      (status === 'rejected') ? 'Request Rejected' :
+      (requestSent === 'Request Sent') ? requestSent  : 'Connect'
+    );
+  };
+
+  const handleEditProfileClick = async () => {
     await dispatch(setProfileState(userData));
     navigate(`/users/${id}`);
-  }
+  };
+
+  const handleConnectUser = async () => {
+    await dispatch(connect(id));
+  };
 
   return (
-    <Layout>
-      <MainHeader verified={true} />
+    <Layout> 
+      <MainHeader verified={true} pendingsCount={pendingsCount ? pendingsCount : initialPendingsCount}/>
       { userData?.status !== 'verified' && !editLoader ? 
       <div className={styles.pageLoaderContainer}>
         <MainException type='404' redirect={`/${currentUserId}`} title={'This Page Isn`t Available'} 
@@ -53,14 +98,16 @@ export default function ViewMyProfile() {
        !editLoader  ? 
       <Content className={styles.site_layout} >
           <Row className={styles.mainRow} >
+
             <Col flex='300px' className={styles.personalInfoContainer}>
               <Title className={styles.title} level={3}>Personal Info </Title>
                 <Title level={4} className={styles.mentorBeige}  hidden={userData?.selectedRole !== 'Mentor'}> 
                  Mentor </Title>
                 <Typography><b>First Name:</b> {userData?.firstName}</Typography>
                 <Typography><b>Last Name:</b> {userData?.lastName}</Typography>
-                {id === currentUserId && 
-                  <Typography><b>Email:</b> {userData?.email}</Typography>
+                {
+                  (id === currentUserId || userData?.isConnected[0]?.status === 'confirmed') &&
+                  <Typography><b>Email: {userData?.email}</b></Typography>
                 }
                 <Typography><b>Role:</b> {userData?.selectedRole}</Typography>
                 <Typography><b>Position:</b> {userData?.position}</Typography>
@@ -97,14 +144,15 @@ export default function ViewMyProfile() {
                  onClick={handleEditProfileClick}
                  loading={editLoader}>Edit</MainButton>
                  : <MainButton width={'150px'} height={'40px'} margin={'40px 0 0 0 '} type='primary' 
-                 className={styles.connectBtn}>Connect</MainButton>
+                 className={styles.connectBtn} onClick={handleConnectUser} 
+                 disabled={findStatus() || requestSent.length}>{requestStatus()}</MainButton>
                 }
                 </div>
           </Row>
       </Content>
       : <div className={styles.pageLoaderContainer}><MainSpin tip='Loading...' /></div>
       }
-      <MainFooter > Simply Technologies ©2022 Created with Pleasure </MainFooter>
+      <MainFooter />
     </Layout>
   );
 }
