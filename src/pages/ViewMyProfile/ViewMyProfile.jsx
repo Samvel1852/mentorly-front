@@ -92,13 +92,13 @@ export default function ViewMyProfile() {
       <MainHeader verified={true} pendingsCount={pendingsCount ? pendingsCount : initialPendingsCount}/>
       { userData?.status !== 'verified' && !editLoader ? 
       <div className={styles.pageLoaderContainer}>
-        <MainException type='404' redirect={`/${currentUserId}`} title={'This Page Isn`t Available'} 
-        desc={'The link may be broken, or the page may have been removed. Check to see if the link you`re trying to open is correct.'} />
+        <MainException backText='Back to home'
+         type='404' redirect={`/${currentUserId}`} title={'This Page Isn`t Available'} 
+          desc={'The link may be broken, or the page may have been removed. Check to see if the link you`re trying to open is correct.'} />
         </div> :
        !editLoader  ? 
       <Content className={styles.site_layout} >
           <Row className={styles.mainRow} >
-
             <Col flex='300px' className={styles.personalInfoContainer}>
               <Title className={styles.title} level={3}>Personal Info </Title>
                 <Title level={4} className={styles.mentorBeige}  hidden={userData?.selectedRole !== 'Mentor'}> 
@@ -107,7 +107,7 @@ export default function ViewMyProfile() {
                 <Typography><b>Last Name:</b> {userData?.lastName}</Typography>
                 {
                   (id === currentUserId || userData?.isConnected[0]?.status === 'confirmed') &&
-                  <Typography><b>Email: {userData?.email}</b></Typography>
+                  <Typography><b>Email:</b> {userData?.email}</Typography>
                 }
                 <Typography><b>Role:</b> {userData?.selectedRole}</Typography>
                 <Typography><b>Position:</b> {userData?.position}</Typography>

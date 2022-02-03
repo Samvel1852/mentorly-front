@@ -87,6 +87,7 @@ export default function FillMyProfile() {
 
     try {
       const { id } = params;
+
       const result = await dispatch(
         verifyUser({
           firstName,
@@ -109,10 +110,10 @@ export default function FillMyProfile() {
         await setLocalStorage('verified', 'verified');
         navigate(`/${id}`);
       } else {
-        message.error('Refused! Please check Your connection and try again');
+        message.error('Refused! Please check Your connection and try again', 6);
       }
     } catch ({ response }) {
-      message.error('This is a message of error');
+      message.error('Refused to add', 6);
     }
   };
 
@@ -157,10 +158,15 @@ export default function FillMyProfile() {
     return ({ min: 2, message: 'Last Name should contain at least two letters.' })
   }
 
-  function validateMaxTen (array) {
+  function validateMaxTenMinOne (array) {
     return ({
       validator() {
         if (array.length < 11) {
+          if (array.length < 1) {
+            return Promise.reject(
+              new Error('Please provide your skills.'),
+            );
+          }
           return Promise.resolve();
         } else {
           return Promise.reject(
@@ -357,7 +363,7 @@ export default function FillMyProfile() {
               label='Skills'
               labelCol={{ span: 24 }}
               rules={[getRequiredMessage('Please provide Your Skills.'),
-                    validateMaxTen(skills)]} >
+                validateMaxTenMinOne(skills)]} >
               <Layout>
                 <div className={styles.skillsContainer}>
                   {skills.map((skill) => (

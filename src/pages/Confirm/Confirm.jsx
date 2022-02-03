@@ -31,6 +31,7 @@ export default function Confirm() {
         message.success({ content: 'You have successfully registered',
           style: { marginTop: '80vh' },
           icon: <CheckCircleFilled style={{ color: '#026670' }} />,
+          duration: 6,
         });
         navigate('/login');
       }

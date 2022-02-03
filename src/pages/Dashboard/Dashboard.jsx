@@ -85,8 +85,9 @@ function Dashboard() {
         await getData(params);
     };
     return (
+        <>
+        <MainHeader verified={true} />
         <Layout className={styles.layout} >
-            <MainHeader verified={true} />
             <div style={ { 'margin': '30px'} }>
                 <Form
                     onSubmit={ handleSubmit }
@@ -162,8 +163,9 @@ function Dashboard() {
                         </Col>
                     </Row>
                 </Form>
-
+                <div className={styles.tableContainer}>               
                 <MainTable
+                    scroll={{ y: 200 }} 
                     dataSource={ dataSource }
                     columns={ columns }
                     onRow={(record) => {
@@ -184,9 +186,11 @@ function Dashboard() {
                         },
                     } }
                 />
+                </div> 
             </div>
-            <MainFooter />
         </Layout>
+        <MainFooter />        
+        </>
     );
 }
 

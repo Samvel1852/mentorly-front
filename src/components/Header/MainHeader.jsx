@@ -10,8 +10,7 @@ import styles from './MainHeader.module.less';
 import Logo from '../../assets/images/MentorlyLogo.png'
 
 export default function MainHeader ({ inPublicPages }) {
-
-    const { pathname } = useLocation()
+    const { pathname } = useLocation();
 
     const { pendingsCount } = useSelector((state) => state.connections);
 
