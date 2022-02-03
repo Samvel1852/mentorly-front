@@ -93,8 +93,8 @@ const connectionSlice = createSlice({
            state.errors = payload;
            state.loading = false;
         },
-        [changeRequestStatus.rejected]: (state, {payload}) => {
-           state.errors = payload;
+        [changeRequestStatus.rejected]: (state) => {
+           state.errors = 'Something went wrong';
         },
     }
 });

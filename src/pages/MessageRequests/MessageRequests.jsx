@@ -28,7 +28,7 @@ export default function MessageRequests() {
       message.error(errors);
     }
     return () => dispatch(clearErrorsInMessages());
-  },[errors])
+  },[errors]);
 
   useEffect(() => {
     dispatch(pendingConnections());
@@ -38,7 +38,7 @@ export default function MessageRequests() {
   const requestAnswer = async (id, param) => {
     const resp = await dispatch(changeRequestStatus({id, param}));
     if (typeof resp?.payload !== 'string') {
-      setStatus(resp);
+      setStatus('Something went wrong');
     }
   };
   
