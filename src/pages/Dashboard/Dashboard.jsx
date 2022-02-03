@@ -3,7 +3,7 @@ import { Col, Form, Layout, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Option } from 'antd/es/mentions';
 
-import { getUsers } from '../../features/Dashboard/dashboardSlice';
+import { getUsers } from '../../features/dashboard/dashboardSlice';
 import MainHeader from '../../components/Header/MainHeader';
 import { useNavigate } from 'react-router-dom';
 import { MainInput } from '../../elements/MainInput';

@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import fillMyProfileSlice from '../features/fillMyProfile/fillMyProfileSlice';
 import profileSlice from '../features/profile/profileSlice';
-import userSlice from '../features/Dashboard/dashboardSlice';
+import userSlice from '../features/dashboard/dashboardSlice';
 import connectionSlice from '../features/messageRequests/messageRequestsSlice';
 
 export default configureStore({

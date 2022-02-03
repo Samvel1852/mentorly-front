@@ -29,7 +29,7 @@ const { Content } = Layout;
 
 const { Title } = Typography;
 export default function ViewMyProfile() {
-  const [initialPendingsCount, setinitialPendingsCount] = useState(0);
+  const [initialPendingsCount, setInitialPendingsCount] = useState(0);
   const {userData, editLoader} = useSelector((state) => state.profile);
   const {requestSent, pendingsCount, errors} = useSelector((state) => state.connections);
 
@@ -38,7 +38,7 @@ export default function ViewMyProfile() {
   }, []);
 
   useEffect(() => {
-    setinitialPendingsCount(pendingsCount);
+    setInitialPendingsCount(pendingsCount);
   }, [pendingsCount]);
 
   const navigate = useNavigate();
