@@ -23,7 +23,8 @@ export const PrivateRoute = () => {
 
 export const PublicRoute = () => {
     const isAuth = useAuth();
-    return !isAuth ? <Outlet /> : <Navigate to='/' />
+    const isLogged = useLogged();
+    return !isAuth || !isLogged ? <Outlet /> : <Navigate to='/' />
 }
 
 export const SemiPrivateRoute = () => {

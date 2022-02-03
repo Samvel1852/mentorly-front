@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { Form, Button, message } from 'antd';
 
 import MainHeader from '../../components/Header/MainHeader'
@@ -7,6 +7,7 @@ import styles from './Confirm.module.less';
 import axiosInstance from '../../helpers/axiosInstance';
 import { MainInput } from '../../elements/MainInput';
 import { CheckCircleFilled } from '@ant-design/icons/lib/icons';
+import { getLocalStorage } from '../../helpers/localStorage';
 
 export default function Confirm() {
   const [errorMessage, setErrorMessage] = useState(null);
@@ -61,6 +62,7 @@ export default function Confirm() {
   return (
     <>
     <MainHeader inPublicPages={true} />
+    { getLocalStorage('accessToken') ? <Navigate to='/' /> :
       <div className={styles.formContainer}>
       <Form name='basic' initialValues={{ remember: true }}
         form={form}
@@ -94,5 +96,6 @@ export default function Confirm() {
         </Form.Item>
       </Form>
     </div>
+}
   </>);
 }

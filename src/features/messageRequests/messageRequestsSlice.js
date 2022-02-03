@@ -9,7 +9,10 @@ const initialState = {
     loading: false,
     requestSent: '',
     pendingsCount: 0,
+    reqStatus: '',
 };
+
+const errMessage = 'Something went wrong';
 
 export const connect = createAsyncThunk('connections/connect', async (id,{rejectWithValue}) => {
     try {
@@ -66,9 +69,9 @@ const connectionSlice = createSlice({
             state.requestSent = 'Request Sent';
             state.loading = false;
         },
-        [connect.rejected]: (state, {payload}) => {
+        [connect.rejected]: (state) => {
             state.loading = false;
-            state.errors = payload;
+            state.errors = errMessage;
         },
         [pendingConnections.pending]: (state) => {
            state.loading = true;
@@ -93,8 +96,12 @@ const connectionSlice = createSlice({
            state.errors = payload;
            state.loading = false;
         },
+        [changeRequestStatus.fulfilled]: (state, {payload}) => {
+            state.reqStatus = payload;
+         },
         [changeRequestStatus.rejected]: (state, {payload}) => {
-           state.errors = payload;
+           state.errors = errMessage;
+           state.reqStatus = payload;
         },
     }
 });
