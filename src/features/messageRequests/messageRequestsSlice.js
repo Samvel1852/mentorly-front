@@ -101,7 +101,6 @@ const connectionSlice = createSlice({
          },
         [changeRequestStatus.rejected]: (state, {payload}) => {
            state.errors = errMessage;
-           console.log('payload', payload);
            state.reqStatus = payload;
         },
     }
