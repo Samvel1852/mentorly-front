@@ -19,10 +19,12 @@ function Dashboard() {
     const navigate = useNavigate();
     const [page, setPage] = useState(1);
     const limit = 5;
-    const [params, setParams] = useState({});
+    const [params, setParams] = useState({
+        sortBy: 'ascend'
+    });
 
     useEffect(async () => {
-       await getData(params)
+       await getData({ params })
     }, []);
 
     const getData = async (params) => {
@@ -55,7 +57,18 @@ function Dashboard() {
             dataIndex: 'role',
             key: 'role',
         },
+        {
+            title: 'Date',
+            dataIndex: 'date',
+            key: 'date',
+            sorter: true,
+            sortOrder: params.sortBy
+        }
     ];
+    const handleTableChange = async () => {
+        setParams({ ...params, sortBy: params.sortBy === 'ascend' ? 'descend' : 'ascend' });
+        await getData(params)
+    }
     const dataSource = users.map((item) => (
         {
             key: item._id,
@@ -64,6 +77,7 @@ function Dashboard() {
             position: item.position,
             filed: item.selectedField,
             role: item.selectedRole,
+            date: new Date(item.createdAt).toLocaleString().split(',')[0]
         }
     ));
     const handleSubmit = async (event) => {
@@ -159,6 +173,7 @@ function Dashboard() {
                           }
                     }}
                     loading={ loading }
+                    onChange={handleTableChange}
                     pagination={ {
                         total: pageTotal,
                         current: page,
