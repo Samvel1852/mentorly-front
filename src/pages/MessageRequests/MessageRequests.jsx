@@ -48,7 +48,7 @@ export default function MessageRequests() {
       {loading ? <div className={styles.pageLoaderContainer}><MainSpin tip='Loading...' /></div> :
       <Row className={styles.requestContainer}>
         <Col span={11}>
-          <Title level={4} className={styles.title}>Connections</Title>
+          <Title level={4} className={styles.title}>My Connections</Title>
           <List
             size='large'
             dataSource={confirmations} 
@@ -58,7 +58,7 @@ export default function MessageRequests() {
                 <List.Item.Meta
                   title=
                   {<Link className={styles.text} to={`/${item._id}`}>
-                    {`${++index}. ${item.firstName} ${item.lastName}(${item.position}).`}
+                    {`${++index}. ${item.firstName} ${item.lastName} (${item.position}, ${item.selectedRole})`}
                   </Link>}
                 />
             </List.Item>}
@@ -76,13 +76,14 @@ export default function MessageRequests() {
             renderItem={item => 
             <div className={styles.pendings}>
               {item?.from?._id &&
-            <List.Item>
+            <List.Item className={styles.container}> 
               <List.Item.Meta
+              className={styles.listItem}
                 title=
                 {<Link className={styles.text} to={`/${item?.from._id}`}>
                   {`${item?.from?.firstName} ${item?.from?.lastName}`}
                 </Link>}
-                description={item.from.position}
+                description={<p className={styles.description}>{item.from.position}<br/><p className={styles.role}>{item.from.selectedRole}</p></p>}
               />
               <Button className={styles.accept} onClick={() => requestAnswer(item._id, {connect: 'confirmed'})}>Accept</Button>
               <Button className={styles.decline} onClick={() => requestAnswer(item._id, {connect: 'rejected'})}>Ignore</Button>
