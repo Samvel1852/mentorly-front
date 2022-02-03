@@ -30,8 +30,10 @@ export default function MessageRequests() {
   },[errors]);
 
   useEffect(() => {
-    dispatch(pendingConnections());
-    dispatch(confirmedConnections());
+    if (!errors?.length) {
+      dispatch(pendingConnections());
+      dispatch(confirmedConnections());
+    }
   }, [reqStatus]);
 
   const requestAnswer = async (id, param) => {
